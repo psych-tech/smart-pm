@@ -1,0 +1,62 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "owner",
+            "relationshipNameCapitalized": "Owner",
+            "relationshipFieldName": "owner",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "User",
+            "otherEntityField": "login"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "sn",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Sn",
+            "fieldNameUnderscored": "sn",
+            "fieldInJavaBeanMethod": "Sn",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "regTime",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "RegTime",
+            "fieldNameUnderscored": "reg_time",
+            "fieldInJavaBeanMethod": "RegTime",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "lastUpdate",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "LastUpdate",
+            "fieldNameUnderscored": "last_update",
+            "fieldInJavaBeanMethod": "LastUpdate",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "status",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Status",
+            "fieldNameUnderscored": "status",
+            "fieldInJavaBeanMethod": "Status",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": true,
+    "fieldsContainDate": false,
+    "changelogDate": "20150522174453",
+    "pagination": "pager",
+    "validation": false
+}

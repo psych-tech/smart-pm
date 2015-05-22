@@ -1,0 +1,23 @@
+{
+    "emolanceApp": {
+        "device" : {
+            "home": {
+                "title": "Devices",
+                "createLabel": "Créer un nouveau Device",
+                "createOrEditLabel": "Créer ou éditer un Device"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Device {{ id }} ?"
+            },
+            "detail": {
+                "title": "Device"
+            },
+            "sn": "Sn",
+            "regTime": "RegTime",
+            "lastUpdate": "LastUpdate",
+            "status": "Status",
+            "owner": "owner"
+        }
+    }
+}
+

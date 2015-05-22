@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <!--
+        Added the entity Device.
+    -->
+    <changeSet id="20150522174453" author="jhipster">
+        <createTable tableName="DEVICE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sn" type="varchar(255)"/>
+            <column name="reg_time" type="timestamp"/>
+            <column name="last_update" type="timestamp"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="owner_id" type="bigint"/>
+        </createTable>
+        <dropDefaultValue tableName="DEVICE" columnName="reg_time" columnDataType="datetime"/>
+
+        <dropDefaultValue tableName="DEVICE" columnName="last_update" columnDataType="datetime"/>
+
+        
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="DEVICE"
+                                 constraintName="fk_device_owner_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="JHI_USER"/>
+
+    </changeSet>
+</databaseChangeLog>

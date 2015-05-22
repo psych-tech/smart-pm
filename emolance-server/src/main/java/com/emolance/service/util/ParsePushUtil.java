@@ -1,17 +1,20 @@
 package com.emolance.service.util;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.emolance.domain.Report;
+import org.joda.time.DateTime;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+
+import com.emolance.domain.Report;
 
 public class ParsePushUtil {
 
@@ -54,31 +57,38 @@ public class ParsePushUtil {
 		}
 	}
 
-	public static void main(String[] args) {
-		String[] channels = new String[]{""};
-		String type = "android";
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("alert", "push data test");
-
-		ParsePushData push = new ParsePushData();
-		push.setChannels(Arrays.asList(channels));
-		push.setData(data);
-
-		try {
-			Response r = parseAPI.sendPushNotification(push);
-			System.out.println(r.getStatus());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		String[] channels = new String[]{""};
+//		String type = "android";
+//
+//		Report report = new Report();
+//		report.setTimestamp(new DateTime());
+//		report.setValue(new BigDecimal(123));
+//		Map<String, Object> data = new HashMap<String, Object>();
+//		data.put("alert", "test");
+//		data.put("value", report.getValue().toString());
+//		data.put("timestamp", report.getTimestamp().toString());
+//
+//
+//		ParsePushData push = new ParsePushData();
+//		push.setChannels(Arrays.asList(channels));
+//		push.setData(data);
+//
+//		try {
+//			Response r = parseAPI.sendPushNotification(push);
+//			System.out.println(r.getStatus());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void sendPushNotification(Report report) {
 		String[] channels = new String[]{""};
 		//String type = "android";
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("alert", "push data test");
-		data.put("value", report.getValue());
-		data.put("timestamp", report.getTimestamp());
+		data.put("alert", "Here is your latest pressure value!");
+		data.put("value", report.getValue().toString());
+		data.put("timestamp", report.getTimestamp().toString());
 
 		ParsePushData push = new ParsePushData();
 		push.setChannels(Arrays.asList(channels));

@@ -1,0 +1,62 @@
+
+<div>
+    <h2><span translate="emolanceApp.device.detail.title">Device</span> {{device.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.device.sn">Sn</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{device.sn}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.device.regTime">RegTime</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{device.regTime}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.device.lastUpdate">LastUpdate</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{device.lastUpdate}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.device.status">Status</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{device.status}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.device.owner">owner</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{device.owner.login}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="device"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>
