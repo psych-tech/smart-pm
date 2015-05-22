@@ -1,0 +1,56 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "userId",
+            "relationshipNameCapitalized": "UserId",
+            "relationshipFieldName": "userId",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "User",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "type",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Type",
+            "fieldNameUnderscored": "type",
+            "fieldInJavaBeanMethod": "Type",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "value",
+            "fieldType": "BigDecimal",
+            "fieldNameCapitalized": "Value",
+            "fieldNameUnderscored": "value",
+            "fieldInJavaBeanMethod": "Value",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "timestamp",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "Timestamp",
+            "fieldNameUnderscored": "timestamp",
+            "fieldInJavaBeanMethod": "Timestamp",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": true,
+    "fieldsContainDateTime": true,
+    "fieldsContainDate": false,
+    "changelogDate": "20150522051250",
+    "pagination": "pager",
+    "validation": true
+}

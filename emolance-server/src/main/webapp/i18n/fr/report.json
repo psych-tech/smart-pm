@@ -1,0 +1,22 @@
+{
+    "emolanceApp": {
+        "report" : {
+            "home": {
+                "title": "Reports",
+                "createLabel": "Créer un nouveau Report",
+                "createOrEditLabel": "Créer ou éditer un Report"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Report {{ id }} ?"
+            },
+            "detail": {
+                "title": "Report"
+            },
+            "type": "Type",
+            "value": "Value",
+            "timestamp": "Timestamp",
+            "userId": "userId"
+        }
+    }
+}
+

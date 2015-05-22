@@ -1,0 +1,54 @@
+
+<div>
+    <h2><span translate="emolanceApp.report.detail.title">Report</span> {{report.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.report.type">Type</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{report.type}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.report.value">Value</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{report.value}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.report.timestamp">Timestamp</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{report.timestamp}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="emolanceApp.report.userId">userId</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{report.userId.id}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="report"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

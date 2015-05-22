@@ -1,0 +1,20 @@
+{
+  "generator-jhipster": {
+    "baseName": "emolance",
+    "packageName": "com.emolance",
+    "packageFolder": "com/emolance",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "rememberMeKey": "e2a9fe54ee469b701e8bc8a9d5a79f4c3030dde5"
+  }
+}
