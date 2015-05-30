@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#f5f5f5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+
+
+        <ImageView
+                android:adjustViewBounds="true"
+                android:src="@drawable/profile_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_alignParentTop="true"
+                android:text="Dr. Joseph Cooper"
+                android:textColor="#000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/positionText"
+                android:layout_below="@+id/nameText"
+                android:text="Biotech Startup CEO"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_above="@+id/ageText"
+                android:text="Philadephia, PA"
+                android:textColor="#828282"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/ageText"
+                android:layout_alignParentBottom="true"
+                android:text="Age 55"
+                android:textColor="#828282"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/rounded_layout"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="30"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <View
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dip"
+                    android:background="#ebebeb" />
+
+                <ImageView
+                    android:id="@+id/hammerImage"
+                    android:layout_gravity="center"
+                    android:src="@drawable/hammer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dip"
+                    android:background="#ebebeb" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/timeText"
+                android:text="06/28/2015 8:00AM"
+                android:textColor="#828282"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:layout_weight="10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/levelText"
+                        android:textSize="20sp"
+                        android:text="7"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@id/levelText"
+                        android:textSize="12sp"
+                        android:text="th"
+                        android:textColor="#828282"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_below="@id/levelText"
+                        android:textSize="12sp"
+                        android:textColor="#828282"
+                        android:text="level of stress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/precentText"
+                        android:textSize="20sp"
+                        android:text="75"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@id/precentText"
+                        android:text="%"
+                        android:textSize="12sp"
+                        android:textColor="#828282"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_below="@id/precentText"
+                        android:text="people ahead of you"
+                        android:textColor="#828282"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_weight="70"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/bear_cup"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

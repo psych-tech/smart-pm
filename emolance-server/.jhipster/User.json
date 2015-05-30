@@ -1,0 +1,24 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "subId",
+            "fieldType": "String",
+            "fieldNameCapitalized": "SubId",
+            "fieldNameUnderscored": "sub_id",
+            "fieldInJavaBeanMethod": "SubId",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150522215259",
+    "pagination": "no",
+    "validation": false
+}

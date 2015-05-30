@@ -1,12 +1,14 @@
 package com.emolance.web.rest.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Utility class for handling pagination.
@@ -22,7 +24,7 @@ public class PaginationUtil {
 
     public static final int MIN_OFFSET = 1;
 
-    public static final int DEFAULT_LIMIT = 20;
+    public static final int DEFAULT_LIMIT = 50;
 
     public static final int MAX_LIMIT = 100;
 
@@ -34,6 +36,16 @@ public class PaginationUtil {
             limit = DEFAULT_LIMIT;
         }
         return new PageRequest(offset - 1, limit);
+    }
+
+    public static Pageable generatePageRequest(Integer offset, Integer limit, boolean isSorting) {
+        if (offset == null || offset < MIN_OFFSET) {
+            offset = DEFAULT_OFFSET;
+        }
+        if (limit == null || limit > MAX_LIMIT) {
+            limit = DEFAULT_LIMIT;
+        }
+        return new PageRequest(offset - 1, limit, new Sort(Direction.DESC, "id"));
     }
 
     public static HttpHeaders generatePaginationHttpHeaders(Page page, String baseUrl, Integer offset, Integer limit)

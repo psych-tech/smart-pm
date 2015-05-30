@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "emolance",
+        "title": "Emolance",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
@@ -8,6 +8,7 @@
                 "main": "Entities",
                 "report": "Report",
                 "device": "Device",
+                "user": "User",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -44,7 +45,7 @@
         },
         "messages": {
             "info": {
-                "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
+                "authenticated": "Please <a href=\"#/login\">login</a> with your existing account.",
                 "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
             },
             "error": {
@@ -98,5 +99,5 @@
             "datetimelocal": "This field should be a date and time."
         }
     },
-    "footer": "This is your footer"
+    "footer": "Copyright © 2015 Emolance"
 }

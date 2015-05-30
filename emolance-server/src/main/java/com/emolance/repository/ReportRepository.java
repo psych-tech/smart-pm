@@ -1,9 +1,11 @@
 package com.emolance.repository;
 
-import com.emolance.domain.Report;
-import org.springframework.data.jpa.repository.*;
-
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.emolance.domain.Report;
 
 /**
  * Spring Data JPA repository for the Report entity.

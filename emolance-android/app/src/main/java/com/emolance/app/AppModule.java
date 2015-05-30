@@ -7,6 +7,7 @@ import com.emolance.app.auth.ApiKeyProvider;
 import com.emolance.app.service.EmolanceAPI;
 import com.emolance.app.service.ServiceGenerator;
 import com.emolance.app.ui.MainFragment;
+import com.emolance.app.ui.ReportFragment;
 import com.emolance.app.util.Constants;
 
 import javax.inject.Singleton;
@@ -20,7 +21,8 @@ import dagger.Provides;
 @Module(
         injects = {
                 EmolanceApplication.class,
-                MainFragment.class
+                MainFragment.class,
+                ReportFragment.class
         }
 )
 public class AppModule {

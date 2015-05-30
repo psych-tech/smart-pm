@@ -36,6 +36,8 @@ public class ParsePushUtil {
 		    "Content-Type: application/json"
 		})
 		public Response sendPushNotification(@Body ParsePushData data);
+
+
 	}
 
 	public static class ParsePushData {
@@ -82,8 +84,8 @@ public class ParsePushUtil {
 //		}
 //	}
 
-	public static void sendPushNotification(Report report) {
-		String[] channels = new String[]{""};
+	public static void sendPushNotification(String login, Report report) {
+		String[] channels = new String[]{"user_" + login};
 		//String type = "android";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("alert", "Here is your latest pressure value!");

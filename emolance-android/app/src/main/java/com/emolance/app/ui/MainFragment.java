@@ -1,7 +1,6 @@
 package com.emolance.app.ui;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -78,8 +77,9 @@ public class MainFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static MainFragment newInstance(int sectionNumber) {
-        MainFragment fragment = new MainFragment();
+    public static Fragment newInstance(int sectionNumber) {
+        ReportFragment fragment = new ReportFragment();
+        //MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -160,9 +160,9 @@ public class MainFragment extends Fragment {
             public void success(List<Report> reports, Response response) {
                 //swipeRefreshLayout.setRefreshing(false);
                 closeRefreshing();
-                // use the last report to update the main screen
+                // use the first report to update the main screen
                 updateLastCheckResult(reports.get(0));
-                // remove the last report
+                // remove the first report
                 reports.remove(0);
                 reportsAdapter = new HistoryReportAdapter(
                         context, reports);
@@ -195,7 +195,9 @@ public class MainFragment extends Fragment {
                 DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
                         .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-        currentTime.setText(dateTime.getMonthOfYear() + "/" + dateTime.getDayOfMonth() + "/" + dateTime.getYear());
+        String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+                .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+        currentTime.setText(dateTimeStr);
     }
 
     /**** Method for Setting the Height of the ListView dynamically.
@@ -220,7 +222,9 @@ public class MainFragment extends Fragment {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
-        scrollView.pageScroll(View.FOCUS_UP);
+
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        scrollView.smoothScrollTo(0, 0);
     }
 
     @Override
