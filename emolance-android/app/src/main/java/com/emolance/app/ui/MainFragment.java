@@ -7,13 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.emolance.app.Injector;
@@ -22,7 +25,12 @@ import com.emolance.app.data.Report;
 import com.emolance.app.service.EmolanceAPI;
 import com.emolance.app.util.Constants;
 
+import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -48,14 +56,17 @@ public class MainFragment extends Fragment {
     TextView currentValue;
     @InjectView(R.id.currentTime)
     TextView currentTime;
+    @InjectView(R.id.swipe_container)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.mainScrollView)
+    ScrollView scrollView;
 
     @Inject
     EmolanceAPI emolanceAPI;
 
     private HistoryReportAdapter reportsAdapter;
     private SyncBroadcastReceiver receiver;
-
-    private ProgressDialog progressDialog;
+    private Context context;
 
     /**
      * The fragment argument representing the section number for this
@@ -85,6 +96,7 @@ public class MainFragment extends Fragment {
         receiver = new SyncBroadcastReceiver();
         this.getActivity().registerReceiver(receiver,
                 new IntentFilter(Constants.SYNC_INTENT_FILTER));
+        this.context = getActivity();
     }
 
     @Override
@@ -93,7 +105,18 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
 
-        //syncHistoryData();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                syncHistoryData();
+            }
+        });
+
+        swipeRefreshLayout.setColorScheme(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         return rootView;
     }
@@ -128,34 +151,76 @@ public class MainFragment extends Fragment {
         });
     }
 
+
     private void syncHistoryData() {
-        progressDialog = ProgressDialog.show(
-                this.getActivity(), "Please Wait ...", "Syncing your pressure data", true);
+        swipeRefreshLayout.setRefreshing(true);
 
         emolanceAPI.listReports(new Callback<List<Report>>() {
             @Override
             public void success(List<Report> reports, Response response) {
-                progressDialog.dismiss();
+                //swipeRefreshLayout.setRefreshing(false);
+                closeRefreshing();
                 // use the last report to update the main screen
-                updateLastCheckResult(reports.get(reports.size() - 1));
+                updateLastCheckResult(reports.get(0));
                 // remove the last report
-                reports.remove(reports.size() - 1);
+                reports.remove(0);
                 reportsAdapter = new HistoryReportAdapter(
-                        MainFragment.this.getActivity(), reports);
+                        context, reports);
                 historyListView.setAdapter(reportsAdapter);
+
+                setListViewHeightBasedOnChildren(historyListView, reportsAdapter);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e(TAG, "Failed to get the list of history reports.", error);
-                progressDialog.dismiss();
+                closeRefreshing();
             }
         });
     }
 
+    private void closeRefreshing() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+    }
+
     private void updateLastCheckResult(Report lastReport) {
         currentValue.setText(Double.toString(lastReport.getValue()));
-        currentTime.setText(lastReport.getTimestamp());
+
+        DateTime dateTime = DateTime.parse(lastReport.getTimestamp(),
+                DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                        .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+        currentTime.setText(dateTime.getMonthOfYear() + "/" + dateTime.getDayOfMonth() + "/" + dateTime.getYear());
+    }
+
+    /**** Method for Setting the Height of the ListView dynamically.
+     **** Hack to fix the issue of not showing all the items of the ListView
+     **** when placed inside a ScrollView  ****/
+    public void setListViewHeightBasedOnChildren(ListView listView, HistoryReportAdapter listAdapter) {
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+        scrollView.pageScroll(View.FOCUS_UP);
     }
 
     @Override

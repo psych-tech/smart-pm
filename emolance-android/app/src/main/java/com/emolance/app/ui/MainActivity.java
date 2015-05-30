@@ -46,6 +46,8 @@ public class MainActivity extends ActionBarActivity
 
         // check auth
         checkAuth();
+
+        onNavigationDrawerItemSelected(0);
     }
 
     @Override
