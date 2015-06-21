@@ -40,6 +40,12 @@ public class Report implements Serializable {
     @Column(name = "timestamp", nullable = false)
     private DateTime timestamp;
 
+    @Column(name = "qrcode")
+    private String qrcode;
+
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     private User userId;
 
@@ -73,6 +79,22 @@ public class Report implements Serializable {
 
     public void setTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public User getUserId() {
@@ -111,6 +133,8 @@ public class Report implements Serializable {
                 ", type='" + type + "'" +
                 ", value='" + value + "'" +
                 ", timestamp='" + timestamp + "'" +
+                ", qrcode='" + qrcode + "'" +
+                ", status='" + status + "'" +
                 '}';
     }
 }

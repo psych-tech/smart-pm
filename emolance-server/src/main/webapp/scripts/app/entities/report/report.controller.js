@@ -61,7 +61,7 @@ angular.module('emolanceApp')
         };
 
         $scope.clear = function () {
-            $scope.report = {type: null, value: null, timestamp: null, id: null};
+            $scope.report = {type: null, value: null, timestamp: null, qrcode: null, status: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

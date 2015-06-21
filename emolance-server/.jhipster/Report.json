@@ -41,6 +41,24 @@
             "fieldNameUnderscored": "timestamp",
             "fieldInJavaBeanMethod": "Timestamp",
             "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "qrcode",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Qrcode",
+            "fieldNameUnderscored": "qrcode",
+            "fieldInJavaBeanMethod": "Qrcode",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "status",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Status",
+            "fieldNameUnderscored": "status",
+            "fieldInJavaBeanMethod": "Status",
+            "fieldValidate": false
         }
     ],
     "fieldsContainOwnerManyToMany": false,

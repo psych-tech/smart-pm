@@ -20,6 +20,8 @@
                 <constraints nullable="false" />
             </column>
             <column name="timestamp" type="timestamp"/>
+            <column name="qrcode" type="varchar(255)"/>
+            <column name="status" type="varchar(255)"/>
             <column name="userid_id" type="bigint"/>
         </createTable>
         <dropDefaultValue tableName="REPORT" columnName="timestamp" columnDataType="datetime"/>
