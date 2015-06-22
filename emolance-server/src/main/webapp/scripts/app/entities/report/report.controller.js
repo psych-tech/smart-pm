@@ -2,6 +2,8 @@
 
 angular.module('emolanceApp')
     .controller('ReportController', function ($scope, Report, User, ParseLinks) {
+    	console.log("get here");
+
         $scope.reports = [];
         $scope.users = User.query();
         $scope.page = 1;

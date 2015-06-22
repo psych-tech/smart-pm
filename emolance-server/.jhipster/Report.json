@@ -68,7 +68,7 @@
     "fieldsContainBigDecimal": true,
     "fieldsContainDateTime": true,
     "fieldsContainDate": false,
-    "changelogDate": "20150522051250",
+    "changelogDate": "20150621051250",
     "pagination": "pager",
     "validation": true
 }

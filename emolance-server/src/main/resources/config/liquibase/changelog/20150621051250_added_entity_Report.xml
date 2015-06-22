@@ -10,7 +10,7 @@
     <!--
         Added the entity Report.
     -->
-    <changeSet id="20150522051250" author="jhipster">
+    <changeSet id="20150621051250" author="jhipster">
         <createTable tableName="REPORT">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
