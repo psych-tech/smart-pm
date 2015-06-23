@@ -46,6 +46,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.UserReportCreatorActivity"
+            android:screenOrientation="portrait" />
+
         <activity android:name=".auth.AuthActivity"/>
 
         <service android:name=".auth.EmolanceAuthService">

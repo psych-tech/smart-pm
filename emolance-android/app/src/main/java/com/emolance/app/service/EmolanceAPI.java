@@ -8,6 +8,8 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by yusun on 5/22/15.
@@ -22,4 +24,14 @@ public interface EmolanceAPI {
 
     @GET("/api/account")
     public Response authenticate();
+
+    @POST("/api/reports/device/trigger/process/{sn}")
+    public void triggerProcess(@Path("sn") String sn, @Query("qrcode") String qrcode, Callback<Response> callback);
+
+    @POST("/api/reports/user/create/{qrcode}")
+    public void createUserReport(
+            @Path("qrcode") String qrcode,
+            @Query("name") String name,
+            @Query("link") String link,
+            Callback<Response> callback);
 }
