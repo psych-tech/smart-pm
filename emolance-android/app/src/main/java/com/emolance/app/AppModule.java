@@ -6,7 +6,9 @@ import android.content.Context;
 import com.emolance.app.auth.ApiKeyProvider;
 import com.emolance.app.service.EmolanceAPI;
 import com.emolance.app.service.ServiceGenerator;
+import com.emolance.app.ui.AdminFragment;
 import com.emolance.app.ui.MainFragment;
+import com.emolance.app.ui.NewMainActivity;
 import com.emolance.app.ui.ReportFragment;
 import com.emolance.app.util.Constants;
 
@@ -21,8 +23,10 @@ import dagger.Provides;
 @Module(
         injects = {
                 EmolanceApplication.class,
+                NewMainActivity.class,
                 MainFragment.class,
-                ReportFragment.class
+                ReportFragment.class,
+                AdminFragment.class
         }
 )
 public class AppModule {

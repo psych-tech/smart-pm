@@ -13,6 +13,13 @@
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
 
+
+    <item name="actionbar_text" type="color">#000</item>
+    <item name="tab_background" type="color">#f5f5f5</item>
+    <color name="tab_bar_text_default">#5c5c5c</color>
+    <color name="transparent">#f5f5f5</color>
+    <color name="tab_highlight">#43cdcb</color>
+
     <integer-array name="androidcolors">
         <item>@color/blue</item>
         <item>@color/purple</item>
