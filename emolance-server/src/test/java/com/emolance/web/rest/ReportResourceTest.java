@@ -58,6 +58,10 @@ public class ReportResourceTest {
     private static final String UPDATED_QRCODE = "UPDATED_TEXT";
     private static final String DEFAULT_STATUS = "SAMPLE_TEXT";
     private static final String UPDATED_STATUS = "UPDATED_TEXT";
+    private static final String DEFAULT_NAME = "SAMPLE_TEXT";
+    private static final String UPDATED_NAME = "UPDATED_TEXT";
+    private static final String DEFAULT_LINK = "SAMPLE_TEXT";
+    private static final String UPDATED_LINK = "UPDATED_TEXT";
 
     @Inject
     private ReportRepository reportRepository;
@@ -82,6 +86,8 @@ public class ReportResourceTest {
         report.setTimestamp(DEFAULT_TIMESTAMP);
         report.setQrcode(DEFAULT_QRCODE);
         report.setStatus(DEFAULT_STATUS);
+        report.setName(DEFAULT_NAME);
+        report.setLink(DEFAULT_LINK);
     }
 
     @Test
@@ -104,6 +110,8 @@ public class ReportResourceTest {
         assertThat(testReport.getTimestamp().toDateTime(DateTimeZone.UTC)).isEqualTo(DEFAULT_TIMESTAMP);
         assertThat(testReport.getQrcode()).isEqualTo(DEFAULT_QRCODE);
         assertThat(testReport.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testReport.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testReport.getLink()).isEqualTo(DEFAULT_LINK);
     }
 
     @Test
@@ -140,7 +148,9 @@ public class ReportResourceTest {
                 .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
                 .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP_STR)))
                 .andExpect(jsonPath("$.[*].qrcode").value(hasItem(DEFAULT_QRCODE.toString())))
-                .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+                .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK.toString())));
     }
 
     @Test
@@ -158,7 +168,9 @@ public class ReportResourceTest {
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
             .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP_STR))
             .andExpect(jsonPath("$.qrcode").value(DEFAULT_QRCODE.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.link").value(DEFAULT_LINK.toString()));
     }
 
     @Test
@@ -183,6 +195,8 @@ public class ReportResourceTest {
         report.setTimestamp(UPDATED_TIMESTAMP);
         report.setQrcode(UPDATED_QRCODE);
         report.setStatus(UPDATED_STATUS);
+        report.setName(UPDATED_NAME);
+        report.setLink(UPDATED_LINK);
         restReportMockMvc.perform(put("/api/reports")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(report)))
@@ -197,6 +211,8 @@ public class ReportResourceTest {
         assertThat(testReport.getTimestamp().toDateTime(DateTimeZone.UTC)).isEqualTo(UPDATED_TIMESTAMP);
         assertThat(testReport.getQrcode()).isEqualTo(UPDATED_QRCODE);
         assertThat(testReport.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testReport.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testReport.getLink()).isEqualTo(UPDATED_LINK);
     }
 
     @Test

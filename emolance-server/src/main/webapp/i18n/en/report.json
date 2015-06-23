@@ -17,6 +17,8 @@
             "timestamp": "Timestamp",
             "qrcode": "Qrcode",
             "status": "Status",
+            "name": "Name",
+            "link": "Link",
             "userId": "userId"
         }
     }

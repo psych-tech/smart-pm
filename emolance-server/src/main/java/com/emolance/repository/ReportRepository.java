@@ -15,4 +15,6 @@ public interface ReportRepository extends JpaRepository<Report,Long> {
 
     @Query("select report from Report report where report.status = 'READY' order by report.id ASC")
     List<Report> findFirstReadyReport();
+
+    List<Report> findByQrcode(String qrcode);
 }

@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import retrofit.RestAdapter;
@@ -56,14 +57,20 @@ public class ReportResourceSelf {
 			method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public ResponseEntity<Void> userCreateReport(@PathVariable("qrcode") String qrcode) throws URISyntaxException {
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		log.info("Received the qrcode report from user: " + name + " qr: " + qrcode);
-		Optional<com.emolance.domain.User> user = userRepository.findOneByLogin(name);
+	public ResponseEntity<Void> userCreateReport(
+			@PathVariable("qrcode") String qrcode,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "link", required = false) String link) throws URISyntaxException {
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		log.info("Received the qrcode report from user: " + username + " qr: " + qrcode);
+		Optional<com.emolance.domain.User> user = userRepository.findOneByLogin(username);
 
 		// report the result
 		Report report = new Report();
 		report.setTimestamp(new DateTime());
+		report.setName(name);
+		report.setLink(link);
 		report.setType("NORMAL");
 		report.setQrcode(qrcode);
 		report.setStatus(ReportStatus.READY.toString());
@@ -87,13 +94,19 @@ public class ReportResourceSelf {
 			method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public ResponseEntity<Void> deviceReturnReport(@PathVariable(value = "sn") String sn) throws URISyntaxException {
+	public ResponseEntity<Void> deviceReturnReport(
+			@PathVariable(value = "sn") String sn,
+			@RequestParam(value = "qrcode", required = false) String qrcode) throws URISyntaxException {
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("Trigger the report from device sn: " + sn);
 		Optional<com.emolance.domain.User> user = userRepository.findOneByLogin(name);
 
 		Report report = null;
-		List<Report> reports = reportRepository.findFirstReadyReport();
+		List<Report> reports = qrcode == null ?
+				reportRepository.findFirstReadyReport()
+				:
+				reportRepository.findByQrcode(qrcode);
+
 		if (reports == null || reports.size() == 0) {
 			log.warn("No report is available");
 			report = new Report();

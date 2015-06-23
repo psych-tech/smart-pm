@@ -46,6 +46,12 @@ public class Report implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "link")
+    private String link;
+
     @ManyToOne
     private User userId;
 
@@ -97,6 +103,22 @@ public class Report implements Serializable {
         this.status = status;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public User getUserId() {
         return userId;
     }
@@ -135,6 +157,8 @@ public class Report implements Serializable {
                 ", timestamp='" + timestamp + "'" +
                 ", qrcode='" + qrcode + "'" +
                 ", status='" + status + "'" +
+                ", name='" + name + "'" +
+                ", link='" + link + "'" +
                 '}';
     }
 }

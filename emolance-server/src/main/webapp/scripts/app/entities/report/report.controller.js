@@ -2,8 +2,6 @@
 
 angular.module('emolanceApp')
     .controller('ReportController', function ($scope, Report, User, ParseLinks) {
-    	console.log("get here");
-
         $scope.reports = [];
         $scope.users = User.query();
         $scope.page = 1;
@@ -63,7 +61,7 @@ angular.module('emolanceApp')
         };
 
         $scope.clear = function () {
-            $scope.report = {type: null, value: null, timestamp: null, qrcode: null, status: null, id: null};
+            $scope.report = {type: null, value: null, timestamp: null, qrcode: null, status: null, name: null, link: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

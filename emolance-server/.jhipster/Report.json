@@ -59,6 +59,24 @@
             "fieldNameUnderscored": "status",
             "fieldInJavaBeanMethod": "Status",
             "fieldValidate": false
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Name",
+            "fieldNameUnderscored": "name",
+            "fieldInJavaBeanMethod": "Name",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "link",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Link",
+            "fieldNameUnderscored": "link",
+            "fieldInJavaBeanMethod": "Link",
+            "fieldValidate": false
         }
     ],
     "fieldsContainOwnerManyToMany": false,
