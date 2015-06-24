@@ -29,35 +29,35 @@ public class ImageColorAnalyzer extends Component {
         int SC = 0;
 
         //Calculate ST
-        for (int i = 480; i <= 860; i++) {
-            for (int j = 600; j <= 667; j++) {
-                System.out.println("x,y: " + j + ", " + i);
-                int pixel = image.getRGB(j, i);
-                System.out.println(pixel);
+        for (int i = 488; i <= 818; i++) {
+            for (int j = 645; j <= 690; j++) {
+                //System.out.println("x,y: " + j + ", " + i);
+                int pixel = image.getRGB(i, j);
+                //System.out.println(pixel);
                 ST += printPixelARGB(pixel);
-                System.out.println("");
+                //System.out.println("");
             }
         }
 
         //Calculate SO
-        for (int i = 480; i <= 860; i++) {
-            for (int j = 500; j <= 567; j++) {
-                System.out.println("x,y: " + j + ", " + i);
-                int pixel = image.getRGB(j, i);
-                System.out.println(pixel);
+        for (int i = 488; i <= 818; i++) {
+            for (int j = 475; j <= 520; j++) {
+                //System.out.println("x,y: " + j + ", " + i);
+                int pixel = image.getRGB(i, j);
+                //System.out.println(pixel);
                 SO += printPixelARGB(pixel);
-                System.out.println("");
+                //System.out.println("");
             }
         }
 
         //Calculate SC
-        for (int i = 480; i <= 860; i++) {
-            for (int j = 400; j <= 467; j++) {
-                System.out.println("x,y: " + j + ", " + i);
-                int pixel = image.getRGB(j, i);
-                System.out.println(pixel);
+        for (int i = 488; i <= 818; i++) {
+            for (int j = 288; j <= 333; j++) {
+                //System.out.println("x,y: " + j + ", " + i);
+                int pixel = image.getRGB(i, j);
+                //System.out.println(pixel);
                 SC += printPixelARGB(pixel);
-                System.out.println("");
+                //System.out.println("");
             }
         }
 
