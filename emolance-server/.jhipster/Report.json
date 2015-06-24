@@ -77,6 +77,42 @@
             "fieldNameUnderscored": "link",
             "fieldInJavaBeanMethod": "Link",
             "fieldValidate": false
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "age",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Age",
+            "fieldNameUnderscored": "age",
+            "fieldInJavaBeanMethod": "Age",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "position",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Position",
+            "fieldNameUnderscored": "position",
+            "fieldInJavaBeanMethod": "Position",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 10,
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Email",
+            "fieldNameUnderscored": "email",
+            "fieldInJavaBeanMethod": "Email",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 11,
+            "fieldName": "result",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Result",
+            "fieldNameUnderscored": "result",
+            "fieldInJavaBeanMethod": "Result",
+            "fieldValidate": false
         }
     ],
     "fieldsContainOwnerManyToMany": false,

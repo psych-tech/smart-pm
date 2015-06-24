@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -53,6 +56,8 @@ public class ReportResourceSelf {
 	@Inject
 	private ImageProcessService imageProcessService;
 
+	private final ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(5);
+
 	@RequestMapping(value = "/reports/user/create/{qrcode}",
 			method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -96,10 +101,15 @@ public class ReportResourceSelf {
 	@Timed
 	public ResponseEntity<Void> deviceReturnReport(
 			@PathVariable(value = "sn") String sn,
-			@RequestParam(value = "qrcode", required = false) String qrcode) throws URISyntaxException {
+			@RequestParam(value = "qrcode", required = false) String qrcode,
+			@RequestParam(value = "delay", required = false) Integer delayInSec) throws URISyntaxException {
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("Trigger the report from device sn: " + sn);
 		Optional<com.emolance.domain.User> user = userRepository.findOneByLogin(name);
+
+		if (delayInSec == null) {
+			delayInSec = 0;
+		}
 
 		Report report = null;
 		List<Report> reports = qrcode == null ?
@@ -118,39 +128,11 @@ public class ReportResourceSelf {
 			report = reports.get(0);
 		}
 
-		try {
-			// report the result
-			RestAdapter restAdapter = new RestAdapter.Builder()
-					.setEndpoint("http://" + sn + ".emolance.ngrok.io")
-					.build();
-			ReportService reportService = restAdapter.create(ReportService.class);
+		report.setStatus(ReportStatus.TESTING.toString());
+		reportRepository.save(report);
 
-			ImageReport ir = reportService.triggerProcess(name);
-			log.info("Finished processing! The image is at: " + ir.getUrl());
-
-			// process image
-			BigDecimal res = imageProcessService.processImage(ir.getUrl());
-
-			// update result
-			report.setValue(res);
-			report.setStatus(ReportStatus.DONE.toString());
-			report.setUserId(user.get());
-			reportRepository.save(report);
-
-			// send notification
-			User userToNotify = report.getUserId();
-			if (userToNotify != null) {
-				String login = userToNotify.getLogin();
-				ParsePushUtil.sendPushNotification(login, report);
-			} else {
-				log.warn("Unknow user. Didn't send push notificaiton!");
-			}
-		} catch (Exception e) {
-			log.error("Failed to trigger the report from the device", e);
-			report.setStatus(ReportStatus.ERROR.toString());
-			report.setUserId(user.get());
-			reportRepository.save(report);
-		}
+		scheduledPool.schedule(new WaitAndCaptureImage(sn, report, user),
+				delayInSec, TimeUnit.SECONDS);
 
 		return ResponseEntity.ok().build();
 	}
@@ -197,6 +179,56 @@ public class ReportResourceSelf {
 		} else {
 			log.equals("Failed to process the image and generate the report!");
 			return ResponseEntity.status(500).build();
+		}
+	}
+
+	class WaitAndCaptureImage implements Runnable {
+
+		private Report report;
+		private String sn;
+		private Optional<com.emolance.domain.User> user;
+
+		public WaitAndCaptureImage(String sn, Report report, Optional<com.emolance.domain.User> user) {
+			this.sn = sn;
+			this.report = report;
+			this.user = user;
+		}
+
+		@Override
+		public void run() {
+			try {
+				// report the result
+				RestAdapter restAdapter = new RestAdapter.Builder()
+						.setEndpoint("http://" + sn + ".emolance.ngrok.io")
+						.build();
+				ReportService reportService = restAdapter.create(ReportService.class);
+
+				ImageReport ir = reportService.triggerProcess(user.get().getLogin());
+				log.info("Finished processing! The image is at: " + ir.getUrl());
+
+				// process image
+				BigDecimal res = imageProcessService.processImage(ir.getUrl());
+
+				// update result
+				report.setValue(res);
+				report.setStatus(ReportStatus.DONE.toString());
+				report.setUserId(user.get());
+				reportRepository.save(report);
+
+				// send notification
+				User userToNotify = report.getUserId();
+				if (userToNotify != null) {
+					String login = userToNotify.getLogin();
+					ParsePushUtil.sendPushNotification(login, report);
+				} else {
+					log.warn("Unknow user. Didn't send push notificaiton!");
+				}
+			} catch (Exception e) {
+				log.error("Failed to trigger the report from the device", e);
+				report.setStatus(ReportStatus.ERROR.toString());
+				report.setUserId(user.get());
+				reportRepository.save(report);
+			}
 		}
 	}
 
