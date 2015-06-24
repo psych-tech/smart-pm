@@ -2,7 +2,6 @@ package com.emolance.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -15,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ImageProcessService {
 
+	private ImageColorAnalyzer imageColorAnalyzer = new ImageColorAnalyzer();
+
     private final Logger log = LoggerFactory.getLogger(ImageProcessService.class);
 
-    public BigDecimal processImage(String url) {
-    	BigDecimal result = null;
+    public Node processImage(String url) {
+    	Node result = null;
 
     	// download
     	long timestamp = System.currentTimeMillis();
@@ -28,7 +29,11 @@ public class ImageProcessService {
 			FileUtils.copyURLToFile(new URL(url), tmpFile);
 
 			// process
-			result = new BigDecimal(tmpFile.length());
+			Node node = imageColorAnalyzer.analyzeImage(tmpFile);
+			log.info("SC: " + node.getSC());
+			log.info("SO: " + node.getSO());
+			log.info("ST: " + node.getST());
+			result = node;
 
 			// delete
 			tmpFile.delete();

@@ -62,6 +62,14 @@ public class ReportResourceTest {
     private static final String UPDATED_NAME = "UPDATED_TEXT";
     private static final String DEFAULT_LINK = "SAMPLE_TEXT";
     private static final String UPDATED_LINK = "UPDATED_TEXT";
+    private static final String DEFAULT_AGE = "SAMPLE_TEXT";
+    private static final String UPDATED_AGE = "UPDATED_TEXT";
+    private static final String DEFAULT_POSITION = "SAMPLE_TEXT";
+    private static final String UPDATED_POSITION = "UPDATED_TEXT";
+    private static final String DEFAULT_EMAIL = "SAMPLE_TEXT";
+    private static final String UPDATED_EMAIL = "UPDATED_TEXT";
+    private static final String DEFAULT_RESULT = "SAMPLE_TEXT";
+    private static final String UPDATED_RESULT = "UPDATED_TEXT";
 
     @Inject
     private ReportRepository reportRepository;
@@ -88,6 +96,10 @@ public class ReportResourceTest {
         report.setStatus(DEFAULT_STATUS);
         report.setName(DEFAULT_NAME);
         report.setLink(DEFAULT_LINK);
+        report.setAge(DEFAULT_AGE);
+        report.setPosition(DEFAULT_POSITION);
+        report.setEmail(DEFAULT_EMAIL);
+        report.setResult(DEFAULT_RESULT);
     }
 
     @Test
@@ -112,6 +124,10 @@ public class ReportResourceTest {
         assertThat(testReport.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testReport.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testReport.getLink()).isEqualTo(DEFAULT_LINK);
+        assertThat(testReport.getAge()).isEqualTo(DEFAULT_AGE);
+        assertThat(testReport.getPosition()).isEqualTo(DEFAULT_POSITION);
+        assertThat(testReport.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testReport.getResult()).isEqualTo(DEFAULT_RESULT);
     }
 
     @Test
@@ -150,7 +166,11 @@ public class ReportResourceTest {
                 .andExpect(jsonPath("$.[*].qrcode").value(hasItem(DEFAULT_QRCODE.toString())))
                 .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-                .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK.toString())));
+                .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK.toString())))
+                .andExpect(jsonPath("$.[*].age").value(hasItem(DEFAULT_AGE.toString())))
+                .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION.toString())))
+                .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+                .andExpect(jsonPath("$.[*].result").value(hasItem(DEFAULT_RESULT.toString())));
     }
 
     @Test
@@ -170,7 +190,11 @@ public class ReportResourceTest {
             .andExpect(jsonPath("$.qrcode").value(DEFAULT_QRCODE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.link").value(DEFAULT_LINK.toString()));
+            .andExpect(jsonPath("$.link").value(DEFAULT_LINK.toString()))
+            .andExpect(jsonPath("$.age").value(DEFAULT_AGE.toString()))
+            .andExpect(jsonPath("$.position").value(DEFAULT_POSITION.toString()))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.result").value(DEFAULT_RESULT.toString()));
     }
 
     @Test
@@ -197,6 +221,10 @@ public class ReportResourceTest {
         report.setStatus(UPDATED_STATUS);
         report.setName(UPDATED_NAME);
         report.setLink(UPDATED_LINK);
+        report.setAge(UPDATED_AGE);
+        report.setPosition(UPDATED_POSITION);
+        report.setEmail(UPDATED_EMAIL);
+        report.setResult(UPDATED_RESULT);
         restReportMockMvc.perform(put("/api/reports")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(report)))
@@ -213,6 +241,10 @@ public class ReportResourceTest {
         assertThat(testReport.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testReport.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testReport.getLink()).isEqualTo(UPDATED_LINK);
+        assertThat(testReport.getAge()).isEqualTo(UPDATED_AGE);
+        assertThat(testReport.getPosition()).isEqualTo(UPDATED_POSITION);
+        assertThat(testReport.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testReport.getResult()).isEqualTo(UPDATED_RESULT);
     }
 
     @Test

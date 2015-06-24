@@ -1,5 +1,6 @@
 package com.emolance.web.rest;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -35,8 +36,11 @@ import com.emolance.repository.DeviceRepository;
 import com.emolance.repository.ReportRepository;
 import com.emolance.repository.UserRepository;
 import com.emolance.service.ImageProcessService;
+import com.emolance.service.Node;
 import com.emolance.service.ReportService;
 import com.emolance.service.util.ParsePushUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * REST controller for managing Report.
@@ -56,6 +60,8 @@ public class ReportResourceSelf {
 	@Inject
 	private ImageProcessService imageProcessService;
 
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+
 	private final ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(5);
 
 	@RequestMapping(value = "/reports/user/create/{qrcode}",
@@ -65,7 +71,10 @@ public class ReportResourceSelf {
 	public ResponseEntity<Void> userCreateReport(
 			@PathVariable("qrcode") String qrcode,
 			@RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "link", required = false) String link) throws URISyntaxException {
+			@RequestParam(value = "link", required = false) String link,
+			@RequestParam(value = "age", required = false) String age,
+			@RequestParam(value = "position", required = false) String position,
+			@RequestParam(value = "email", required = false) String email) throws URISyntaxException {
 
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("Received the qrcode report from user: " + username + " qr: " + qrcode);
@@ -81,6 +90,9 @@ public class ReportResourceSelf {
 		report.setStatus(ReportStatus.READY.toString());
 		report.setUserId(user.get());
 		report.setValue(new BigDecimal(-1));
+		report.setAge(age);
+		report.setPosition(position);
+		report.setEmail(email);
 
 		reportRepository.save(report);
 
@@ -141,7 +153,7 @@ public class ReportResourceSelf {
 			method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public ResponseEntity<Void> triggerReport() throws URISyntaxException {
+	public ResponseEntity<Void> triggerReport() throws URISyntaxException, IOException {
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("Start processing photos for user: " + name);
 		Optional<com.emolance.domain.User> user = userRepository.findOneByLogin(name);
@@ -159,16 +171,19 @@ public class ReportResourceSelf {
 		log.info("Finished processing! The image is at: " + ir.getUrl());
 
 		// process image
-		BigDecimal res = imageProcessService.processImage(ir.getUrl());
+		Node res = imageProcessService.processImage(ir.getUrl());
+		BigDecimal value = new BigDecimal(res.getRT());
+		String result = objectMapper.writeValueAsString(res);
 
 		if (res != null) {
 			// report the result
 			Report report = new Report();
 			report.setTimestamp(new DateTime(ir.getTimestamp()));
 			report.setType("NORMAL");
-			report.setValue(res);
+			report.setValue(value);
 			report.setStatus(ReportStatus.DONE.toString());
 			report.setUserId(user.get());
+			report.setResult(result);
 
 			reportRepository.save(report);
 
@@ -207,12 +222,15 @@ public class ReportResourceSelf {
 				log.info("Finished processing! The image is at: " + ir.getUrl());
 
 				// process image
-				BigDecimal res = imageProcessService.processImage(ir.getUrl());
+				Node res = imageProcessService.processImage(ir.getUrl());
+				BigDecimal value = new BigDecimal(res.getRT());
+				String result = objectMapper.writeValueAsString(res);
 
 				// update result
-				report.setValue(res);
+				report.setValue(value);
 				report.setStatus(ReportStatus.DONE.toString());
 				report.setUserId(user.get());
+				report.setResult(result);
 				reportRepository.save(report);
 
 				// send notification

@@ -24,6 +24,10 @@
             <column name="status" type="varchar(255)"/>
             <column name="name" type="varchar(255)"/>
             <column name="link" type="varchar(255)"/>
+            <column name="age" type="varchar(255)"/>
+            <column name="position" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="result" type="varchar(255)"/>
             <column name="userid_id" type="bigint"/>
         </createTable>
         <dropDefaultValue tableName="REPORT" columnName="timestamp" columnDataType="datetime"/>

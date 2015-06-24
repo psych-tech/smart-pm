@@ -82,6 +82,30 @@
                                    ng-model="report.link">
 
                         </div>
+                        <div class="form-group">
+                            <label translate="emolanceApp.report.age">Age</label>
+                            <input type="text" class="form-control" name="age"
+                                   ng-model="report.age">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="emolanceApp.report.position">Position</label>
+                            <input type="text" class="form-control" name="position"
+                                   ng-model="report.position">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="emolanceApp.report.email">Email</label>
+                            <input type="text" class="form-control" name="email"
+                                   ng-model="report.email">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="emolanceApp.report.result">Result</label>
+                            <input type="text" class="form-control" name="result"
+                                   ng-model="report.result">
+
+                        </div>
 
                         <div class="form-group">
                             <label translate="emolanceApp.report.userId">userId</label>
@@ -139,6 +163,10 @@
                     <th translate="emolanceApp.report.status">Status</th>
                     <th translate="emolanceApp.report.name">Name</th>
                     <th translate="emolanceApp.report.link">Link</th>
+                    <th translate="emolanceApp.report.age">Age</th>
+                    <th translate="emolanceApp.report.position">Position</th>
+                    <th translate="emolanceApp.report.email">Email</th>
+                    <th translate="emolanceApp.report.result">Result</th>
                     <th translate="emolanceApp.report.userId">userId</th>
                     <th></th>
                 </tr>
@@ -153,6 +181,10 @@
                     <td>{{report.status}}</td>
                     <td>{{report.name}}</td>
                     <td>{{report.link}}</td>
+                    <td>{{report.age}}</td>
+                    <td>{{report.position}}</td>
+                    <td>{{report.email}}</td>
+                    <td>{{report.result}}</td>
                     <td>{{report.userId.id}}</td>
                     <td>
                         <button type="submit"

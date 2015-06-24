@@ -67,7 +67,7 @@ class ReportGatlingTest extends Simulation {
             .exec(http("Create new report")
             .put("/api/reports")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "type":"SAMPLE_TEXT", "value":null, "timestamp":"2020-01-01T00:00:00.000Z", "qrcode":"SAMPLE_TEXT", "status":"SAMPLE_TEXT", "name":"SAMPLE_TEXT", "link":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "type":"SAMPLE_TEXT", "value":null, "timestamp":"2020-01-01T00:00:00.000Z", "qrcode":"SAMPLE_TEXT", "status":"SAMPLE_TEXT", "name":"SAMPLE_TEXT", "link":"SAMPLE_TEXT", "age":"SAMPLE_TEXT", "position":"SAMPLE_TEXT", "email":"SAMPLE_TEXT", "result":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_report_url")))
             .pause(10)

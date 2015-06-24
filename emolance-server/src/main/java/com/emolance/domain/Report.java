@@ -52,6 +52,18 @@ public class Report implements Serializable {
     @Column(name = "link")
     private String link;
 
+    @Column(name = "age")
+    private String age;
+
+    @Column(name = "position")
+    private String position;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "result")
+    private String result;
+
     @ManyToOne
     private User userId;
 
@@ -119,6 +131,38 @@ public class Report implements Serializable {
         this.link = link;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     public User getUserId() {
         return userId;
     }
@@ -159,6 +203,10 @@ public class Report implements Serializable {
                 ", status='" + status + "'" +
                 ", name='" + name + "'" +
                 ", link='" + link + "'" +
+                ", age='" + age + "'" +
+                ", position='" + position + "'" +
+                ", email='" + email + "'" +
+                ", result='" + result + "'" +
                 '}';
     }
 }
