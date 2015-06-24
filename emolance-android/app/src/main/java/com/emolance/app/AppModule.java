@@ -9,6 +9,7 @@ import com.emolance.app.service.ServiceGenerator;
 import com.emolance.app.ui.AdminFragment;
 import com.emolance.app.ui.MainFragment;
 import com.emolance.app.ui.NewMainActivity;
+import com.emolance.app.ui.ReportActivity;
 import com.emolance.app.ui.ReportFragment;
 import com.emolance.app.ui.UserReportCreatorActivity;
 import com.emolance.app.util.Constants;
@@ -28,7 +29,8 @@ import dagger.Provides;
                 MainFragment.class,
                 ReportFragment.class,
                 AdminFragment.class,
-                UserReportCreatorActivity.class
+                UserReportCreatorActivity.class,
+                ReportActivity.class
         }
 )
 public class AppModule {

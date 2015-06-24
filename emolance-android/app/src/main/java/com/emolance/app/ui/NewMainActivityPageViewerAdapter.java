@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by yusun on 6/22/15.
  */
 public class NewMainActivityPageViewerAdapter extends FragmentStatePagerAdapter {
+
     public NewMainActivityPageViewerAdapter(FragmentManager fm) {
         super(fm);
     }

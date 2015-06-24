@@ -22,11 +22,18 @@ public interface EmolanceAPI {
     @GET("/api/reports")
     public void listReports(Callback<List<Report>> reports);
 
+    @GET("/api/reports/{id}")
+    public void getReport(@Path("id") Long id, Callback<Report> report);
+
     @GET("/api/account")
     public Response authenticate();
 
     @POST("/api/reports/device/trigger/process/{sn}")
-    public void triggerProcess(@Path("sn") String sn, @Query("qrcode") String qrcode, Callback<Response> callback);
+    public void triggerProcess(
+            @Path("sn") String sn,
+            @Query("qrcode") String qrcode,
+            @Query("delay") Integer delay,
+            Callback<Response> callback);
 
     @POST("/api/reports/user/create/{qrcode}")
     public void createUserReport(
@@ -34,4 +41,6 @@ public interface EmolanceAPI {
             @Query("name") String name,
             @Query("link") String link,
             Callback<Response> callback);
+
+
 }

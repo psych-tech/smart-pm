@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.emolance.app.R;
 import com.emolance.app.data.Report;
 import com.emolance.app.service.EmolanceAPI;
+import com.emolance.app.util.GlobalSettings;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -59,38 +60,49 @@ public class AdminReportAdapter extends ArrayAdapter<Report> {
         TextView nameText = (TextView) view.findViewById(R.id.nameText);
         nameText.setText(reports.get(position).getName());
 
+        final Button opButton = (Button) view.findViewById(R.id.opButton);
+        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         final TextView qrText = (TextView) view.findViewById(R.id.qrText);
         qrText.setText("QR ID: " + reports.get(position).getQrcode());
 
-        TextView valueText = (TextView) view.findViewById(R.id.statusText);
+        final TextView valueText = (TextView) view.findViewById(R.id.statusText);
         valueText.setText("Status: " + reports.get(position).getStatus());
 
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        if (reports.get(position).getStatus().equals("TESTING")) {
+            opButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
-        final Button opButton = (Button) view.findViewById(R.id.opButton);
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 opButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
-                emolanceAPI.triggerProcess("0000000047bb064b", reports.get(position).getQrcode(), new Callback<Response>() {
-                    @Override
-                    public void success(Response response, Response response2) {
-                        Toast.makeText(context,"Processed successfully", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
-                        opButton.setVisibility(View.VISIBLE);
-                    }
+                emolanceAPI.triggerProcess(
+                        "0000000047bb064b",
+                        reports.get(position).getQrcode(),
+                        GlobalSettings.processingDelay * 60,
+                        new Callback<Response>() {
+                            @Override
+                            public void success(Response response, Response response2) {
+                                Toast.makeText(context,"Processing... Please Wait...", Toast.LENGTH_LONG).show();
+                                valueText.setText("Status: TESTING");
+//                                progressBar.setVisibility(View.GONE);
+//                                opButton.setVisibility(View.VISIBLE);
+                            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Toast.makeText(context,"Process Failed", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
-                        opButton.setVisibility(View.VISIBLE);
-                    }
-                });
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(context,"Process Failed", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                                opButton.setVisibility(View.VISIBLE);
+                            }
+                        });
             }
         });
 
         return view;
     }
+
+
 }

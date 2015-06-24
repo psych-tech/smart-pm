@@ -1,13 +1,16 @@
 package com.emolance.app.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -15,6 +18,7 @@ import com.emolance.app.Injector;
 import com.emolance.app.R;
 import com.emolance.app.data.Report;
 import com.emolance.app.service.EmolanceAPI;
+import com.emolance.app.util.Constants;
 
 import java.util.List;
 
@@ -42,11 +46,16 @@ public class AdminFragment extends Fragment {
 
     private Context context;
     private AdminReportAdapter adminReportAdapter;
+    private ReportsSyncBroadcastReceiver receiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);
+        receiver = new ReportsSyncBroadcastReceiver();
+        this.getActivity().registerReceiver(receiver,
+                new IntentFilter(Constants.SYNC_INTENT_FILTER));
+
         this.context = getActivity();
     }
 
@@ -69,12 +78,20 @@ public class AdminFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void loadReports() {
+    public void loadReports() {
         emolanceAPI.listReports(new Callback<List<Report>>() {
             @Override
             public void success(List<Report> reports, Response response) {
                 adminReportAdapter = new AdminReportAdapter(context, reports, emolanceAPI);
                 adminReportListView.setAdapter(adminReportAdapter);
+                adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(AdminFragment.this.getActivity(), ReportActivity.class);
+                        intent.putExtra("id", adminReportAdapter.getItem(i).getId());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -83,4 +100,13 @@ public class AdminFragment extends Fragment {
             }
         });
     }
+
+    public class ReportsSyncBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("Receive", "Received sync intent");
+            loadReports();
+        }
+    }
+
 }

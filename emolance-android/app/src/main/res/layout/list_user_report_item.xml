@@ -62,6 +62,7 @@
             android:id="@+id/opButton"
             android:text="Measure"
             android:textSize="14sp"
+            android:focusable="false"
             android:textColor="@color/op_button_color"
             android:background="@drawable/op_button_selector"
             android:paddingLeft="5dp"
