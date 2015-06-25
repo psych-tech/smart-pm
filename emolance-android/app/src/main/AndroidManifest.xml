@@ -34,16 +34,18 @@
             android:label="@string/app_name" >
         </activity>
 
-        <activity android:name=".ui.SplashActivity">
-
-        </activity>
-
-        <activity android:name=".ui.NewMainActivity">
+        <activity android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.NewMainActivity"
+            android:screenOrientation="portrait">
+
         </activity>
 
         <activity android:name=".ui.UserReportCreatorActivity"
@@ -52,6 +54,7 @@
 
         <activity android:name=".auth.AuthActivity"/>
         <activity android:name=".ui.ReportActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.NewMainActivity" />
 
         <service android:name=".auth.EmolanceAuthService">

@@ -1,5 +1,7 @@
 package com.emolance.app.ui;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,9 @@ public class NewMainActivity extends FragmentActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkAuth();
+
         setContentView(R.layout.activity_new_main);
 
         ActionBar actionBar = getActionBar();
@@ -69,6 +75,17 @@ public class NewMainActivity extends FragmentActivity {
                 getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(pagerAdapter);
+    }
+
+    private void checkAuth() {
+        Log.i("TEST", "Checking auth...");
+        final AccountManager accountManager = AccountManager.get(this);
+        Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE);
+        Log.i("TEST", "Checking auth..." + accounts.length);
+        if (accounts.length == 0) {
+            accountManager.addAccount(Constants.ACCOUNT_TYPE, null, null, null, this,
+                    null, null);
+        }
     }
 
     @Override
@@ -149,4 +166,5 @@ public class NewMainActivity extends FragmentActivity {
         // show it
         alertDialog.show();
     }
+
 }

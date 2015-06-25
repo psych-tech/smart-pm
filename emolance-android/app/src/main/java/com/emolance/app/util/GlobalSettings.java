@@ -5,6 +5,6 @@ package com.emolance.app.util;
  */
 public class GlobalSettings {
 
-    public static int processingDelay = 15;
+    public static int processingDelay = 0;
 
 }

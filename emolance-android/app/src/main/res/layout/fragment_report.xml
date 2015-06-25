@@ -13,14 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp">
 
-
         <ImageView
+                android:id="@+id/profileImageReport"
                 android:adjustViewBounds="true"
-                android:src="@drawable/profile_pic"
+                android:src="@drawable/user_profile_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
-
-
 
         <RelativeLayout
             android:padding="5dp"
@@ -29,14 +27,14 @@
             <TextView
                 android:id="@+id/nameText"
                 android:layout_alignParentTop="true"
-                android:text="Dr. Joseph Cooper"
+                android:text="Name"
                 android:textColor="#000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/positionText"
                 android:layout_below="@+id/nameText"
-                android:text="Biotech Startup CEO"
+                android:text="Profession"
                 android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -50,7 +48,7 @@
             <TextView
                 android:id="@+id/ageText"
                 android:layout_alignParentBottom="true"
-                android:text="Age 55"
+                android:text="Age ??"
                 android:textColor="#828282"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
@@ -58,16 +56,19 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_layout"
         android:layout_weight="4"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/rounded_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -111,7 +112,7 @@
 
             <TextView
                 android:id="@+id/timeText"
-                android:text="06/28/2015 8:00AM"
+                android:text="--/--/---- -:--"
                 android:textColor="#828282"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -131,7 +132,7 @@
                     <TextView
                         android:id="@+id/levelText"
                         android:textSize="20sp"
-                        android:text="7"
+                        android:text="-"
                         android:textColor="#000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -159,7 +160,7 @@
                     <TextView
                         android:id="@+id/percentText"
                         android:textSize="20sp"
-                        android:text="75"
+                        android:text="--"
                         android:textColor="#000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -184,6 +185,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/debugText"
+                        android:text="(Debug Only)"
+                        android:textColor="#828282"
+                        android:textSize="6sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/pie_chart"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -196,6 +211,7 @@
             android:layout_height="0dp">
 
             <ImageView
+                android:id="@+id/beerLevelImage"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:src="@drawable/beer_level_5"
@@ -206,5 +222,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+        <ImageView
+            android:layout_gravity="right|top"
+            android:src="@drawable/pie_chart"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="13dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp" />
+
+    </FrameLayout>
 
 </LinearLayout>

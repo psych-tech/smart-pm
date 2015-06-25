@@ -40,6 +40,8 @@ public interface EmolanceAPI {
             @Path("qrcode") String qrcode,
             @Query("name") String name,
             @Query("link") String link,
+            @Query("age") String age,
+            @Query("position") String position,
             Callback<Response> callback);
 
 

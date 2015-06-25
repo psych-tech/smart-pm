@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.emolance.app.Injector;
 import com.emolance.app.R;
@@ -38,7 +40,8 @@ public class AdminFragment extends Fragment {
 
     @Inject
     EmolanceAPI emolanceAPI;
-
+    @InjectView(R.id.numResult)
+    TextView totalTextView;
     @InjectView(R.id.newUserReportButton)
     ImageButton newUserReportButton;
     @InjectView(R.id.userListView)
@@ -74,8 +77,21 @@ public class AdminFragment extends Fragment {
 
     @OnClick(R.id.newUserReportButton)
     void takeNewUserReport() {
-        Intent intent = new Intent(context, UserReportCreatorActivity.class);
-        startActivity(intent);
+        qrButtonTake();
+    }
+
+    void qrButtonTake() {
+        try {
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+
+            startActivityForResult(intent, 0);
+        } catch (Exception e) {
+            Log.w("QR", "Failed to start the activity. Try suggest");
+            Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+            Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+            startActivity(marketIntent);
+        }
     }
 
     public void loadReports() {
@@ -83,6 +99,7 @@ public class AdminFragment extends Fragment {
             @Override
             public void success(List<Report> reports, Response response) {
                 adminReportAdapter = new AdminReportAdapter(context, reports, emolanceAPI);
+                totalTextView.setText(adminReportAdapter.getCount() + " Test Results");
                 adminReportListView.setAdapter(adminReportAdapter);
                 adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -99,6 +116,20 @@ public class AdminFragment extends Fragment {
                 Log.e("AdminReport", "Failed to get the list of history reports.", error);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String qrCode = null;
+        Log.i("TEST", "reqCode: " + requestCode + " resultCode: " + resultCode);
+        if (requestCode == 0) {
+            qrCode = data.getStringExtra("SCAN_RESULT");
+            Intent intent = new Intent(AdminFragment.this.getActivity(), UserReportCreatorActivity.class);
+            intent.putExtra("qr", qrCode);
+            startActivity(intent);
+        }
     }
 
     public class ReportsSyncBroadcastReceiver extends BroadcastReceiver {

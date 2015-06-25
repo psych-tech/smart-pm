@@ -13,6 +13,10 @@ public class Report implements Serializable {
     private String status;
     private String name;
     private String link;
+    private String age;
+    private String position;
+    private String email;
+    private String result;
 
     public Long getId() {
         return id;
@@ -62,8 +66,6 @@ public class Report implements Serializable {
         this.link = link;
     }
 
-
-
     @Override
     public String toString() {
         return "Report{" +
@@ -92,5 +94,51 @@ public class Report implements Serializable {
 
     public double getValue() {
         return value;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getLevel() {
+        if (value >= 0.95) {
+            return 10;
+        }
+        return (int)(value * 10);
+    }
+
+    public int getPercent() {
+        if (value >= 0.95) {
+            return 95;
+        }
+        return (int)(value * 100) + 5;
     }
 }

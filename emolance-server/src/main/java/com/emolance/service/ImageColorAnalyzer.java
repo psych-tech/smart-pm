@@ -16,7 +16,7 @@ public class ImageColorAnalyzer extends Component {
         int green = (pixel >> 8) & 0xff;
         int blue = (pixel) & 0xff;
         int total = red + blue + green;
-        System.out.println("argb: " + alpha + ", " + red + ", " + green + ", " + blue);
+        //System.out.println("argb: " + alpha + ", " + red + ", " + green + ", " + blue);
         return total;
     }
 
@@ -68,10 +68,11 @@ public class ImageColorAnalyzer extends Component {
         System.out.println("SC is " + result.getSC());
         System.out.println("RT is " + (double)result.getST() / result.getSO());
         System.out.println("RC is " + (double)result.getSC() / result.getSO());
+        System.out.println("Scaled RT is " + result.getScaledRT());
+        System.out.println("Scaled RC is " + result.getScaledRC());
         System.out.println("Less number, More pressure ---> more Red");
 
         return result;
-
     }
 
     public Node analyzeImage(File imageFile) {
@@ -85,7 +86,10 @@ public class ImageColorAnalyzer extends Component {
         }
     }
 
+    public static void main(String[] args) {
+    	ImageColorAnalyzer ica = new ImageColorAnalyzer();
+    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-3.jpg"));
+    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-1.jpg"));
+    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-2.jpg"));
+    }
 }
-
-
-

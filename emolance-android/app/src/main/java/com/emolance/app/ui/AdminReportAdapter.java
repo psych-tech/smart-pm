@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,10 +46,10 @@ public class AdminReportAdapter extends ArrayAdapter<Report> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        if (view == null) {
+        //if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_user_report_item, parent, false);
-        }
+        //}
 
         DateTime dateTime = DateTime.parse(reports.get(position).getTimestamp(),
                 DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -59,6 +60,11 @@ public class AdminReportAdapter extends ArrayAdapter<Report> {
 
         TextView nameText = (TextView) view.findViewById(R.id.nameText);
         nameText.setText(reports.get(position).getName());
+
+        final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImage);
+        int profileIndex = reports.get(position).getLink() == null ?
+                0 : Integer.parseInt(reports.get(position).getLink());
+        profileImageView.setImageResource(UserReportCreatorActivity.profileList.get(profileIndex));
 
         final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -79,7 +85,7 @@ public class AdminReportAdapter extends ArrayAdapter<Report> {
                 opButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 emolanceAPI.triggerProcess(
-                        "0000000047bb064b",
+                        "000000008868bad7",
                         reports.get(position).getQrcode(),
                         GlobalSettings.processingDelay * 60,
                         new Callback<Response>() {
@@ -87,6 +93,7 @@ public class AdminReportAdapter extends ArrayAdapter<Report> {
                             public void success(Response response, Response response2) {
                                 Toast.makeText(context,"Processing... Please Wait...", Toast.LENGTH_LONG).show();
                                 valueText.setText("Status: TESTING");
+                                reports.get(position).setStatus("TESTING");
 //                                progressBar.setVisibility(View.GONE);
 //                                opButton.setVisibility(View.VISIBLE);
                             }

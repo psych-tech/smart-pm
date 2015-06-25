@@ -13,7 +13,7 @@ import com.emolance.app.R;
 public class SplashActivity extends Activity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     /** Called when the activity is first created. */
     @Override
@@ -29,7 +29,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, NewMainActivity.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }
