@@ -223,7 +223,7 @@ public class ReportResourceSelf {
 
 				// process image
 				Node res = imageProcessService.processImage(ir.getUrl());
-				BigDecimal value = new BigDecimal(res.getRT());
+				BigDecimal value = new BigDecimal(res.getScaledRT());
 				String result = objectMapper.writeValueAsString(res);
 
 				// update result

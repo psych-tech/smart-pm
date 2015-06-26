@@ -69,7 +69,6 @@ public class ImageColorAnalyzer extends Component {
         System.out.println("RT is " + (double)result.getST() / result.getSO());
         System.out.println("RC is " + (double)result.getSC() / result.getSO());
         System.out.println("Scaled RT is " + result.getScaledRT());
-        System.out.println("Scaled RC is " + result.getScaledRC());
         System.out.println("Less number, More pressure ---> more Red");
 
         return result;
@@ -77,7 +76,7 @@ public class ImageColorAnalyzer extends Component {
 
     public Node analyzeImage(File imageFile) {
     	try {
-            //File name should be modified by using your image's name
+            // File name should be modified by using your image's name
             BufferedImage image = ImageIO.read(imageFile);
             return marchThroughImage(image);
         } catch (IOException e) {
@@ -86,10 +85,10 @@ public class ImageColorAnalyzer extends Component {
         }
     }
 
-    public static void main(String[] args) {
-    	ImageColorAnalyzer ica = new ImageColorAnalyzer();
-    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-3.jpg"));
-    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-1.jpg"));
-    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-2.jpg"));
-    }
+//    public static void main(String[] args) {
+//    	ImageColorAnalyzer ica = new ImageColorAnalyzer();
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-01.jpg")); // 0.81 // white
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-02.jpg")); // 0.75 // midlle   // 0.7
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-03.jpg")); // 0.70 // dark     // 0.2
+//    }
 }

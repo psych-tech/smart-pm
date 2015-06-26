@@ -52,7 +52,24 @@ public class Node {
     }
 
     public double getScaledRT() {
-    	return ((double) SO - (double) ST) / ((double) MAX_VALUE - (double) SO);
+    	double rt = getRT();
+    	if (rt > 0.82) {
+    		return 0.99;
+    	}
+    	if (rt > 0.8) {
+    		return 0.9;
+    	}
+    	if (rt < 0.6) {
+    		return 0.05;
+    	}
+    	if (rt < 0.68) {
+    		return 0.11;
+    	}
+    	double level = 0.01;
+    	rt = (rt - 0.68) / level / 10;
+    	if (rt >= 0.9) rt = 0.9;
+    	if (rt <= 0.1) rt = 0.1;
+    	return rt;
     }
 
     public double getScaledRC() {
