@@ -1,6 +1,9 @@
 package com.emolance.service;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +19,7 @@ public class ImageColorAnalyzer extends Component {
         int green = (pixel >> 8) & 0xff;
         int blue = (pixel) & 0xff;
         int total = red + blue + green;
-        //System.out.println("argb: " + alpha + ", " + red + ", " + green + ", " + blue);
+//        System.out.println("argb: " + alpha + ", " + red + ", " + green + ", " + blue);
         return total;
     }
 
@@ -78,6 +81,19 @@ public class ImageColorAnalyzer extends Component {
     	try {
             // File name should be modified by using your image's name
             BufferedImage image = ImageIO.read(imageFile);
+
+//            ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+//            ColorConvertOp op = new ColorConvertOp(cs, null);
+
+//            BufferedImage imageGray = new BufferedImage(1280, 960,
+//            	    BufferedImage.TYPE_BYTE_GRAY);
+//            	Graphics g = imageGray.getGraphics();
+//            	g.drawImage(image, 0, 0, null);
+//            	g.dispose();
+
+
+            //BufferedImage imageGray = op.filter(image, null);
+
             return marchThroughImage(image);
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -87,8 +103,18 @@ public class ImageColorAnalyzer extends Component {
 
 //    public static void main(String[] args) {
 //    	ImageColorAnalyzer ica = new ImageColorAnalyzer();
-//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-01.jpg")); // 0.81 // white
-//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-02.jpg")); // 0.75 // midlle   // 0.7
-//    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-03.jpg")); // 0.70 // dark     // 0.2
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-01.jpg")); // 0.81 // white
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-02.jpg")); // 0.75 // midlle   // 0.7
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/test-03.jpg")); // 0.70 // dark     // 0.2
+//
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-l1.jpg")); // 0.81 // white
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-l5.jpg")); // 0.81 // white
+////    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-l10.jpg")); // 0.81 // white
+//
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-n1.jpg")); // 0.81 // white
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-n2.jpg")); // 0.81 // white
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-n3.jpg")); // 0.81 // white
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-n4.jpg")); // 0.81 // white
+//    	ica.analyzeImage(new File("/Users/yusun/Desktop/sample-images/test-n5.jpg")); // 0.81 // white
 //    }
 }

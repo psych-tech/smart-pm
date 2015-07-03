@@ -65,8 +65,8 @@ public class Node {
     	if (rt < 0.68) {
     		return 0.11;
     	}
-    	double level = 0.01;
-    	rt = (rt - 0.68) / level / 10;
+    	double level = 0.007;
+    	rt = (rt - 0.70) / level / 10;
     	if (rt >= 0.9) rt = 0.9;
     	if (rt <= 0.1) rt = 0.1;
     	return rt;
