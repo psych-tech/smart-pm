@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#f5f5f5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+
+        <ImageView
+                android:id="@+id/profileImageReport"
+                android:adjustViewBounds="true"
+                android:src="@drawable/user_profile_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_alignParentTop="true"
+                android:text="Name"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/positionText"
+                android:layout_below="@+id/nameText"
+                android:text="Profession"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_above="@+id/ageText"
+                android:text="Lake Buena Vista, FL"
+                android:textColor="#828282"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/ageText"
+                android:layout_alignParentBottom="true"
+                android:text="Age ??"
+                android:textColor="#828282"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="300dp"
+        android:layout_marginRight="300dp"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/rounded_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="30"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <View
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dip"
+                    android:background="#ebebeb" />
+
+                <ImageView
+                    android:id="@+id/hammerImage"
+                    android:layout_gravity="center"
+                    android:src="@drawable/hammer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dip"
+                    android:background="#ebebeb" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/timeText"
+                android:text="--/--/---- -:--"
+                android:textColor="#828282"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:layout_weight="10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/levelText"
+                        android:textSize="20sp"
+                        android:text="-"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@id/levelText"
+                        android:textSize="16sp"
+                        android:text="th"
+                        android:textColor="#828282"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_below="@id/levelText"
+                        android:textSize="16sp"
+                        android:textColor="#828282"
+                        android:text="level of stress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/percentText"
+                        android:textSize="20sp"
+                        android:text="--"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@id/percentText"
+                        android:text="%"
+                        android:textSize="16sp"
+                        android:textColor="#828282"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_below="@id/percentText"
+                        android:text="people ahead of you"
+                        android:textColor="#828282"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/debugText"
+                        android:text="(Debug Only)"
+                        android:textColor="#828282"
+                        android:textSize="6sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/pie_chart"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_weight="70"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:id="@+id/beerLevelImage"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/beer_level_5"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+        <ImageView
+            android:layout_gravity="right|top"
+            android:src="@drawable/pie_chart"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="13dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp" />
+
+    </FrameLayout>
+
+</LinearLayout>
