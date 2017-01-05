@@ -21,20 +21,15 @@ import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.Report;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.service.ImageColorAnalyzer;
 import com.emolance.enterprise.service.TestResult;
-import com.emolance.enterprise.util.BackupTask;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,6 +37,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by yusun on 6/22/15.
@@ -59,21 +57,16 @@ public class AdminFragment extends Fragment {
 
     private ProgressDialog progress;
     private Context context;
-    private AdminReportAdapter adminReportAdapter;
+    private UserListAdapter adminReportAdapter;
 
     private Camera camera;
     private int cameraId = 0;
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
-
-    private Firebase ref;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);
-        Firebase.setAndroidContext(getActivity());
-        ref = new Firebase("https://emolance.firebaseio.com");
 
         this.context = getActivity();
     }
@@ -120,8 +113,7 @@ public class AdminFragment extends Fragment {
     }
 
     private void startProgressDialog() {
-        progress = ProgressDialog.show(this.getActivity(), "Please Wait",
-                "Loading report data ...", true);
+        progress = ProgressDialog.show(this.getActivity(), null, "Loading report data ...", true);
     }
 
     private void endProgressDialog() {
@@ -135,38 +127,32 @@ public class AdminFragment extends Fragment {
     }
 
     public void loadReports() {
-        ref.child("reports").addValueEventListener(new ValueEventListener() {
+        Call<List<EmoUser>> call = emolanceAPI.listMyUsers();
+        call.enqueue(new Callback<List<EmoUser>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("TEST", "Get reports: " + dataSnapshot);
-                List<Report> reports = new ArrayList<Report>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Report r = ds.getValue(Report.class);
-                    reports.add(r);
-                }
-
-                adminReportAdapter = new AdminReportAdapter(context, reports, AdminFragment.this);
-                totalTextView.setText(adminReportAdapter.getCount() + " Test Results");
-                adminReportListView.setAdapter(adminReportAdapter);
-                adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(AdminFragment.this.getActivity(), ReportActivity.class);
-                        intent.putExtra("id", adminReportAdapter.getItem(i).getId());
-                        startActivity(intent);
-                    }
-                });
+            public void onResponse(Call<List<EmoUser>> call, Response<List<EmoUser>> response) {
                 endProgressDialog();
+                if (response.isSuccessful()) {
+                    adminReportAdapter = new UserListAdapter(context, response.body(), AdminFragment.this);
+                    totalTextView.setText(adminReportAdapter.getCount() + " Users");
+                    adminReportListView.setAdapter(adminReportAdapter);
+                    adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(AdminFragment.this.getActivity(), ReportActivity.class);
+                            intent.putExtra("id", adminReportAdapter.getItem(i).getId());
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e("AdminReport", "Failed to get the list of history reports. "
-                        + firebaseError.getMessage());
+            public void onFailure(Call<List<EmoUser>> call, Throwable t) {
+                Log.e("AdminReport", "Failed to get the list of history reports. ");
                 endProgressDialog();
             }
         });
-
     }
 
     public void takePhotoForProcessing(final Report report, final ResultReadyListener onResultReady) {
@@ -190,15 +176,16 @@ public class AdminFragment extends Fragment {
                     report.setTimestamp(System.currentTimeMillis());
                     report.setStatus("Report is ready");
 
-                    ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            Log.i("TEST", "Updated the report");
-                            onResultReady.onResult();
-                            // backup automatically
-                            new BackupTask(ref, file).execute(report);
-                        }
-                    });
+//                    ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
+//                        @Override
+//                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                            Log.i("TEST", "Updated the report");
+//                            onResultReady.onResult();
+//                            // backup automatically
+//                            new BackupTask(ref, file).execute(report);
+//                        }
+//                    });
+
                 } catch (IOException e) {
                     Log.e("TEST", "Failed", e);
                 }

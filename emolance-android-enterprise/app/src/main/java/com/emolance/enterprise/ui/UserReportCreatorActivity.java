@@ -8,13 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.Report;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.mitac.cell.device.bcr.McBcrConnection;
 import com.mitac.cell.device.bcr.McBcrMessage;
 import com.mitac.cell.device.bcr.MiBcrListener;
@@ -50,7 +47,6 @@ public class UserReportCreatorActivity extends FragmentActivity {
     private McBcrConnection mBcr;	// McBcrConnection help BCR control
 
     private int profileIndex = 0;
-    private Firebase ref;
 
     public static final List<Integer> profileList =
             new ArrayList<Integer>() {{
@@ -70,11 +66,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
         this.setContentView(R.layout.activity_new_user_report);
         ButterKnife.inject(this);
 
-        Firebase.setAndroidContext(this);
-        ref = new Firebase("https://emolance.firebaseio.com");
-
         mBcr = new McBcrConnection(this);
-
         mBcr.setListener(new MiBcrListener() {
             @Override
             public void onScanned(String s, BARCODE.TYPE type, int i) {
@@ -138,20 +130,20 @@ public class UserReportCreatorActivity extends FragmentActivity {
         report.setTimestamp(System.currentTimeMillis());
         report.setStatus("Ready to Measure");
 
-        ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    Toast.makeText(UserReportCreatorActivity.this,
-                                "Failed to added the report.", Toast.LENGTH_SHORT).show();
-                    UserReportCreatorActivity.this.finish();
-                } else {
-                    Toast.makeText(UserReportCreatorActivity.this,
-                                "Added a report successfully.", Toast.LENGTH_SHORT).show();
-                    UserReportCreatorActivity.this.finish();
-                }
-            }
-        });
+//        ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
+//            @Override
+//            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                if (firebaseError != null) {
+//                    Toast.makeText(UserReportCreatorActivity.this,
+//                                "Failed to added the report.", Toast.LENGTH_SHORT).show();
+//                    UserReportCreatorActivity.this.finish();
+//                } else {
+//                    Toast.makeText(UserReportCreatorActivity.this,
+//                                "Added a report successfully.", Toast.LENGTH_SHORT).show();
+//                    UserReportCreatorActivity.this.finish();
+//                }
+//            }
+//        });
 
     }
 

@@ -1,15 +1,17 @@
 package com.emolance.enterprise.service;
 
+import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.Report;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 
 /**
  * Created by yusun on 5/22/15.
@@ -17,32 +19,32 @@ import retrofit.http.Query;
 public interface EmolanceAPI {
 
     @POST("/api/reports/trigger/process")
-    public void triggerProcess(Callback<Response> callback);
+    public Call<ResponseBody> triggerProcess();
+
+    @GET("/api/my-users")
+    public Call<List<EmoUser>> listMyUsers();
 
     @GET("/api/reports")
-    public void listReports(Callback<List<Report>> reports);
+    public Call<List<Report>> listReports();
 
     @GET("/api/reports/{id}")
-    public void getReport(@Path("id") Long id, Callback<Report> report);
+    public Call<Report> getReport(@Path("id") Long id);
 
     @GET("/api/account")
-    public Response authenticate();
+    public Call<ResponseBody> authenticate();
 
     @POST("/api/reports/device/trigger/process/{sn}")
-    public void triggerProcess(
+    public Call<ResponseBody> triggerProcess(
             @Path("sn") String sn,
             @Query("qrcode") String qrcode,
-            @Query("delay") Integer delay,
-            Callback<Response> callback);
+            @Query("delay") Integer delay);
 
     @POST("/api/reports/user/create/{qrcode}")
-    public void createUserReport(
+    public Call<ResponseBody> createUserReport(
             @Path("qrcode") String qrcode,
             @Query("name") String name,
             @Query("link") String link,
             @Query("age") String age,
-            @Query("position") String position,
-            Callback<Response> callback);
-
+            @Query("position") String position);
 
 }

@@ -3,11 +3,17 @@ package com.emolance.enterprise.service;
 import android.util.Base64;
 
 import com.emolance.enterprise.auth.ApiKeyProvider;
-import com.squareup.okhttp.OkHttpClient;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * Created by yusun on 5/22/15.
@@ -16,59 +22,75 @@ public class ServiceGenerator {
 
     // No need to instantiate this class.
     private ServiceGenerator() {
-    }
 
-    public static <S> S createService(Class<S> serviceClass, String baseUrl) {
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(baseUrl)
-                .setClient(new OkClient(new OkHttpClient()));
-
-        RestAdapter adapter = builder.build();
-
-        return adapter.create(serviceClass);
     }
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl, final ApiKeyProvider apiKeyProvider) {
-        // set endpoint url and use OkHTTP as HTTP client
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(baseUrl)
-                .setClient(new OkClient(new OkHttpClient()));
-
-        builder.setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestFacade request) {
-                    request.addHeader("Accept", "application/json");
-                    request.addHeader("Authorization", apiKeyProvider.getAuthTokenValue());
-                }
-        });
-
-        RestAdapter adapter = builder.build();
-        return adapter.create(serviceClass);
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(JacksonConverterFactory.create());
+        builder.client(getOkHttpClientWithKeyProvider(apiKeyProvider.getAuthTokenValue()));
+        return builder.build().create(serviceClass);
     }
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl, String username, String password) {
-        // set endpoint url and use OkHTTP as HTTP client
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(baseUrl)
-                .setClient(new OkClient(new OkHttpClient()));
-
-        if (username != null && password != null) {
-            // concatenate username and password with colon for authentication
-            final String credentials = username + ":" + password;
-
-            builder.setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestFacade request) {
-                    // create Base64 encodet string
-                    String string = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    request.addHeader("Accept", "application/json");
-                    request.addHeader("Authorization", string);
-                }
-            });
-        }
-
-        RestAdapter adapter = builder.build();
-
-        return adapter.create(serviceClass);
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(JacksonConverterFactory.create());
+        builder.client(getSimpleOkHttpClient(username, password));
+        return builder.build().create(serviceClass);
     }
+
+    private static Interceptor getLoggingInterceptor() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return interceptor;
+    }
+
+    private static OkHttpClient getOkHttpClientWithKeyProvider(final String key) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(getLoggingInterceptor())
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        request = request.newBuilder()
+                                .removeHeader("Authorization")
+                                .addHeader("Authorization", key)
+                                .addHeader("Acceppt", "application/json")
+                                .build();
+
+                        Response originalResponse = chain.proceed(request);
+                        return originalResponse;
+                    }
+                })
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .build();
+    }
+
+    private static OkHttpClient getSimpleOkHttpClient(String username, String password) {
+        final String credentials = username + ":" + password;
+        return new OkHttpClient.Builder()
+                .addInterceptor(getLoggingInterceptor())
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        String token = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        request = request.newBuilder()
+                                .removeHeader("Authorization")
+                                .addHeader("Authorization", token)
+                                .addHeader("Acceppt", "application/json")
+                                .build();
+
+                        Response originalResponse = chain.proceed(request);
+                        return originalResponse;
+                    }
+                })
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .build();
+    }
+
 }

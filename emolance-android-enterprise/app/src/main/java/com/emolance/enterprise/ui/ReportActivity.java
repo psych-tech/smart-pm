@@ -8,18 +8,8 @@ import android.widget.TextView;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.Report;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -49,8 +39,6 @@ public class ReportActivity extends FragmentActivity {
     @InjectView(R.id.profileImageReport)
     ImageView profileImage;
 
-    private Firebase ref;
-
     private static final Map<Integer, Integer> levelResMap =
             new HashMap<Integer, Integer>() {{
                 put(10, R.drawable.beer_level_10);
@@ -73,52 +61,49 @@ public class ReportActivity extends FragmentActivity {
         Injector.inject(this);
         ButterKnife.inject(this);
 
-        Firebase.setAndroidContext(this);
-
-
         Long id = getIntent().getLongExtra("id", -1l);
         Log.i("TEST", "Report Id: " + id);
 
         if (id != -1) {
-            ref = new Firebase("https://emolance.firebaseio.com/reports/" + id);
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Report report = dataSnapshot.getValue(Report.class);
-
-                    int indexProfile = report.getProfilePhotoIndex();
-
-                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
-                    nameText.setText(report.getName());
-                    ageText.setText("Age: " + report.getAge());
-                    positionText.setText(report.getPosition());
-
-//                    if (!report.getStatus().equals("DONE")) {
-//                        return;
-//                    }
-
-                    levelText.setText(Integer.toString(report.getLevel()));
-                    percentText.setText(Integer.toString(report.getPercent()));
-                    beerLevelImage.setImageResource(levelResMap.get(report.getLevel()));
-
-                    DateTime dateTime = new DateTime(report.getTimestamp());
-
-//                    DateTime.parse(Long.toString(report.getTimestamp()),
-//                            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-//                                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-
-                    String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
-                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-
-                    timeText.setText(dateTimeStr);
-                    debugText.setText(report.getResult());
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.e("TEST", firebaseError.getDetails());
-                }
-            });
+//            ref = new Firebase("https://emolance.firebaseio.com/reports/" + id);
+//            ref.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Report report = dataSnapshot.getValue(Report.class);
+//
+//                    int indexProfile = report.getProfilePhotoIndex();
+//
+//                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
+//                    nameText.setText(report.getName());
+//                    ageText.setText("Age: " + report.getAge());
+//                    positionText.setText(report.getPosition());
+//
+////                    if (!report.getStatus().equals("DONE")) {
+////                        return;
+////                    }
+//
+//                    levelText.setText(Integer.toString(report.getLevel()));
+//                    percentText.setText(Integer.toString(report.getPercent()));
+//                    beerLevelImage.setImageResource(levelResMap.get(report.getLevel()));
+//
+//                    DateTime dateTime = new DateTime(report.getTimestamp());
+//
+////                    DateTime.parse(Long.toString(report.getTimestamp()),
+////                            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+////                                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+//
+//                    String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+//                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+//
+//                    timeText.setText(dateTimeStr);
+//                    debugText.setText(report.getResult());
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError firebaseError) {
+//                    Log.e("TEST", firebaseError.getDetails());
+//                }
+//            });
 
 //            emolanceAPI.getReport(id, new Callback<Report>() {
 //                @Override

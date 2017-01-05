@@ -4,7 +4,9 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -13,10 +15,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
+import com.emolance.enterprise.data.EmoUserType;
+import com.emolance.enterprise.service.EmolanceAuthAPI;
 import com.emolance.enterprise.util.Constants;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * Created by yusun on 5/26/15.
@@ -30,8 +44,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthActivity";
 
     private AccountManager mAccountManager;
+    private EmolanceAuthAPI emolanceAuthAPI;
 
-    private Firebase ref;
+    private String token;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -39,8 +54,6 @@ public class AuthActivity extends AccountAuthenticatorActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.activity_login);
 
-        Firebase.setAndroidContext(this);
-        ref = new Firebase("https://emolance.firebaseio.com");
         mAccountManager = AccountManager.get(this);
 
         ImageButton button = (ImageButton) findViewById(R.id.loginButton);
@@ -52,31 +65,85 @@ public class AuthActivity extends AccountAuthenticatorActivity {
         });
     }
 
+    private Interceptor getLoggingInterceptor() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return interceptor;
+    }
+
+    private OkHttpClient getSimpleOkHttpClient(String username, String password) {
+        final String credentials = username + ":" + password;
+        Log.i("TEST", "get simple client");
+        return new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        token = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        Log.i("TEST", "get simple client in the chain. " + token);
+                        request = request.newBuilder()
+                                .addHeader("Authorization", token)
+                                .addHeader("Acceppt", "application/json")
+                                .build();
+
+                        return chain.proceed(request);
+                    }
+                })
+                .addInterceptor(getLoggingInterceptor())
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .build();
+    }
+
     public void submit() {
         final String username = ((TextView) findViewById(R.id.usernameText)).getText().toString();
         final String password = ((TextView) findViewById(R.id.passwordText)).getText().toString();
 
-        // Create a handler to handle the result of the authentication
-        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                // Authenticated successfully with payload authData
-                final Intent res = new Intent();
-                res.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
-                res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
-                res.putExtra(AccountManager.KEY_AUTHTOKEN, password);
-                res.putExtra(PARAM_USER_PASS, password);
-                finishLogin(res);
-            }
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                // Authenticated failed with error firebaseError
-                Log.w(TAG, "Login failed.");
-                Toast.makeText(AuthActivity.this, "Incorrect username/password.", Toast.LENGTH_SHORT).show();
-            }
-        };
+        if (username != null && password != null) {
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(Constants.ENDPOINT)
+                    .client(getSimpleOkHttpClient(username, password))
+                    .addConverterFactory(JacksonConverterFactory.create());
+            emolanceAuthAPI = builder.build().create(EmolanceAuthAPI.class);
+        } else {
+            Toast.makeText(this, "Please input the correct username/password",
+                    Toast.LENGTH_LONG).show();
+        }
 
-        ref.authWithPassword(username, password, authResultHandler);
+        new AsyncTask<Void, Void, Intent>() {
+            @Override
+            protected Intent doInBackground(Void... params) {
+                try {
+                    Call<EmoUser> authCall = emolanceAuthAPI.authenticate();
+                    retrofit2.Response<EmoUser> response = authCall.execute();
+                    if (response.isSuccessful()) {
+                        EmoUser user = response.body();
+                        if (user.getType() == EmoUserType.ENTERPRISE) {
+                            final Intent res = new Intent();
+                            res.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
+                            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
+                            res.putExtra(AccountManager.KEY_AUTHTOKEN, token);
+                            res.putExtra(PARAM_USER_PASS, password);
+                            return res;
+                        }
+                    }
+                    return null;
+                } catch (Exception e) {
+                    Log.w(TAG, "Login failed.", e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Intent intent) {
+                if (intent != null) {
+                    finishLogin(intent);
+                } else {
+                    Toast.makeText(AuthActivity.this, "Failed to login. Please make sure the username/password is correct.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
     private void finishLogin(Intent intent) {

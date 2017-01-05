@@ -29,15 +29,16 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.firebase:firebase-client-android:2.5.2+'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+    // http and retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-jackson:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
+
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'joda-time:joda-time:2.7'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.amazonaws:aws-android-sdk-core:2.+'
-    compile 'com.amazonaws:aws-android-sdk-s3:2.+'
     compile files('libs/cell_150915_cb.jar')
 }

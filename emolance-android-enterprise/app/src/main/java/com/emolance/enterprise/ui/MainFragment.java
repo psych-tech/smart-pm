@@ -28,7 +28,6 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -36,9 +35,6 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by yusun on 5/22/15.
@@ -139,45 +135,45 @@ public class MainFragment extends Fragment {
     @OnClick(R.id.checkNowButton)
     void onClickCheckNowButton() {
         Log.i(TAG, "Trigger the process ... ");
-        emolanceAPI.triggerProcess(new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Log.i(TAG, "Successfully trigger the process.");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG, "Failed to trigger the process.", error);
-            }
-        });
+//        emolanceAPI.triggerProcess(new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//                Log.i(TAG, "Successfully trigger the process.");
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.e(TAG, "Failed to trigger the process.", error);
+//            }
+//        });
     }
 
 
     private void syncHistoryData() {
         swipeRefreshLayout.setRefreshing(true);
 
-        emolanceAPI.listReports(new Callback<List<Report>>() {
-            @Override
-            public void success(List<Report> reports, Response response) {
-                //swipeRefreshLayout.setRefreshing(false);
-                closeRefreshing();
-                // use the first report to update the main screen
-                updateLastCheckResult(reports.get(0));
-                // remove the first report
-                reports.remove(0);
-                reportsAdapter = new HistoryReportAdapter(
-                        context, reports);
-                historyListView.setAdapter(reportsAdapter);
-
-                setListViewHeightBasedOnChildren(historyListView, reportsAdapter);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG, "Failed to get the list of history reports.", error);
-                closeRefreshing();
-            }
-        });
+//        emolanceAPI.listReports(new Callback<List<Report>>() {
+//            @Override
+//            public void success(List<Report> reports, Response response) {
+//                //swipeRefreshLayout.setRefreshing(false);
+//                closeRefreshing();
+//                // use the first report to update the main screen
+//                updateLastCheckResult(reports.get(0));
+//                // remove the first report
+//                reports.remove(0);
+//                reportsAdapter = new HistoryReportAdapter(
+//                        context, reports);
+//                historyListView.setAdapter(reportsAdapter);
+//
+//                setListViewHeightBasedOnChildren(historyListView, reportsAdapter);
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.e(TAG, "Failed to get the list of history reports.", error);
+//                closeRefreshing();
+//            }
+//        });
     }
 
     private void closeRefreshing() {
