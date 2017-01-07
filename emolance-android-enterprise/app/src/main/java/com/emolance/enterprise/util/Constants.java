@@ -5,7 +5,7 @@ package com.emolance.enterprise.util;
  */
 public class Constants {
 
-    public static final String ENDPOINT = "http://3b820910.ngrok.io"; // "http://182.92.197.74";
+    public static final String ENDPOINT = "http://54ff2f6a.ngrok.io"; // "http://182.92.197.74";
 
     public static final String SYNC_INTENT_FILTER = "com.emolance.app.sync";
 

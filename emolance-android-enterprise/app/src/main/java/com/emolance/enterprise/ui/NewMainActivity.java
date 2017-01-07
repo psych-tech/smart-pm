@@ -8,8 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +25,8 @@ import com.emolance.enterprise.util.GlobalSettings;
  */
 public class NewMainActivity extends FragmentActivity {
 
-    NewMainActivityPageViewerAdapter pagerAdapter;
-    ViewPager mViewPager;
+//    NewMainActivityPageViewerAdapter pagerAdapter;
+//    ViewPager mViewPager;
 
     private int tmpDelayTime = GlobalSettings.processingDelay;
 
@@ -70,18 +69,20 @@ public class NewMainActivity extends FragmentActivity {
                             .setTabListener(tabListener));
 
         // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
-        pagerAdapter = new NewMainActivityPageViewerAdapter(
-                getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(pagerAdapter);
+//        // fragments, so use getSupportFragmentManager.
+//        pagerAdapter = new NewMainActivityPageViewerAdapter(
+//                getSupportFragmentManager());
+//        mViewPager = (ViewPager) findViewById(R.id.pager);
+//        mViewPager.setAdapter(pagerAdapter);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.root_container, new AdminFragment(), null);
+        fragmentTransaction.commit();
     }
 
     private void checkAuth() {
-        Log.i("TEST", "Checking auth...");
         final AccountManager accountManager = AccountManager.get(this);
         Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE);
-        Log.i("TEST", "Checking auth..." + accounts.length);
         if (accounts.length == 0) {
             accountManager.addAccount(Constants.ACCOUNT_TYPE, null, null, null, this,
                     null, null);

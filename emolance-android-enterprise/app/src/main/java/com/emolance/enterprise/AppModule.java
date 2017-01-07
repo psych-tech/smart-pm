@@ -13,6 +13,7 @@ import com.emolance.enterprise.ui.QRScanActivity;
 import com.emolance.enterprise.ui.ReportActivity;
 import com.emolance.enterprise.ui.ReportFragment;
 import com.emolance.enterprise.ui.UserReportCreatorActivity;
+import com.emolance.enterprise.ui.UserReportsFragment;
 import com.emolance.enterprise.util.Constants;
 
 import javax.inject.Singleton;
@@ -30,6 +31,7 @@ import dagger.Provides;
                 QRScanActivity.class,
                 MainFragment.class,
                 ReportFragment.class,
+                UserReportsFragment.class,
                 AdminFragment.class,
                 UserReportCreatorActivity.class,
                 ReportActivity.class

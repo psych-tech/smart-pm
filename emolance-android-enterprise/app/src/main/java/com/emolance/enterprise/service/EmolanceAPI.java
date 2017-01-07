@@ -2,11 +2,13 @@ package com.emolance.enterprise.service;
 
 import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.Report;
+import com.emolance.enterprise.data.TestReport;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -24,8 +26,8 @@ public interface EmolanceAPI {
     @GET("/api/my-users")
     public Call<List<EmoUser>> listMyUsers();
 
-    @GET("/api/reports")
-    public Call<List<Report>> listReports();
+    @GET("/api/emo/reports/byOwner/{id}")
+    public Call<List<TestReport>> listReports(@Path("id") Long ownerId);
 
     @GET("/api/reports/{id}")
     public Call<Report> getReport(@Path("id") Long id);
@@ -39,12 +41,7 @@ public interface EmolanceAPI {
             @Query("qrcode") String qrcode,
             @Query("delay") Integer delay);
 
-    @POST("/api/reports/user/create/{qrcode}")
-    public Call<ResponseBody> createUserReport(
-            @Path("qrcode") String qrcode,
-            @Query("name") String name,
-            @Query("link") String link,
-            @Query("age") String age,
-            @Query("position") String position);
+    @POST("/api/test-reports")
+    public Call<ResponseBody> createUserReport(@Body TestReport testReport);
 
 }

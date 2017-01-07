@@ -3,12 +3,11 @@ package com.emolance.enterprise.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,19 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
-import com.emolance.enterprise.data.Report;
 import com.emolance.enterprise.service.EmolanceAPI;
-import com.emolance.enterprise.service.ImageColorAnalyzer;
-import com.emolance.enterprise.service.TestResult;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -59,8 +51,6 @@ public class AdminFragment extends Fragment {
     private Context context;
     private UserListAdapter adminReportAdapter;
 
-    private Camera camera;
-    private int cameraId = 0;
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
     @Override
@@ -69,31 +59,6 @@ public class AdminFragment extends Fragment {
         Injector.inject(this);
 
         this.context = getActivity();
-    }
-
-    private void initCamera() {
-        if (!context.getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            Toast.makeText(context, "No camera on this device", Toast.LENGTH_LONG)
-                    .show();
-        } else {
-            cameraId = findBackFacingCamera();
-            if (cameraId < 0) {
-                Toast.makeText(context, "No front facing camera found.",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                try {
-                    camera = Camera.open(cameraId);
-                    Camera.Parameters p = camera.getParameters();
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    camera.setParameters(p);
-
-                    camera.setPreviewTexture(surfaceTexture);
-                } catch (IOException e) {
-                    Log.e("Camera", e.getMessage(), e);
-                }
-            }
-        }
     }
 
     @Override
@@ -108,7 +73,6 @@ public class AdminFragment extends Fragment {
         super.onResume();
 
         startProgressDialog();
-        initCamera();
         loadReports();
     }
 
@@ -139,9 +103,16 @@ public class AdminFragment extends Fragment {
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent intent = new Intent(AdminFragment.this.getActivity(), ReportActivity.class);
-                            intent.putExtra("id", adminReportAdapter.getItem(i).getId());
-                            startActivity(intent);
+                            Bundle bundle = new Bundle();
+                            bundle.putLong(UserReportsFragment.USER_ID, adminReportAdapter.getItem(i).getId());
+                            UserReportsFragment userReportsFragment = new UserReportsFragment();
+                            userReportsFragment.setArguments(bundle);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.root_container, userReportsFragment);
+                            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                         }
                     });
                 }
@@ -153,69 +124,6 @@ public class AdminFragment extends Fragment {
                 endProgressDialog();
             }
         });
-    }
-
-    public void takePhotoForProcessing(final Report report, final ResultReadyListener onResultReady) {
-        camera.startPreview();
-        camera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    final File file = new File(
-                            Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES), report.getId() + "-" + report.getTimestamp() + ".jpg");
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(data);
-                    fos.close();
-                    Log.i("TEST", "Photo taken and saved at " + file.getAbsolutePath() + " with size: " + file.length());
-
-                    // analyze here
-                    TestResult result = new ImageColorAnalyzer(file).marchThroughImage();
-                    report.setValue1(result.getScaledCortisol());
-                    report.setValue2(result.getScaledDHEA());
-                    report.setTimestamp(System.currentTimeMillis());
-                    report.setStatus("Report is ready");
-
-//                    ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
-//                        @Override
-//                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-//                            Log.i("TEST", "Updated the report");
-//                            onResultReady.onResult();
-//                            // backup automatically
-//                            new BackupTask(ref, file).execute(report);
-//                        }
-//                    });
-
-                } catch (IOException e) {
-                    Log.e("TEST", "Failed", e);
-                }
-            }
-        });
-    }
-
-    private int findBackFacingCamera() {
-        int cameraId = -1;
-        // Search for the front facing camera
-        int numberOfCameras = Camera.getNumberOfCameras();
-        for (int i = 0; i < numberOfCameras; i++) {
-            Camera.CameraInfo info = new Camera.CameraInfo();
-            Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                Log.d("AdminReport", "Camera found");
-                cameraId = i;
-                break;
-            }
-        }
-        return cameraId;
-    }
-
-    @Override
-    public void onPause() {
-        if (camera != null) {
-            camera.release();
-            camera = null;
-        }
-        super.onPause();
     }
 
 }
