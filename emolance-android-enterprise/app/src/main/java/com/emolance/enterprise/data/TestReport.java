@@ -1,6 +1,9 @@
 package com.emolance.enterprise.data;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +21,7 @@ public class TestReport implements Serializable {
 
     private String resultData;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String reportDate;
 
     private EmoUser owner;
@@ -104,5 +108,24 @@ public class TestReport implements Serializable {
             ", resultData='" + resultData + "'" +
             ", reportDate='" + reportDate + "'" +
             '}';
+    }
+
+    @JsonIgnore
+    public int getLevel() {
+        try {
+            int value = Integer.parseInt(getResultValue());
+            return value / 10;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    @JsonIgnore
+    public int getPercent() {
+        try {
+            return Integer.parseInt(getResultValue());
+        } catch (Exception e) {
+            return 3;
+        }
     }
 }

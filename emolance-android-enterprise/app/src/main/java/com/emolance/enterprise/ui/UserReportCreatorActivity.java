@@ -8,10 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.Report;
+import com.emolance.enterprise.data.TestReport;
+import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.Constants;
 import com.mitac.cell.device.bcr.McBcrConnection;
 import com.mitac.cell.device.bcr.McBcrMessage;
 import com.mitac.cell.device.bcr.MiBcrListener;
@@ -20,15 +25,23 @@ import com.mitac.cell.device.bcr.utility.BARCODE;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by yusun on 6/22/15.
  */
 public class UserReportCreatorActivity extends FragmentActivity {
 
+    private static final String TAG = UserReportCreatorActivity.class.getName();
 
     @InjectView(R.id.qrButton)
     Button qrButton;
@@ -44,9 +57,14 @@ public class UserReportCreatorActivity extends FragmentActivity {
     @InjectView(R.id.profileImageSelector)
     ImageView profileImage;
 
-    private McBcrConnection mBcr;	// McBcrConnection help BCR control
+    @Inject
+    EmolanceAPI emolanceAPI;
 
+    private McBcrConnection mBcr;	// McBcrConnection help BCR control
     private int profileIndex = 0;
+
+    private Long id;
+    private EmoUser currentEmoUser;
 
     public static final List<Integer> profileList =
             new ArrayList<Integer>() {{
@@ -65,6 +83,13 @@ public class UserReportCreatorActivity extends FragmentActivity {
         Injector.inject(this);
         this.setContentView(R.layout.activity_new_user_report);
         ButterKnife.inject(this);
+
+        id = getIntent().getLongExtra(Constants.USER_ID, -1);
+        currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(id), null);
+        if (currentEmoUser == null) {
+            Log.e(TAG, "Failed to find the chosen user. Id: " + id);
+            finish();
+        }
 
         mBcr = new McBcrConnection(this);
         mBcr.setListener(new MiBcrListener() {
@@ -130,21 +155,30 @@ public class UserReportCreatorActivity extends FragmentActivity {
         report.setTimestamp(System.currentTimeMillis());
         report.setStatus("Ready to Measure");
 
-//        ref.child("reports/" + report.getId()).setValue(report, new Firebase.CompletionListener() {
-//            @Override
-//            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-//                if (firebaseError != null) {
-//                    Toast.makeText(UserReportCreatorActivity.this,
-//                                "Failed to added the report.", Toast.LENGTH_SHORT).show();
-//                    UserReportCreatorActivity.this.finish();
-//                } else {
-//                    Toast.makeText(UserReportCreatorActivity.this,
-//                                "Added a report successfully.", Toast.LENGTH_SHORT).show();
-//                    UserReportCreatorActivity.this.finish();
-//                }
-//            }
-//        });
+        TestReport testReport = new TestReport();
+        testReport.setReportCode(qrIdText.getText().toString());
+        testReport.setOwner(currentEmoUser);
 
+//        testReport.setOwner();
+
+        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(UserReportCreatorActivity.this,
+                                "Failed to added the report.", Toast.LENGTH_SHORT).show();
+                }
+                UserReportCreatorActivity.this.finish();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(UserReportCreatorActivity.this,
+                        "Failed to added the report.", Toast.LENGTH_SHORT).show();
+                UserReportCreatorActivity.this.finish();
+            }
+        });
     }
 
     @OnClick(R.id.qrButton)

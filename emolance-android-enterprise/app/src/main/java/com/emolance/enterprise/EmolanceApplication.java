@@ -2,6 +2,8 @@ package com.emolance.enterprise;
 
 import android.app.Application;
 
+import io.paperdb.Paper;
+
 /**
  * Created by yusun on 5/21/15.
  */
@@ -24,9 +26,8 @@ public class EmolanceApplication extends Application {
         // injector
         Injector.init((Object) new AppModule(), this);
 
-        // parse push notification register
-        String username = "admin";
-        final String subId = "user_" + username;
+        // paper db init
+        Paper.init(this);
     }
 
 }

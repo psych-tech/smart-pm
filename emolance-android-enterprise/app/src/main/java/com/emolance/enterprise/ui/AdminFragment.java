@@ -21,6 +21,7 @@ import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.Constants;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,24 +99,17 @@ public class AdminFragment extends Fragment {
             public void onResponse(Call<List<EmoUser>> call, Response<List<EmoUser>> response) {
                 endProgressDialog();
                 if (response.isSuccessful()) {
-                    adminReportAdapter = new UserListAdapter(context, response.body(), AdminFragment.this);
+                    List<EmoUser> myUsers = response.body();
+                    adminReportAdapter = new UserListAdapter(context, myUsers, AdminFragment.this);
                     totalTextView.setText(adminReportAdapter.getCount() + " Users");
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Bundle bundle = new Bundle();
-                            bundle.putLong(UserReportsFragment.USER_ID, adminReportAdapter.getItem(i).getId());
-                            UserReportsFragment userReportsFragment = new UserReportsFragment();
-                            userReportsFragment.setArguments(bundle);
-                            FragmentManager fragmentManager = getFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.root_container, userReportsFragment);
-                            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
+                            openUserTestsFragment(i);
                         }
                     });
+                    persistLoadedMyUsers(myUsers);
                 }
             }
 
@@ -124,6 +119,26 @@ public class AdminFragment extends Fragment {
                 endProgressDialog();
             }
         });
+    }
+
+    public void openUserTestsFragment(int i) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.USER_ID, adminReportAdapter.getItem(i).getId());
+        UserReportsFragment userReportsFragment = new UserReportsFragment();
+        userReportsFragment.setArguments(bundle);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.root_container, userReportsFragment);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void persistLoadedMyUsers(List<EmoUser> myUsers) {
+        for(EmoUser eu : myUsers) {
+            Paper.book(Constants.DB_EMOUSER).write(Long.toString(eu.getId()), eu);
+        }
+        Paper.book(Constants.DB_MYUSERS).write(Constants.DB_MYUSERS_KEY, myUsers);
     }
 
 }

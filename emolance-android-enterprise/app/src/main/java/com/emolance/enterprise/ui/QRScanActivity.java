@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.util.Constants;
 import com.mitac.cell.device.bcr.McBcrConnection;
 import com.mitac.cell.device.bcr.McBcrMessage;
 import com.mitac.cell.device.bcr.MiBcrListener;
@@ -20,8 +21,12 @@ import butterknife.ButterKnife;
  */
 public class QRScanActivity extends FragmentActivity {
 
+    private static final String TAG = QRScanActivity.class.getName();
+
     private boolean hasScanned = false;
     private McBcrConnection mBcr;	// McBcrConnection help BCR control
+
+    private Long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,9 @@ public class QRScanActivity extends FragmentActivity {
         Injector.inject(this);
         this.setContentView(R.layout.activity_scan);
         ButterKnife.inject(this);
+
+        userId = getIntent().getLongExtra(Constants.USER_ID, -1);
+        Log.i(TAG, "Get user id: " + userId);
 
         mBcr = new McBcrConnection(this);
         mBcr.setListener(new MiBcrListener() {
@@ -46,6 +54,7 @@ public class QRScanActivity extends FragmentActivity {
                     public void run() {
                         Intent intent = new Intent(QRScanActivity.this, UserReportCreatorActivity.class);
                         intent.putExtra("qr", s);
+                        intent.putExtra(Constants.USER_ID, userId);
                         startActivity(intent);
                     }
                 }, 1000);

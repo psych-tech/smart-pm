@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.emolance.enterprise.R;
@@ -25,7 +24,7 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
     private AdminFragment adminFragment;
 
     public UserListAdapter(Context context, List<EmoUser> objects, AdminFragment adminFragment) {
-        super(context, R.layout.list_user_report_item, objects);
+        super(context, R.layout.list_user_item, objects);
         this.context = context;
         this.users = objects;
         this.adminFragment = adminFragment;
@@ -36,49 +35,24 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
         View view = convertView;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.list_user_report_item, parent, false);
+        view = inflater.inflate(R.layout.list_user_item, parent, false);
 
-//        DateTime dateTime = new DateTime(reports.get(position).getTimestamp());
-//        String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
-//                .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-
-        TextView nameText = (TextView) view.findViewById(R.id.nameText);
+        TextView nameText = (TextView) view.findViewById(R.id.userNameText);
         nameText.setText(users.get(position).getName());
 
-        final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImage);
+        TextView orgText = (TextView) view.findViewById(R.id.orgText);
+        orgText.setText(users.get(position).getOrganization().getName());
+
+        final ImageView profileImageView = (ImageView) view.findViewById(R.id.userProfileImage);
         int profileIndex = 0; // reports.get(position).getProfilePhotoIndex();
         profileImageView.setImageResource(UserReportCreatorActivity.profileList.get(profileIndex));
 
-        final Button opButton = (Button) view.findViewById(R.id.opButton);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        final TextView qrText = (TextView) view.findViewById(R.id.qrText);
-//        qrText.setText("QR ID: " + reports.get(position).getQrcode());
-
-        final TextView valueText = (TextView) view.findViewById(R.id.statusText);
-//        valueText.setText("Status: " + reports.get(position).getStatus());
-
-//        if (users.get(position).getStatus().equals("TESTING")) {
-//            opButton.setVisibility(View.GONE);
-//            progressBar.setVisibility(View.VISIBLE);
-//        }
+        final Button opButton = (Button) view.findViewById(R.id.testsButton);
 
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                valueText.setText("Status: Testing");
-//                reports.get(position).setStatus("Testing");
-
-                opButton.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-
-//                adminFragment.takePhotoForProcessing(users.get(position), new ResultReadyListener() {
-//                    @Override
-//                    public void onResult() {
-//                        valueText.setText("Status: Report is ready");
-//                        progressBar.setVisibility(View.GONE);
-//                        opButton.setVisibility(View.VISIBLE);
-//                    }
-//                });
+                adminFragment.openUserTestsFragment(position);
             }
         });
 

@@ -14,4 +14,6 @@
     <string name="check_now">Check Now</string>
     <string name="current_value">\?</string>
     <string name="current_time">Last Check</string>
+
+    <string name="check_results">Tests</string>
 </resources>

@@ -8,17 +8,31 @@ import android.widget.TextView;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.TestReport;
+import com.emolance.enterprise.service.EmolanceAPI;
+
+import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by yusun on 6/23/15.
  */
 public class ReportActivity extends FragmentActivity {
+
+    private static final String TAG = ReportActivity.class.getName();
 
     @InjectView(R.id.ageText)
     TextView ageText;
@@ -39,6 +53,9 @@ public class ReportActivity extends FragmentActivity {
     @InjectView(R.id.profileImageReport)
     ImageView profileImage;
 
+    @Inject
+    EmolanceAPI emolanceAPI;
+
     private static final Map<Integer, Integer> levelResMap =
             new HashMap<Integer, Integer>() {{
                 put(10, R.drawable.beer_level_10);
@@ -53,6 +70,7 @@ public class ReportActivity extends FragmentActivity {
                 put(1, R.drawable.beer_level_1);
             }};
 
+    private Long id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,86 +79,46 @@ public class ReportActivity extends FragmentActivity {
         Injector.inject(this);
         ButterKnife.inject(this);
 
-        Long id = getIntent().getLongExtra("id", -1l);
-        Log.i("TEST", "Report Id: " + id);
+        id = getIntent().getLongExtra("id", -1l);
+        Log.i(TAG, "Open report Id: " + id);
 
         if (id != -1) {
-//            ref = new Firebase("https://emolance.firebaseio.com/reports/" + id);
-//            ref.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Report report = dataSnapshot.getValue(Report.class);
-//
-//                    int indexProfile = report.getProfilePhotoIndex();
-//
-//                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
-//                    nameText.setText(report.getName());
-//                    ageText.setText("Age: " + report.getAge());
-//                    positionText.setText(report.getPosition());
-//
-////                    if (!report.getStatus().equals("DONE")) {
-////                        return;
-////                    }
-//
-//                    levelText.setText(Integer.toString(report.getLevel()));
-//                    percentText.setText(Integer.toString(report.getPercent()));
-//                    beerLevelImage.setImageResource(levelResMap.get(report.getLevel()));
-//
-//                    DateTime dateTime = new DateTime(report.getTimestamp());
-//
-////                    DateTime.parse(Long.toString(report.getTimestamp()),
-////                            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-////                                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-//
-//                    String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
-//                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-//
-//                    timeText.setText(dateTimeStr);
-//                    debugText.setText(report.getResult());
-//                }
-//
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//                    Log.e("TEST", firebaseError.getDetails());
-//                }
-//            });
+            Call<TestReport> testReportCall = emolanceAPI.getReport(id);
+            testReportCall.enqueue(new Callback<TestReport>() {
+                @Override
+                public void onResponse(Call<TestReport> call, Response<TestReport> response) {
+                    TestReport testReport = response.body();
+                    String link = null;
+                    int indexProfile = link == null ? 0 : Integer.parseInt(link);
 
-//            emolanceAPI.getReport(id, new Callback<Report>() {
-//                @Override
-//                public void success(Report report, Response response) {
-//
-//                    String link = report.getLink();
-//                    int indexProfile = link == null ? 0 : Integer.parseInt(link);
-//
-//                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
-//                    nameText.setText(report.getName());
-//                    ageText.setText("Age: " + report.getAge());
-//                    positionText.setText(report.getPosition());
-//
+                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
+                    nameText.setText(testReport.getOwner().getName());
+                    ageText.setText("Age: " + 24);
+                    positionText.setText("Emo User");
+
 //                    if (!report.getStatus().equals("DONE")) {
 //                        return;
 //                    }
-//
-//                    levelText.setText(Integer.toString(report.getLevel()));
-//                    percentText.setText(Integer.toString(report.getPercent()));
-//                    beerLevelImage.setImageResource(levelResMap.get(report.getLevel()));
-//                    DateTime dateTime = DateTime.parse(Long.toString(report.getTimestamp()),
-//                            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-//                                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-//
-//                    String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
-//                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
-//
-//                    timeText.setText(dateTimeStr);
-//                    debugText.setText(report.getResult());
-//                }
-//
-//                @Override
-//                public void failure(RetrofitError error) {
-//
-//                }
-//            });
 
+                    levelText.setText(Integer.toString(testReport.getLevel()));
+                    percentText.setText(Integer.toString(testReport.getPercent()));
+                    beerLevelImage.setImageResource(levelResMap.get(testReport.getLevel()));
+                    DateTime dateTime = DateTime.parse(testReport.getReportDate(),
+                            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+                    String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+                    timeText.setText(dateTimeStr);
+                    debugText.setText(testReport.getResultValue());
+                }
+
+                @Override
+                public void onFailure(Call<TestReport> call, Throwable t) {
+                    Log.e(TAG, "Failed to get the test report for user: " + id);
+                }
+            });
         }
     }
 }

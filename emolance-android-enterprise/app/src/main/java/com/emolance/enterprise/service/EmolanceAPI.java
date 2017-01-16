@@ -1,7 +1,6 @@
 package com.emolance.enterprise.service;
 
 import com.emolance.enterprise.data.EmoUser;
-import com.emolance.enterprise.data.Report;
 import com.emolance.enterprise.data.TestReport;
 
 import java.util.List;
@@ -11,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -29,8 +29,8 @@ public interface EmolanceAPI {
     @GET("/api/emo/reports/byOwner/{id}")
     public Call<List<TestReport>> listReports(@Path("id") Long ownerId);
 
-    @GET("/api/reports/{id}")
-    public Call<Report> getReport(@Path("id") Long id);
+    @GET("/api/test-reports/{id}")
+    public Call<TestReport> getReport(@Path("id") Long id);
 
     @GET("/api/account")
     public Call<ResponseBody> authenticate();
@@ -43,5 +43,8 @@ public interface EmolanceAPI {
 
     @POST("/api/test-reports")
     public Call<ResponseBody> createUserReport(@Body TestReport testReport);
+
+    @PUT("/api/test-reports")
+    public Call<ResponseBody> updateUserReport(@Body TestReport testReport);
 
 }

@@ -25,6 +25,7 @@ import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.service.ImageColorAnalyzer;
 import com.emolance.enterprise.service.TestResult;
+import com.emolance.enterprise.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,7 +48,6 @@ import retrofit2.Response;
 public class UserReportsFragment extends Fragment {
 
     private static final String TAG = UserReportsFragment.class.getName();
-    public static final java.lang.String USER_ID = "UserId";
 
     @Inject
     EmolanceAPI emolanceAPI;
@@ -77,7 +77,8 @@ public class UserReportsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            userId = bundle.getLong(USER_ID);
+            userId = bundle.getLong(Constants.USER_ID);
+            Log.i(TAG, "Getting UserId: " + userId);
         }
     }
 
@@ -133,6 +134,7 @@ public class UserReportsFragment extends Fragment {
     @OnClick(R.id.newReportButton)
     void takeNewUserReport() {
         Intent intent = new Intent(UserReportsFragment.this.getActivity(), QRScanActivity.class);
+        intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);
     }
 
@@ -144,7 +146,7 @@ public class UserReportsFragment extends Fragment {
                 endProgressDialog();
                 if (response.isSuccessful()) {
                     adminReportAdapter = new UserReportAdapter(context, response.body(), UserReportsFragment.this);
-                    totalTextView.setText(adminReportAdapter.getCount() + " Users");
+                    totalTextView.setText(adminReportAdapter.getCount() + " Test Reports");
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -184,10 +186,11 @@ public class UserReportsFragment extends Fragment {
                     report.setResultValue(Double.toString(result.getScaledCortisol()));
                     report.setReportCode(Double.toString(result.getScaledDHEA()));
 
+//                    report.setReportDate(DateUtils.getCurrentDateStr());
 //                    report.setTimestamp(System.currentTimeMillis());
 //                    report.setStatus("Report is ready");
 
-                    Call<ResponseBody> responseCall = emolanceAPI.createUserReport(report);
+                    Call<ResponseBody> responseCall = emolanceAPI.updateUserReport(report);
                     responseCall.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
