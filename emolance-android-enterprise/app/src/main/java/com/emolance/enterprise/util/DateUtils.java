@@ -24,4 +24,56 @@ public class DateUtils {
                 .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
         return dateTimeStr;
     }
+
+    public static String getDateBirthInStr(String dateStr) {
+        if (dateStr == null) {
+            return "N/A";
+        }
+
+        try {
+            DateTime dateTime = DateTime.parse(dateStr,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy")
+                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTimeStr;
+        } catch (IllegalArgumentException e) {
+            DateTime dateTime = DateTime.parse(dateStr,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy")
+                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTimeStr;
+        }
+    }
+
+    public static String getTestDateTimeInStr(String dateStr) {
+        if (dateStr == null) {
+            return "N/A";
+        }
+
+        try {
+            DateTime dateTime = DateTime.parse(dateStr,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTimeStr;
+        } catch (IllegalArgumentException e) {
+            DateTime dateTime = DateTime.parse(dateStr,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTimeStr;
+        }
+    }
 }

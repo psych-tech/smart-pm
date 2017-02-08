@@ -10,6 +10,7 @@ import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.DateUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -93,15 +94,15 @@ public class ReportActivity extends FragmentActivity {
 
                     profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
                     nameText.setText(testReport.getOwner().getName());
-                    ageText.setText("Age: " + 24);
-                    positionText.setText("Emo User");
+                    ageText.setText("Date of Birth: " + DateUtils.getDateBirthInStr(testReport.getOwner().getDatebirth()));
+                    positionText.setText(testReport.getOwner().getPosition());
 
-//                    if (!report.getStatus().equals("DONE")) {
-//                        return;
-//                    }
+                    if (!testReport.getStatus().equals("Done")) {
+                        return;
+                    }
 
                     levelText.setText(Integer.toString(testReport.getLevel()));
-                    percentText.setText(Integer.toString(testReport.getPercent()));
+                    percentText.setText(Double.toString(testReport.getPercent()));
                     beerLevelImage.setImageResource(levelResMap.get(testReport.getLevel()));
                     DateTime dateTime = DateTime.parse(testReport.getReportDate(),
                             DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")

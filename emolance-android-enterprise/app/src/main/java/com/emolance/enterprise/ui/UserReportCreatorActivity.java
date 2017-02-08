@@ -158,8 +158,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
         TestReport testReport = new TestReport();
         testReport.setReportCode(qrIdText.getText().toString());
         testReport.setOwner(currentEmoUser);
-
-//        testReport.setOwner();
+        testReport.setStatus("Not Tested");
 
         Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
         createCall.enqueue(new Callback<ResponseBody>() {

@@ -23,8 +23,6 @@ import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
-import com.emolance.enterprise.service.ImageColorAnalyzer;
-import com.emolance.enterprise.service.TestResult;
 import com.emolance.enterprise.util.Constants;
 
 import java.io.File;
@@ -37,7 +35,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -181,25 +181,23 @@ public class UserReportsFragment extends Fragment {
                     fos.close();
                     Log.i("TEST", "Photo taken and saved at " + file.getAbsolutePath() + " with size: " + file.length());
 
-                    // analyze here
-                    TestResult result = new ImageColorAnalyzer(file).marchThroughImage();
-                    report.setResultValue(Double.toString(result.getScaledCortisol()));
-                    report.setReportCode(Double.toString(result.getScaledDHEA()));
+                    // create RequestBody instance from file
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-//                    report.setReportDate(DateUtils.getCurrentDateStr());
-//                    report.setTimestamp(System.currentTimeMillis());
-//                    report.setStatus("Report is ready");
+                    // MultipartBody.Part is used to send also the actual file name
+                    MultipartBody.Part body =
+                            MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-                    Call<ResponseBody> responseCall = emolanceAPI.updateUserReport(report);
-                    responseCall.enqueue(new Callback<ResponseBody>() {
+                    Call<TestReport> responseCall = emolanceAPI.triggerTest(report.getId(), body);
+                    responseCall.enqueue(new Callback<TestReport>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                             onResultReady.onResult();
-                            // backup automatically
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        public void onFailure(Call<TestReport> call, Throwable t) {
                             Log.e(TAG, "Failed to submit the test report.");
                         }
                     });

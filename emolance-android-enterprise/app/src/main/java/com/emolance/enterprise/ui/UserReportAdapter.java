@@ -11,15 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.Report;
 import com.emolance.enterprise.data.TestReport;
 
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
-
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by yusun on 5/26/15.
@@ -61,18 +55,18 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         qrText.setText("QR ID: " + reports.get(position).getReportCode());
 
         final TextView valueText = (TextView) view.findViewById(R.id.statusText);
-        valueText.setText("Status: " + reports.get(position).getResultValue());
+        valueText.setText("Status: " + reports.get(position).getStatus());
 
-//        if (reports.get(position).getStatus().equals("TESTING")) {
-//            opButton.setVisibility(View.GONE);
-//            progressBar.setVisibility(View.VISIBLE);
-//        }
+        if (reports.get(position).getStatus().equals("Testing")) {
+            opButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 valueText.setText("Status: Testing");
-//                reports.get(position).setStatus("Testing");
+                reports.get(position).setStatus("Testing");
 
                 opButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
@@ -90,6 +84,4 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
         return view;
     }
-
-
 }

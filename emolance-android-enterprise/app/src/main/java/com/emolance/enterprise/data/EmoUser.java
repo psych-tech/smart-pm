@@ -23,6 +23,46 @@ public class EmoUser implements Serializable {
 
     private Organization organization;
 
+    private String datebirth;
+
+    private String position;
+
+    private String lastTestDate;
+
+    private String profileImage;
+
+    public String getDatebirth() {
+        return datebirth;
+    }
+
+    public void setDatebirth(String datebirth) {
+        this.datebirth = datebirth;
+    }
+
+    public String getLastTestDate() {
+        return lastTestDate;
+    }
+
+    public void setLastTestDate(String lastTestDate) {
+        this.lastTestDate = lastTestDate;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public Long getId() {
         return id;
     }

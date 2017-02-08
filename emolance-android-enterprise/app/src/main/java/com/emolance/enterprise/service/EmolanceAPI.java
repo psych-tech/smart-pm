@@ -5,14 +5,16 @@ import com.emolance.enterprise.data.TestReport;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 
 /**
@@ -32,14 +34,11 @@ public interface EmolanceAPI {
     @GET("/api/test-reports/{id}")
     public Call<TestReport> getReport(@Path("id") Long id);
 
-    @GET("/api/account")
-    public Call<ResponseBody> authenticate();
-
-    @POST("/api/reports/device/trigger/process/{sn}")
-    public Call<ResponseBody> triggerProcess(
-            @Path("sn") String sn,
-            @Query("qrcode") String qrcode,
-            @Query("delay") Integer delay);
+    @Multipart
+    @POST("/api/emo/process/test/{testReportId}")
+    public Call<TestReport> triggerTest(
+            @Path("testReportId") Long testReportId,
+            @Part MultipartBody.Part file);
 
     @POST("/api/test-reports")
     public Call<ResponseBody> createUserReport(@Body TestReport testReport);
