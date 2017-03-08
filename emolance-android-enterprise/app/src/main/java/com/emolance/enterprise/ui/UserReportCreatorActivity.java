@@ -166,7 +166,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(UserReportCreatorActivity.this,
-                                "Failed to added the report.", Toast.LENGTH_SHORT).show();
+                                "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 }
                 UserReportCreatorActivity.this.finish();
             }
@@ -174,7 +174,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(UserReportCreatorActivity.this,
-                        "Failed to added the report.", Toast.LENGTH_SHORT).show();
+                        "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 UserReportCreatorActivity.this.finish();
             }
         });

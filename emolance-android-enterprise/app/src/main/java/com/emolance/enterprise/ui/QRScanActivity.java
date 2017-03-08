@@ -5,21 +5,36 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
+import com.emolance.enterprise.data.Report;
+import com.emolance.enterprise.data.TestReport;
+import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
 import com.mitac.cell.device.bcr.McBcrConnection;
 import com.mitac.cell.device.bcr.McBcrMessage;
 import com.mitac.cell.device.bcr.MiBcrListener;
 import com.mitac.cell.device.bcr.utility.BARCODE;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by yusun on 6/22/15.
  */
 public class QRScanActivity extends FragmentActivity {
+
+    @Inject
+    EmolanceAPI emolanceAPI;
 
     private static final String TAG = QRScanActivity.class.getName();
 
@@ -27,6 +42,7 @@ public class QRScanActivity extends FragmentActivity {
     private McBcrConnection mBcr;	// McBcrConnection help BCR control
 
     private Long userId;
+    private EmoUser currentEmoUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +53,11 @@ public class QRScanActivity extends FragmentActivity {
 
         userId = getIntent().getLongExtra(Constants.USER_ID, -1);
         Log.i(TAG, "Get user id: " + userId);
+        currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(userId), null);
+        if (currentEmoUser == null) {
+            Log.e(TAG, "Failed to find the chosen user. Id: " + userId);
+            finish();
+        }
 
         mBcr = new McBcrConnection(this);
         mBcr.setListener(new MiBcrListener() {
@@ -49,6 +70,8 @@ public class QRScanActivity extends FragmentActivity {
                 Log.i("Scanner", s + " " + type + " " + i);
                 Log.i("Scanner", "Shutting down the BarCode scanner.");
 
+                create(s);
+                /*
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -58,6 +81,7 @@ public class QRScanActivity extends FragmentActivity {
                         startActivity(intent);
                     }
                 }, 1000);
+                */
             }
 
             @Override
@@ -88,4 +112,39 @@ public class QRScanActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    protected void create(String qr) {
+        Report report = new Report();
+        report.setId(System.currentTimeMillis());
+        report.setQrcode(qr);
+        report.setName("");
+        report.setAge("");
+        report.setPosition("");
+        report.setProfilePhotoIndex(0);
+        report.setTimestamp(System.currentTimeMillis());
+        report.setStatus("Ready to Measure");
+
+        TestReport testReport = new TestReport();
+        testReport.setReportCode(qr);
+        testReport.setOwner(currentEmoUser);
+        testReport.setStatus("Not Tested");
+
+        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(QRScanActivity.this,
+                            "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                }
+                QRScanActivity.this.finish();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QRScanActivity.this,
+                        "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                QRScanActivity.this.finish();
+            }
+        });
+    }
 }
