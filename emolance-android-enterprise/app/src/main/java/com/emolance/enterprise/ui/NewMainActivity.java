@@ -40,8 +40,9 @@ public class NewMainActivity extends FragmentActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
         // Specify that tabs should be displayed in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
+        /*
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             @Override
@@ -60,13 +61,10 @@ public class NewMainActivity extends FragmentActivity {
             }
         };
 
-        // Add 2 tabs, specifying the tab's text and TabListener
+        // Add 1 tab, specifying the tab's text and TabListener
         actionBar.addTab(actionBar.newTab()
                             .setText("New")
-                            .setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab()
-                            .setText("Historical")
-                            .setTabListener(tabListener));
+                            .setTabListener(tabListener));*/
 
         // ViewPager and its adapters use support library
 //        // fragments, so use getSupportFragmentManager.

@@ -42,10 +42,6 @@ public class AdminFragment extends Fragment {
 
     @Inject
     EmolanceAPI emolanceAPI;
-    @InjectView(R.id.numResult)
-    TextView totalTextView;
-    @InjectView(R.id.newUserReportButton)
-    ImageButton newUserReportButton;
     @InjectView(R.id.userListView)
     ListView adminReportListView;
 
@@ -86,12 +82,6 @@ public class AdminFragment extends Fragment {
         progress.dismiss();
     }
 
-    @OnClick(R.id.newUserReportButton)
-    void takeNewUserReport() {
-        Intent intent = new Intent(AdminFragment.this.getActivity(), QRScanActivity.class);
-        startActivity(intent);
-    }
-
     public void loadReports() {
         Call<List<EmoUser>> call = emolanceAPI.listMyUsers();
         call.enqueue(new Callback<List<EmoUser>>() {
@@ -101,7 +91,6 @@ public class AdminFragment extends Fragment {
                 if (response.isSuccessful()) {
                     List<EmoUser> myUsers = response.body();
                     adminReportAdapter = new UserListAdapter(context, myUsers, AdminFragment.this);
-                    totalTextView.setText(adminReportAdapter.getCount() + " Users");
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
