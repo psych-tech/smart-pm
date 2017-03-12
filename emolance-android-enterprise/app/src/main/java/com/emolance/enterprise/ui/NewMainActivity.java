@@ -7,8 +7,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +19,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
+import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.util.Constants;
 import com.emolance.enterprise.util.GlobalSettings;
+
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by yusun on 6/22/15.
@@ -29,6 +37,7 @@ public class NewMainActivity extends FragmentActivity {
 //    ViewPager mViewPager;
 
     private int tmpDelayTime = GlobalSettings.processingDelay;
+    private FragmentTransaction fragmentTransaction;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +82,11 @@ public class NewMainActivity extends FragmentActivity {
 //        mViewPager = (ViewPager) findViewById(R.id.pager);
 //        mViewPager.setAdapter(pagerAdapter);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.root_container, new AdminFragment(), null);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.root_container, new AdminFragment(), "AdminFragment");
+        fragmentTransaction.replace(R.id.root_container2, new AdminDashboardFragment(), "AdminDashboardFragment");
         fragmentTransaction.commit();
+
     }
 
     private void checkAuth() {
@@ -84,6 +95,21 @@ public class NewMainActivity extends FragmentActivity {
         if (accounts.length == 0) {
             accountManager.addAccount(Constants.ACCOUNT_TYPE, null, null, null, this,
                     null, null);
+        }
+    }
+
+    //Used to transfer data from AdminFragment to AdminDashboardFragment
+    public void transferData() {
+        AdminFragment adminFragment = (AdminFragment) getSupportFragmentManager().findFragmentByTag("AdminFragment");
+        if (adminFragment != null) {
+            AdminDashboardFragment adminDashboardFragment = (AdminDashboardFragment)
+                    getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment");
+
+            if (adminDashboardFragment != null) {
+                List<EmoUser> myUsers = adminFragment.getEmoUserList();
+                HashMap<Long, List<TestReport>> hashMap = adminFragment.getTestsHashmap();
+                adminDashboardFragment.setData(myUsers, hashMap);
+            }
         }
     }
 

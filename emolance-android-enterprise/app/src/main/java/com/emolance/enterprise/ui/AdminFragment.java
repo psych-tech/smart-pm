@@ -13,16 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
+import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +50,11 @@ public class AdminFragment extends Fragment {
     private Context context;
     private UserListAdapter adminReportAdapter;
 
+    //Used to send data to AdminDashboardFragment
+    private List<EmoUser> myUsers;
+    private HashMap<Long, List<TestReport>> hashMap;
+    private EmoUser emoUser;
+    private int counter;
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
     @Override
@@ -87,9 +93,11 @@ public class AdminFragment extends Fragment {
         call.enqueue(new Callback<List<EmoUser>>() {
             @Override
             public void onResponse(Call<List<EmoUser>> call, Response<List<EmoUser>> response) {
-                endProgressDialog();
                 if (response.isSuccessful()) {
-                    List<EmoUser> myUsers = response.body();
+                    myUsers = response.body();
+                    counter = 0;
+                    hashMap = new HashMap<>(); //used to map tests to users
+                    loadHashmap();
                     adminReportAdapter = new UserListAdapter(context, myUsers, AdminFragment.this);
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,9 +113,52 @@ public class AdminFragment extends Fragment {
             @Override
             public void onFailure(Call<List<EmoUser>> call, Throwable t) {
                 Log.e("AdminReport", "Failed to get the list of history reports. ");
-                endProgressDialog();
+                Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    //Loads the hashmap with the lists of test reports and then transfers the data between the fragments
+    private void loadHashmap() {
+        //Load all the tests
+        for (int i = 0; i < myUsers.size(); i++) {
+            emoUser = myUsers.get(i);
+            Long userId = emoUser.getId();
+            Call<List<TestReport>> testReportCall = emolanceAPI.listReports(userId);
+            testReportCall.enqueue(new Callback<List<TestReport>>() {
+                @Override
+                public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
+                    counter++;
+                    if (response.isSuccessful()) {
+                        List<TestReport> list = response.body();
+                        if (list != null && list.size() > 0) {
+                            Long tempId = list.get(0).getOwner().getId();
+                            hashMap.put(tempId, list);
+                        }
+                    }
+                    //Once the last response has been received, transfer the data
+                    if (counter == myUsers.size()) {
+                        NewMainActivity activity = (NewMainActivity) getActivity();
+                        activity.transferData();
+                        endProgressDialog();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<TestReport>> call, Throwable t) {
+                    Log.e("AdminReport", "Failed to get the list of individual history reports. ");
+                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    //Used to send data to AdminDashboardFragment
+    public List<EmoUser> getEmoUserList() {
+        return myUsers;
+    }
+    public HashMap<Long, List<TestReport>> getTestsHashmap() {
+        return hashMap;
     }
 
     public void openUserTestsFragment(int i) {
