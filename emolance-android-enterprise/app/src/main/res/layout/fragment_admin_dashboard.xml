@@ -48,7 +48,7 @@
             android:id="@+id/adminDashboardBarChart"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"/>
         <View
             android:layout_width="2dip"
@@ -58,7 +58,7 @@
             android:id="@+id/adminDashboardPieChart"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"/>
     </LinearLayout>
 

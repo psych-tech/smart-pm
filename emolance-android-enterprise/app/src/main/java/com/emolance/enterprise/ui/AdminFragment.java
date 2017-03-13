@@ -165,10 +165,13 @@ public class AdminFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.USER_ID, adminReportAdapter.getItem(i).getId());
         UserReportsFragment userReportsFragment = new UserReportsFragment();
+        UserProfileFragment userProfileFragment = new UserProfileFragment();
         userReportsFragment.setArguments(bundle);
+        userProfileFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.root_container, userReportsFragment);
+        fragmentTransaction.replace(R.id.root_container, userProfileFragment, "UserProfileFragment");
+        fragmentTransaction.replace(R.id.root_container2, userReportsFragment, "UserReportsFragment");
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
