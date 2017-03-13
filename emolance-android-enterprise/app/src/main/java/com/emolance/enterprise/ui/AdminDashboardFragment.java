@@ -77,7 +77,7 @@ public class AdminDashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Context context = getActivity();
-        font = Typeface.createFromAsset(context.getAssets(), "fonts/JLSDataGothicR_NC.otf"); //create font
+        font = Typeface.createFromAsset(context.getAssets(), "fonts/DataGothic.otf"); //create font
 
         totalUsersTextView.setTypeface(font);
         totalTestsTextView.setTypeface(font);
