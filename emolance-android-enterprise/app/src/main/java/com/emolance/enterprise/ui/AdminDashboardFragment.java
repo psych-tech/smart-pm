@@ -126,16 +126,14 @@ public class AdminDashboardFragment extends Fragment {
             Integer key = entry.getKey();
             Integer value = entry.getValue();
             barEntries.add(new BarEntry(key, value));
-            if (value > 0) {
-                if (key < 4) {
-                    low += value;
-                }
-                else if (key > 6) {
-                    high += value;
-                }
-                else {
-                    mid += value;
-                }
+            if (key < 4) {
+                low += value;
+            }
+            else if (key > 6) {
+                high += value;
+            }
+            else {
+                mid += value;
             }
         }
 
@@ -161,7 +159,7 @@ public class AdminDashboardFragment extends Fragment {
         pieChart.setData(pieData);
 
         //More styling
-        pieChart.getDescription().setText("");
+        pieChart.getDescription().setText(""); //hide description
         pieChart.setUsePercentValues(true);
         pieChart.setHoleRadius(20);
         pieChart.setTransparentCircleRadius(25);
@@ -174,6 +172,8 @@ public class AdminDashboardFragment extends Fragment {
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         BarData barData = new BarData(barDataSet);
+
+        //Set data to be outputted as integers
         barData.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -182,9 +182,9 @@ public class AdminDashboardFragment extends Fragment {
             }
         });
         barChart.setData(barData);
-        barChart.getDescription().setText("");
+        barChart.getDescription().setText(""); //hide description
         barChart.setFitBars(true);
-        barChart.getLegend().setEnabled(false);
+        barChart.getLegend().setEnabled(false); //hide legend
 
         //Format X Axis labels
         XAxis xAxis = barChart.getXAxis();
