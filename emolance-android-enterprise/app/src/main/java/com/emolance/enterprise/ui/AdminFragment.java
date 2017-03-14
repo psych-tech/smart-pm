@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class AdminFragment extends Fragment {
     private HashMap<Long, List<TestReport>> hashMap;
     private EmoUser emoUser;
     private int counter;
+    private NewMainActivity activity;
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
     @Override
@@ -76,6 +78,8 @@ public class AdminFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        activity = (NewMainActivity) getActivity();
+        activity.setRootContainerVisibility(false);
         startProgressDialog();
         loadReports();
     }
@@ -138,7 +142,6 @@ public class AdminFragment extends Fragment {
                     }
                     //Once the last response has been received, transfer the data
                     if (counter == myUsers.size()) {
-                        NewMainActivity activity = (NewMainActivity) getActivity();
                         activity.transferData();
                         endProgressDialog();
                     }
@@ -170,8 +173,8 @@ public class AdminFragment extends Fragment {
         userProfileFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.root_container, userProfileFragment, "UserProfileFragment");
-        fragmentTransaction.replace(R.id.root_container2, userReportsFragment, "UserReportsFragment");
+        fragmentTransaction.replace(R.id.root_container_left, userProfileFragment, "UserProfileFragment");
+        fragmentTransaction.replace(R.id.root_container_right, userReportsFragment, "UserReportsFragment");
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

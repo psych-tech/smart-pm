@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_container"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:visibility="invisible">
     <FrameLayout
-        android:id="@+id/root_container"
+        android:id="@+id/root_container_left"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent">
@@ -16,7 +18,7 @@
         android:background="@color/separator"/>
 
     <FrameLayout
-        android:id="@+id/root_container2"
+        android:id="@+id/root_container_right"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent">

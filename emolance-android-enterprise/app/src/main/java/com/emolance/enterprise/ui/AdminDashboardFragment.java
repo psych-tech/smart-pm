@@ -25,7 +25,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -76,6 +75,8 @@ public class AdminDashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        //Set text style
         Context context = getActivity();
         font = Typeface.createFromAsset(context.getAssets(), "fonts/DataGothic.otf"); //create font
 
@@ -117,6 +118,16 @@ public class AdminDashboardFragment extends Fragment {
             }
         }
 
+        //Hardcoded sample data (DELETE THIS LATER!)
+        levelsHashmap.put(1, 3);
+        levelsHashmap.put(2, 4);
+        levelsHashmap.put(3, 6);
+        levelsHashmap.put(4, 5);
+        levelsHashmap.put(5, 8);
+        levelsHashmap.put(7, 2);
+        levelsHashmap.put(8, 14);
+        levelsHashmap.put(10, 5);
+
         //Create chart data
         List<BarEntry> barEntries = new ArrayList<>();
         List<PieEntry> pieEntries = new ArrayList<>();
@@ -153,7 +164,16 @@ public class AdminDashboardFragment extends Fragment {
         pieDataSet.setSliceSpace(3); //styling
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS); //styling
         PieData pieData = new PieData(pieDataSet);
-        pieData.setValueFormatter(new PercentFormatter());
+
+        //Percentages will be displayed as integers if they are whole numbers, but will be
+        //displayed as decimals if they are not.
+        pieData.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                DecimalFormat df = new DecimalFormat("##.#");
+                return df.format(value) + "%";
+            }
+        });
         pieData.setValueTextSize(20f);
         pieData.setValueTextColor(Color.BLACK);
         pieChart.setData(pieData);
@@ -161,8 +181,8 @@ public class AdminDashboardFragment extends Fragment {
         //More styling
         pieChart.getDescription().setText(""); //hide description
         pieChart.setUsePercentValues(true);
-        pieChart.setHoleRadius(20);
-        pieChart.setTransparentCircleRadius(25);
+        pieChart.setHoleRadius(45);
+        pieChart.setTransparentCircleRadius(48);
         pieChart.getLegend().setEnabled(false); //hide legend
 
         //animate the chart data (over 1.5 sec interval)
@@ -183,8 +203,8 @@ public class AdminDashboardFragment extends Fragment {
         });
         barChart.setData(barData);
         barChart.getDescription().setText(""); //hide description
-        barChart.setFitBars(true);
         barChart.getLegend().setEnabled(false); //hide legend
+        barChart.setFitBars(true);
 
         //Format X Axis labels
         XAxis xAxis = barChart.getXAxis();

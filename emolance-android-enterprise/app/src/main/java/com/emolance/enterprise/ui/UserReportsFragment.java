@@ -67,6 +67,8 @@ public class UserReportsFragment extends Fragment {
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
     private Long userId;
+    private NewMainActivity activity;
+    private List<TestReport> testList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +120,9 @@ public class UserReportsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        activity = (NewMainActivity) getActivity();
+        activity.setRootContainerVisibility(false);
+
         startProgressDialog();
         initCamera();
         loadReports();
@@ -145,7 +150,10 @@ public class UserReportsFragment extends Fragment {
             public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
                 endProgressDialog();
                 if (response.isSuccessful()) {
-                    adminReportAdapter = new UserReportAdapter(context, response.body(), UserReportsFragment.this);
+                    testList = response.body();
+                    NewMainActivity activity = (NewMainActivity) getActivity();
+                    activity.transferDataUser(); //transfer the data to the UserProfileFragment
+                    adminReportAdapter = new UserReportAdapter(context, testList, UserReportsFragment.this);
                     totalTextView.setText(adminReportAdapter.getCount() + " Test Reports");
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,8 +171,13 @@ public class UserReportsFragment extends Fragment {
             public void onFailure(Call<List<TestReport>> call, Throwable t) {
                 Log.e("AdminReport", "Failed to get the list of history reports. ");
                 endProgressDialog();
+                Toast.makeText(getActivity(),"Failed to get the list of reports. ",  Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public List<TestReport> getTestList() {
+        return testList;
     }
 
     public void takePhotoForProcessing(final TestReport report, final ResultReadyListener onResultReady) {

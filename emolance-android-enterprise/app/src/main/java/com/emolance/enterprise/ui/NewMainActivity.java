@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.InjectView;
+
 /**
  * Created by yusun on 6/22/15.
  */
@@ -35,6 +38,8 @@ public class NewMainActivity extends FragmentActivity {
 
 //    NewMainActivityPageViewerAdapter pagerAdapter;
 //    ViewPager mViewPager;
+
+    private LinearLayout rootContainer;
 
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
@@ -83,10 +88,11 @@ public class NewMainActivity extends FragmentActivity {
 //        mViewPager.setAdapter(pagerAdapter);
 
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.root_container, new AdminFragment(), "AdminFragment");
-        fragmentTransaction.replace(R.id.root_container2, new AdminDashboardFragment(), "AdminDashboardFragment");
+        fragmentTransaction.replace(R.id.root_container_left, new AdminFragment(), "AdminFragment");
+        fragmentTransaction.replace(R.id.root_container_right, new AdminDashboardFragment(), "AdminDashboardFragment");
         fragmentTransaction.commit();
 
+        rootContainer = (LinearLayout) findViewById(R.id.root_container);
     }
 
     private void checkAuth() {
@@ -111,6 +117,22 @@ public class NewMainActivity extends FragmentActivity {
                 adminDashboardFragment.setData(myUsers, hashMap);
             }
         }
+        setRootContainerVisibility(true);
+    }
+    //Used to transfer data from UserReportsFragment to UserProfileFragment
+    public void transferDataUser() {
+        UserReportsFragment userReportsFragment = (UserReportsFragment) getSupportFragmentManager()
+                .findFragmentByTag("UserReportsFragment");
+        if (userReportsFragment != null) {
+            UserProfileFragment userProfileFragment = (UserProfileFragment)
+                    getSupportFragmentManager().findFragmentByTag("UserProfileFragment");
+
+            if (userProfileFragment != null) {
+                List<TestReport> testReportList = userReportsFragment.getTestList();
+                userProfileFragment.setData(testReportList);
+            }
+        }
+        setRootContainerVisibility(true);
     }
 
     @Override
@@ -135,6 +157,16 @@ public class NewMainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Sets the visibility of the container (cleaner look when data is loading)
+    public void setRootContainerVisibility(boolean visible) {
+        if (visible) {
+            rootContainer.setVisibility(View.VISIBLE);
+        }
+        else {
+            rootContainer.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void openDelaySettingDialog() {
