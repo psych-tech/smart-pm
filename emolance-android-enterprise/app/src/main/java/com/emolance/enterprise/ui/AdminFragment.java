@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -117,7 +116,8 @@ public class AdminFragment extends Fragment {
             @Override
             public void onFailure(Call<List<EmoUser>> call, Throwable t) {
                 Log.e("AdminReport", "Failed to get the list of history reports. ");
-                Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                endProgressDialog();
             }
         });
     }
@@ -150,7 +150,8 @@ public class AdminFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<TestReport>> call, Throwable t) {
                     Log.e("AdminReport", "Failed to get the list of individual history reports. ");
-                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                    endProgressDialog();
                 }
             });
         }

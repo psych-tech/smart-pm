@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/profileImage"
+        android:id="@+id/testImage"
         android:adjustViewBounds="true"
-        android:src="@drawable/profile_pic"
+        android:src="@drawable/test_icon_incomplete"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_weight="8"
         android:padding="5dp"
         android:layout_marginLeft="10dp"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
-            android:paddingTop="2dp"
             android:id="@+id/nameText"
-            android:layout_alignParentTop="true"
             android:text="Dr. Joseph Cooper"
             android:textSize="18sp"
             android:textColor="#000"
@@ -33,22 +31,19 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/qrText"
-            android:layout_below="@+id/nameText"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="3dp"
             android:text="QR ID: Emolance 800-810-6330 06-15-2015"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/statusText"
-            android:layout_alignParentBottom="true"
             android:text="Status: Report is Ready"
             android:textColor="#828282"
             android:textSize="16sp"
-            android:paddingBottom="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -60,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp" />
         <Button
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:layout_gravity="center"
             android:id="@+id/opButton"
             android:text="Measure"

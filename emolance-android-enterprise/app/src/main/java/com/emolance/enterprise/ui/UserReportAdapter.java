@@ -42,22 +42,31 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 //        String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
 //                .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-        TextView nameText = (TextView) view.findViewById(R.id.nameText);
-        nameText.setText(reports.get(position).getOwner().getName());
+        final TestReport testReport = reports.get(position);
 
-        final ImageView profileImageView = (ImageView) view.findViewById(R.id.profileImage);
-        int profileIndex = 0; //reports.get(position).getProfilePhotoIndex();
-        profileImageView.setImageResource(UserReportCreatorActivity.profileList.get(profileIndex));
+        TextView nameText = (TextView) view.findViewById(R.id.nameText);
+        nameText.setText(testReport.getOwner().getName());
+
+        final ImageView profileImageView = (ImageView) view.findViewById(R.id.testImage);
 
         final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         final TextView qrText = (TextView) view.findViewById(R.id.qrText);
-        qrText.setText("QR ID: " + reports.get(position).getReportCode());
+        qrText.setText("QR ID: " + testReport.getReportCode());
 
         final TextView valueText = (TextView) view.findViewById(R.id.statusText);
-        valueText.setText("Status: " + reports.get(position).getStatus());
+        String status = testReport.getStatus();
+        Integer level = testReport.getLevel();
+        if (status.equals("Done")) {
+            profileImageView.setImageResource(R.drawable.test_icon_complete);
+            valueText.setText("Status: " + status + "   ---->   Stress level: " + level);
+        }
+        else {
+            profileImageView.setImageResource(R.drawable.test_icon_incomplete);
+            valueText.setText("Status: Incomplete");
+        }
 
-        if (reports.get(position).getStatus().equals("Testing")) {
+        if (status.equals("Testing")) {
             opButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -66,15 +75,17 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             @Override
             public void onClick(View view) {
                 valueText.setText("Status: Testing");
-                reports.get(position).setStatus("Testing");
+                testReport.setStatus("Testing");
 
+                profileImageView.setImageResource(R.drawable.test_icon_incomplete);
                 opButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
 
-                adminFragment.takePhotoForProcessing(reports.get(position), new ResultReadyListener() {
+                adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
                     @Override
                     public void onResult() {
                         valueText.setText("Status: Report is ready");
+                        profileImageView.setImageResource(R.drawable.test_icon_complete);
                         progressBar.setVisibility(View.GONE);
                         opButton.setVisibility(View.VISIBLE);
                     }

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -81,20 +82,22 @@ public class UserProfileFragment extends Fragment {
         //fill lineEntries with data
         List<Entry> lineEntries = new ArrayList<>();
         for (TestReport testReport : tests) {
-            int stressLevel = testReport.getLevel();
-            String testDate = testReport.getReportDate();
-            lineEntries.add(new Entry(0, stressLevel));
+            if (testReport != null) {
+                Integer stressLevel = testReport.getLevel();
+                String testDate = testReport.getReportDate();
+                lineEntries.add(new Entry(new Random().nextInt(10), new Random().nextInt(10)));
+            }
         }
 
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "");
-        lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        lineDataSet.setColors(getResources().getIntArray(R.array.altcolors));
         LineData lineData = new LineData(lineDataSet);
 
         //Set data to be outputted as integers
         lineData.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                DecimalFormat df = new DecimalFormat("#,###");
+                DecimalFormat df = new DecimalFormat("##");
                 return df.format(value);
             }
         });

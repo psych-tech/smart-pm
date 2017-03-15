@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:layout_width="match_parent"
@@ -14,18 +12,18 @@
         android:src="@drawable/profile_pic"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_weight="8"
         android:padding="5dp"
         android:layout_marginLeft="10dp"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
-            android:paddingTop="2dp"
             android:id="@+id/userNameText"
-            android:layout_alignParentTop="true"
             android:text="Dr. Joseph Cooper"
             android:textSize="18sp"
             android:textColor="#000"
@@ -33,22 +31,19 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/orgText"
-            android:layout_below="@+id/userNameText"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="3dp"
             android:text="Organization"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/recentTestDate"
-            android:layout_alignParentBottom="true"
             android:text="Recent Test: 2017-01-21 18:05PM"
             android:textColor="#828282"
             android:textSize="16sp"
-            android:paddingBottom="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -62,7 +57,7 @@
             android:layout_height="0dp" />
 
         <Button
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:layout_gravity="center"
             android:id="@+id/testsButton"
             android:text="@string/check_results"

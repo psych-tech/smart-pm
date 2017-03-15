@@ -14,7 +14,6 @@
         android:background="@color/separator" />
 
     <ListView
-        android:layout_weight="8"
         android:id="@+id/userListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

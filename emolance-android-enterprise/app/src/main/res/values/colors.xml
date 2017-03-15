@@ -34,4 +34,12 @@
         <item>@color/darkred</item>
     </integer-array>
 
+    <integer-array name="altcolors">
+        <item>@color/darkblue</item>
+        <item>@color/darkpurple</item>
+        <item>@color/red</item>
+        <item>@color/darkgreen</item>
+        <item>@color/darkred</item>
+    </integer-array>
+
 </resources>

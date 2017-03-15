@@ -16,6 +16,7 @@ import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -60,6 +61,8 @@ public class AdminDashboardFragment extends Fragment {
     private HashMap<Integer, Integer> levelsHashmap;
     private Typeface font;
 
+    private int[] colors;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,8 @@ public class AdminDashboardFragment extends Fragment {
         totalTestsTextView.setTypeface(font);
         stressStatsTextView.setTypeface(font);
         stressStatsTextView.setPaintFlags(stressStatsTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        colors = getResources().getIntArray(R.array.altcolors);
     }
 
     //Takes the test data from the AdminFragment and adjusts the UI according to the stats
@@ -150,19 +155,19 @@ public class AdminDashboardFragment extends Fragment {
 
         //Prevent showing the value if it is 0 (makes chart look nicer)
         if (low > 0) {
-            pieEntries.add(new PieEntry(low, "1-3"));
+            pieEntries.add(new PieEntry(low, "Low stress (1-3)"));
         }
         if (mid > 0) {
-            pieEntries.add(new PieEntry(mid, "4-6"));
+            pieEntries.add(new PieEntry(mid, "Normal stress (4-6)"));
         }
         if (high > 0) {
-            pieEntries.add(new PieEntry(high, "7-10"));
+            pieEntries.add(new PieEntry(high, "High stress (7-10)"));
         }
 
         //Set up pie chart and style it
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
         pieDataSet.setSliceSpace(3); //styling
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS); //styling
+        pieDataSet.setColors(colors); //styling
         PieData pieData = new PieData(pieDataSet);
 
         //Percentages will be displayed as integers if they are whole numbers, but will be
@@ -180,17 +185,21 @@ public class AdminDashboardFragment extends Fragment {
 
         //More styling
         pieChart.getDescription().setText(""); //hide description
+        pieChart.setCenterText("Stress Breakdown");
+        pieChart.setCenterTextSize(16);
+        pieChart.setCenterTextOffset(0, -5);
+        pieChart.setDrawCenterText(true);
         pieChart.setUsePercentValues(true);
-        pieChart.setHoleRadius(45);
-        pieChart.setTransparentCircleRadius(48);
-        pieChart.getLegend().setEnabled(false); //hide legend
+        pieChart.setHoleRadius(35);
+        pieChart.setTransparentCircleRadius(38);
+        pieChart.setDrawSliceText(false);
 
         //animate the chart data (over 1.5 sec interval)
         pieChart.animateX(1500);
         pieChart.animateY(1500);
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setColors(colors);
         BarData barData = new BarData(barDataSet);
 
         //Set data to be outputted as integers
@@ -206,14 +215,16 @@ public class AdminDashboardFragment extends Fragment {
         barChart.getLegend().setEnabled(false); //hide legend
         barChart.setFitBars(true);
 
-        //Format X Axis labels
+        //Format X Axis
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelCount(11);
+        xAxis.setDrawGridLines(false);
 
-        //Format Y Axis Labels
+        //Format Y Axis
         barChart.getAxisRight().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisLeft().setDrawGridLines(false);
 
         barChart.animateY(1500); //animate the chart data (over 1.5 sec interval)
 
