@@ -22,4 +22,8 @@ public class Constants {
     public static final String DB_TESTREPORT = "db.testreport";
 
     public static final String USER_ID = "UserId";
+    public static final String USER_NAME = "UserName";
+    public static final String USER_AGE = "UserAge";
+    public static final String USER_POSITION = "UserPosition";
+    public static final String USER_IMAGE = "UserImage";
 }

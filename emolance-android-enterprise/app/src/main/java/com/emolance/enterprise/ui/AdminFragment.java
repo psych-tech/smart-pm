@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -56,7 +57,6 @@ public class AdminFragment extends Fragment {
     private EmoUser emoUser;
     private int counter;
     private NewMainActivity activity;
-    private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,8 @@ public class AdminFragment extends Fragment {
         activity = (NewMainActivity) getActivity();
         activity.setRootContainerVisibility(false);
         startProgressDialog();
-        loadReports();
+        GetDataAsyncTask asyncTask = new GetDataAsyncTask();
+        asyncTask.execute();
     }
 
     private void startProgressDialog() {
@@ -89,72 +90,6 @@ public class AdminFragment extends Fragment {
 
     private void endProgressDialog() {
         progress.dismiss();
-    }
-
-    public void loadReports() {
-        Call<List<EmoUser>> call = emolanceAPI.listMyUsers();
-        call.enqueue(new Callback<List<EmoUser>>() {
-            @Override
-            public void onResponse(Call<List<EmoUser>> call, Response<List<EmoUser>> response) {
-                if (response.isSuccessful()) {
-                    myUsers = response.body();
-                    counter = 0;
-                    hashMap = new HashMap<>(); //used to map tests to users
-                    loadHashmap();
-                    adminReportAdapter = new UserListAdapter(context, myUsers, AdminFragment.this);
-                    adminReportListView.setAdapter(adminReportAdapter);
-                    adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            openUserTestsFragment(i);
-                        }
-                    });
-                    persistLoadedMyUsers(myUsers);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<EmoUser>> call, Throwable t) {
-                Log.e("AdminReport", "Failed to get the list of history reports. ");
-                Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
-                endProgressDialog();
-            }
-        });
-    }
-
-    //Loads the hashmap with the lists of test reports and then transfers the data between the fragments
-    private void loadHashmap() {
-        //Load all the tests
-        for (int i = 0; i < myUsers.size(); i++) {
-            emoUser = myUsers.get(i);
-            Long userId = emoUser.getId();
-            Call<List<TestReport>> testReportCall = emolanceAPI.listReports(userId);
-            testReportCall.enqueue(new Callback<List<TestReport>>() {
-                @Override
-                public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
-                    counter++;
-                    if (response.isSuccessful()) {
-                        List<TestReport> list = response.body();
-                        if (list != null && list.size() > 0) {
-                            Long tempId = list.get(0).getOwner().getId();
-                            hashMap.put(tempId, list);
-                        }
-                    }
-                    //Once the last response has been received, transfer the data
-                    if (counter == myUsers.size()) {
-                        activity.transferData();
-                        endProgressDialog();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<TestReport>> call, Throwable t) {
-                    Log.e("AdminReport", "Failed to get the list of individual history reports. ");
-                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
-                    endProgressDialog();
-                }
-            });
-        }
     }
 
     //Used to send data to AdminDashboardFragment
@@ -166,12 +101,19 @@ public class AdminFragment extends Fragment {
     }
 
     public void openUserTestsFragment(int i) {
-        Bundle bundle = new Bundle();
-        bundle.putLong(Constants.USER_ID, adminReportAdapter.getItem(i).getId());
         UserReportsFragment userReportsFragment = new UserReportsFragment();
         UserProfileFragment userProfileFragment = new UserProfileFragment();
+        Bundle bundle = new Bundle();
+        EmoUser emoUser = adminReportAdapter.getItem(i);
+
+        bundle.putLong(Constants.USER_ID, emoUser.getId());
         userReportsFragment.setArguments(bundle);
+        bundle.putString(Constants.USER_NAME, emoUser.getName());
+        bundle.putString(Constants.USER_AGE, emoUser.getDatebirth());
+        bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
+        bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
         userProfileFragment.setArguments(bundle);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.root_container_left, userProfileFragment, "UserProfileFragment");
@@ -188,4 +130,76 @@ public class AdminFragment extends Fragment {
         Paper.book(Constants.DB_MYUSERS).write(Constants.DB_MYUSERS_KEY, myUsers);
     }
 
+    private class GetDataAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            Call<List<EmoUser>> call = emolanceAPI.listMyUsers();
+            call.enqueue(new Callback<List<EmoUser>>() {
+                @Override
+                public void onResponse(Call<List<EmoUser>> call, Response<List<EmoUser>> response) {
+                    if (response.isSuccessful()) {
+                        myUsers = response.body();
+                        counter = 0;
+                        hashMap = new HashMap<>(); //used to map tests to users
+                        //Loads the hashmap with the lists of test reports and then transfers the data between the fragments
+                        for (int i = 0; i < myUsers.size(); i++) {
+                            emoUser = myUsers.get(i);
+                            Long userId = emoUser.getId();
+                            Call<List<TestReport>> testReportCall = emolanceAPI.listReports(userId);
+                            testReportCall.enqueue(new Callback<List<TestReport>>() {
+                                @Override
+                                public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
+                                    counter++;
+                                    if (response.isSuccessful()) {
+                                        List<TestReport> list = response.body();
+                                        if (list != null && list.size() > 0) {
+                                            Long tempId = list.get(0).getOwner().getId();
+                                            hashMap.put(tempId, list);
+                                        }
+                                        publishProgress();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<TestReport>> call, Throwable t) {
+                                    Log.e("AdminReport", "Failed to get the list of individual history reports. ");
+                                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                                    endProgressDialog();
+                                }
+                            });
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<EmoUser>> call, Throwable t) {
+                    Log.e("AdminReport", "Failed to get the list of history reports. ");
+                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                    endProgressDialog();
+                }
+            });
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            //Once the last response has been received, transfer the data
+            if (counter == myUsers.size()) {
+                activity.transferData();
+                endProgressDialog();
+
+                adminReportAdapter = new UserListAdapter(context, myUsers, AdminFragment.this);
+                adminReportListView.setAdapter(adminReportAdapter);
+                adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        openUserTestsFragment(i);
+                    }
+                });
+                persistLoadedMyUsers(myUsers);
+            }
+        }
+    }
 }

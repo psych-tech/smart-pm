@@ -165,7 +165,7 @@ public class NewMainActivity extends FragmentActivity {
             rootContainer.setVisibility(View.VISIBLE);
         }
         else {
-            rootContainer.setVisibility(View.INVISIBLE);
+            rootContainer.setVisibility(View.GONE);
         }
     }
 
