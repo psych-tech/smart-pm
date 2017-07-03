@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 
 import javax.inject.Inject;
 
@@ -65,7 +67,7 @@ public class UserReportsFragment extends Fragment {
     private Camera camera;
     private int cameraId = 0;
     private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
-
+    private boolean isFlashOn;
     private Long userId;
     private NewMainActivity activity;
     private List<TestReport> testList;
@@ -102,6 +104,7 @@ public class UserReportsFragment extends Fragment {
                     camera.setParameters(p);
 
                     camera.setPreviewTexture(surfaceTexture);
+
                 } catch (IOException e) {
                     Log.e("Camera", e.getMessage(), e);
                 }
@@ -124,7 +127,7 @@ public class UserReportsFragment extends Fragment {
         activity.setRootContainerVisibility(false);
 
         startProgressDialog();
-        initCamera();
+        //initCamera();
         loadReports();
     }
 
@@ -181,44 +184,54 @@ public class UserReportsFragment extends Fragment {
     }
 
     public void takePhotoForProcessing(final TestReport report, final ResultReadyListener onResultReady) {
+        initCamera();
         camera.startPreview();
-        camera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    final File file = new File(
-                            Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES), report.getId() + "-" + System.currentTimeMillis() + ".jpg");
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(data);
-                    fos.close();
-                    Log.i("TEST", "Photo taken and saved at " + file.getAbsolutePath() + " with size: " + file.length());
+        isFlashOn=true;
+        new Handler().postDelayed(new Runnable(){
+            @Override public void run(){
+                camera.takePicture(null, null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        try {
 
-                    // create RequestBody instance from file
-                    RequestBody requestFile =
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                            final File file = new File(
+                                    Environment.getExternalStoragePublicDirectory(
+                                            Environment.DIRECTORY_PICTURES), report.getId() + "-" + System.currentTimeMillis() + ".jpg");
+                            FileOutputStream fos = new FileOutputStream(file);
+                            fos.write(data);
+                            fos.close();
+                            Log.i("TEST", "Photo taken and saved at " + file.getAbsolutePath() + " with size: " + file.length());
 
-                    // MultipartBody.Part is used to send also the actual file name
-                    MultipartBody.Part body =
-                            MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+                            // create RequestBody instance from file
+                            RequestBody requestFile =
+                                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-                    Call<TestReport> responseCall = emolanceAPI.triggerTest(report.getId(), body);
-                    responseCall.enqueue(new Callback<TestReport>() {
-                        @Override
-                        public void onResponse(Call<TestReport> call, Response<TestReport> response) {
-                            onResultReady.onResult();
+                            // MultipartBody.Part is used to send also the actual file name
+                            MultipartBody.Part body =
+                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+                            Call<TestReport> responseCall = emolanceAPI.triggerTest(report.getId(), body);
+                            responseCall.enqueue(new Callback<TestReport>() {
+                                @Override
+                                public void onResponse(Call<TestReport> call, Response<TestReport> response) {
+                                    onResultReady.onResult();
+                                }
+
+                                @Override
+                                public void onFailure(Call<TestReport> call, Throwable t) {
+                                    Log.e(TAG, "Failed to submit the test report.");
+                                }
+                            });
+                        } catch (IOException e) {
+                            Log.e("TEST", "Failed", e);
                         }
+                    }
+                });
 
-                        @Override
-                        public void onFailure(Call<TestReport> call, Throwable t) {
-                            Log.e(TAG, "Failed to submit the test report.");
-                        }
-                    });
-                } catch (IOException e) {
-                    Log.e("TEST", "Failed", e);
-                }
+
             }
-        });
+        }, 5000);
+
     }
 
     private int findBackFacingCamera() {
@@ -236,7 +249,30 @@ public class UserReportsFragment extends Fragment {
         }
         return cameraId;
     }
+    public void turnOffFlash() {
+        //try {
+            if (context.getPackageManager().hasSystemFeature(
+                    PackageManager.FEATURE_CAMERA_FLASH)) {
+                camera.stopPreview();
+                camera.release();
+                camera = null;
+            }
+        //} //catch (Exception e) {
+            //Log.e("Camera", e.getMessage(), e);
+        //}
 
+        //if (isFlashOn) {
+          //  if (camera == null) {
+            //    return;
+            //}
+
+            //Camera.Parameters params = camera.getParameters();
+            //params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            //camera.setParameters(params);
+          //  camera.stopPreview();
+           // isFlashOn = false;
+        //}
+    }
     @Override
     public void onPause() {
         if (camera != null) {

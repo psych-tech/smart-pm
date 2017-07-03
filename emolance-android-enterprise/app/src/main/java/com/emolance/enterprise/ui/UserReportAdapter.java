@@ -81,15 +81,24 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                 opButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
 
+                //camera.startPreview();
+                //new Handler().postDelayed(this,
+                  //      10000);
                 adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
                     @Override
                     public void onResult() {
                         valueText.setText("Status: Report is ready");
+                        adminFragment.turnOffFlash();
                         profileImageView.setImageResource(R.drawable.test_icon_complete);
                         progressBar.setVisibility(View.GONE);
                         opButton.setVisibility(View.VISIBLE);
+
                     }
-                });
+                }
+
+                );
+
+
             }
         });
 
