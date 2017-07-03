@@ -57,7 +57,7 @@ public class ServiceGenerator {
                         request = request.newBuilder()
                                 .removeHeader("Authorization")
                                 .addHeader("Authorization", key)
-                                .addHeader("Accept", "application/json")
+                                .addHeader("Acceppt", "application/json")
                                 .build();
 
                         Response originalResponse = chain.proceed(request);
@@ -81,7 +81,7 @@ public class ServiceGenerator {
                         request = request.newBuilder()
                                 .removeHeader("Authorization")
                                 .addHeader("Authorization", token)
-                                .addHeader("Accept", "application/json")
+                                .addHeader("Acceppt", "application/json")
                                 .build();
 
                         Response originalResponse = chain.proceed(request);
