@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -96,7 +95,7 @@ public class UserProfileFragment extends Fragment {
             Log.i(TAG, "Getting UserId: " + userId);
 
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            outputFormatter = new SimpleDateFormat("MM/dd/yy");
+            outputFormatter = new SimpleDateFormat("MM/dd");
             if (userAge != null) {
                 try {
                     Date date = inputFormatter.parse(userAge);
@@ -145,7 +144,7 @@ public class UserProfileFragment extends Fragment {
                 try {
                     d = inputFormatter.parse(testDate);
                     timestamps[i] = d.getTime();
-                    lineEntries.add(new Entry(i, new Random().nextInt(10)));
+                    lineEntries.add(new Entry(i, stressLevel));
                 }
                 catch (ParseException e) {
                     Toast.makeText(getActivity(), "Error getting test date",  Toast.LENGTH_LONG).show();
