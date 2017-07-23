@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -74,6 +77,25 @@ public class DateUtils {
                     .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
             return dateTimeStr;
+        }
+    }
+
+    public static Date getMillisecondsFromDate(String s){
+        if(s == null){
+            return null;
+        }
+        try {
+            DateTime dateTime = DateTime.parse(s,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTime.toDate();
+        } catch (IllegalArgumentException e) {
+            DateTime dateTime = DateTime.parse(s,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+
+            return dateTime.toDate();
         }
     }
 }

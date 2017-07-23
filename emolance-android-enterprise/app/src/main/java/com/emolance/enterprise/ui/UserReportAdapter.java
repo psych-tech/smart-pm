@@ -1,6 +1,7 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
     public UserReportAdapter(Context context, List<TestReport> objects, UserReportsFragment adminFragment) {
         super(context, R.layout.list_user_report_item, objects);
         this.context = context;
+        sortList(objects);
         this.reports = objects;
         this.adminFragment = adminFragment;
     }
@@ -60,6 +64,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         if (status.equals("Done")) {
             profileImageView.setImageResource(R.drawable.test_icon_complete);
             valueText.setText("Status: " + status + "   ---->   Stress level: " + level);
+            valueText.setTypeface(null, Typeface.BOLD);
         }
         else {
             profileImageView.setImageResource(R.drawable.test_icon_incomplete);
@@ -103,5 +108,14 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         });
 
         return view;
+    }
+
+    private void sortList(List<TestReport> reports){
+        Collections.sort(reports, new Comparator<TestReport>() {
+            public int compare(TestReport lhs, TestReport rhs) {
+                return lhs.getReportDateinMillseconds().compareTo(rhs.getReportDateinMillseconds());
+            }
+        });
+        Collections.reverse(reports);
     }
 }

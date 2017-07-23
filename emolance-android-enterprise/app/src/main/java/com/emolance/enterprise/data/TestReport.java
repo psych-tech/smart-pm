@@ -1,9 +1,11 @@
 package com.emolance.enterprise.data;
 
 
+import com.emolance.enterprise.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A TestReport.
@@ -153,6 +155,8 @@ public class TestReport implements Serializable {
         this.owner = emoUser;
         return this;
     }
+
+    public Date getReportDateinMillseconds(){ return DateUtils.getMillisecondsFromDate(reportDate); }
 
     public void setOwner(EmoUser emoUser) {
         this.owner = emoUser;
