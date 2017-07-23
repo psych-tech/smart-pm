@@ -81,11 +81,6 @@ public class AdminDashboardFragment extends Fragment {
 
         //Set text style
         Context context = getActivity();
-        font = Typeface.createFromAsset(context.getAssets(), "fonts/DataGothic.otf"); //create font
-
-        totalUsersTextView.setTypeface(font);
-        totalTestsTextView.setTypeface(font);
-        stressStatsTextView.setTypeface(font);
 
         colors = getResources().getIntArray(R.array.altcolors);
     }

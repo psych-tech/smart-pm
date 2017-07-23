@@ -23,6 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:textSize="32sp"
+                android:textColor="#000"
                 android:text="Stress Stats"
                 android:gravity="center"/>
             <TextView
@@ -31,14 +32,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
             <TextView
                 android:id="@+id/totalTestsTextView"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center_horizontal"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
         </LinearLayout>
 
         <View
