@@ -86,7 +86,6 @@ public class AdminDashboardFragment extends Fragment {
         totalUsersTextView.setTypeface(font);
         totalTestsTextView.setTypeface(font);
         stressStatsTextView.setTypeface(font);
-        stressStatsTextView.setPaintFlags(stressStatsTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         colors = getResources().getIntArray(R.array.altcolors);
     }
