@@ -2,6 +2,9 @@ package com.emolance.enterprise;
 
 import android.app.Application;
 
+import com.instabug.library.Instabug;
+import com.instabug.library.invocation.InstabugInvocationEvent;
+
 import io.paperdb.Paper;
 
 /**
@@ -28,6 +31,10 @@ public class EmolanceApplication extends Application {
 
         // paper db init
         Paper.init(this);
+
+        new Instabug.Builder(this, "125a778e9668362c123857c3e9846c89")
+                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
+                .build();
     }
 
 }

@@ -9,59 +9,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_weight="0.6"
-        android:padding="5dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+    <!-- The following is not needed in the current add new user screen -->
+    <!--<LinearLayout-->
+        <!--android:layout_weight="0.6"-->
+        <!--android:padding="5dp"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp">-->
 
-        <LinearLayout
-            android:layout_weight="1.8"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/qr_code_background"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp">
+        <!--<LinearLayout-->
+            <!--android:layout_weight="1.8"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:orientation="vertical"-->
+            <!--android:background="@drawable/qr_code_background"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:paddingLeft="15dp"-->
+            <!--android:paddingRight="15dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp">-->
 
-            <TextView
-                android:layout_gravity="center"
-                android:text="QR ID"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!--<TextView-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="QR ID"-->
+                <!--android:textSize="16sp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
 
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:text="N/A"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:id="@+id/qrIdText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:text="N/A"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:id="@+id/qrIdText"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp">
-            <Button
-                android:id="@+id/qrButton"
-                android:background="@null"
-                android:text="Not You, Rescan?"
-                android:textSize="16sp"
-                android:textColor="@color/tab_highlight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp">-->
+            <!--<Button-->
+                <!--android:id="@+id/qrButton"-->
+                <!--android:background="@null"-->
+                <!--android:text="Not You, Rescan?"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/tab_highlight"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:padding="5dp"
@@ -77,15 +78,6 @@
             android:layout_width="0dp"
             android:layout_height="1dip"
             android:background="#ebebeb" />
-
-        <TextView
-            android:layout_gravity="center"
-            android:text="Your Profile"
-            android:textSize="16sp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <View
             android:paddingLeft="5dp"

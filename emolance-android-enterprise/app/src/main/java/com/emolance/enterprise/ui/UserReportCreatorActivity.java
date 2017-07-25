@@ -43,9 +43,9 @@ public class UserReportCreatorActivity extends FragmentActivity {
 
     private static final String TAG = UserReportCreatorActivity.class.getName();
 
-    @InjectView(R.id.qrButton)
+    //@InjectView(R.id.qrButton)
     Button qrButton;
-    @InjectView(R.id.qrIdText)
+    //@InjectView(R.id.qrIdText)
     TextView qrIdText;
     @InjectView(R.id.nameEditText)
     EditText nameEditText;
@@ -180,7 +180,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
         });
     }
 
-    @OnClick(R.id.qrButton)
+    //@OnClick(R.id.qrButton)
     void qrButtonTake() {
         mBcr.startListening();
         mBcr.scan(true);
