@@ -111,6 +111,17 @@
             android:hint="Name"
             android:singleLine="true"
             android:paddingLeft="20dp"
+            android:nextFocusDown="@+id/emailEditTextEditText"
+            android:background="@drawable/user_profile_field"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/emailEditText"
+            android:hint="Email"
+            android:singleLine="true"
+            android:paddingLeft="20dp"
             android:nextFocusDown="@+id/ageEditText"
             android:background="@drawable/user_profile_field"
             android:layout_width="match_parent"
@@ -145,11 +156,21 @@
                 android:hint="Zipcode"
                 android:singleLine="true"
                 android:inputType="number"
-                android:nextFocusDown="@+id/professionEditText"
+                android:nextFocusDown="@+id/organizationNameEditText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
 
         </LinearLayout>
+        <EditText
+            android:layout_weight="1"
+            android:background="@drawable/user_profile_field"
+            android:id="@+id/organizationNameEditText"
+            android:hint="Organization Name"
+            android:singleLine="true"
+            android:paddingLeft="20dp"
+            android:nextFocusDown="@+id/professionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
         <EditText
             android:layout_weight="1"

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
@@ -39,8 +41,10 @@ public class NewMainActivity extends FragmentActivity {
 //    NewMainActivityPageViewerAdapter pagerAdapter;
 //    ViewPager mViewPager;
 
-    private LinearLayout rootContainer;
+    @InjectView(R.id.newUserButton)
+    ImageButton newUserButton;
 
+    private LinearLayout rootContainer;
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
 
@@ -93,6 +97,23 @@ public class NewMainActivity extends FragmentActivity {
         fragmentTransaction.commit();
 
         rootContainer = (LinearLayout) findViewById(R.id.root_container);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ButterKnife.inject(this);
+        newUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.hide(getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
+                ft.add(R.id.root_container_right,new UserReportCreatorFragment());
+                ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+            }
+        });
     }
 
     private void checkAuth() {
