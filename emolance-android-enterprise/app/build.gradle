@@ -46,5 +46,5 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.instabug.library:instabug:4.2.6'
 
-    compile files('libs/cell_150915_cb.jar')
+    compile files('libs/cell_170329_cb.jar')
 }
