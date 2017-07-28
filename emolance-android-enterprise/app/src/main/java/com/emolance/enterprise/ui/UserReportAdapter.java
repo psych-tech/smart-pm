@@ -48,9 +48,6 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
         final TestReport testReport = reports.get(position);
 
-        TextView nameText = (TextView) view.findViewById(R.id.nameText);
-        nameText.setText(testReport.getOwner().getName());
-
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.testImage);
 
         final Button opButton = (Button) view.findViewById(R.id.opButton);
