@@ -1,6 +1,7 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -59,18 +60,19 @@ public class QRScanActivity extends FragmentActivity {
             finish();
         }
 
-        mBcr = new McBcrConnection(this);
-        mBcr.setListener(new MiBcrListener() {
-            @Override
-            public void onScanned(final String s, BARCODE.TYPE type, int i) {
-                if (hasScanned) return;
-                hasScanned = true;
-                //mBcr.scan(false);
+        try{
+            mBcr = new McBcrConnection(this);
+            mBcr.setListener(new MiBcrListener() {
+                @Override
+                public void onScanned(final String s, BARCODE.TYPE type, int i) {
+                    if (hasScanned) return;
+                    hasScanned = true;
+                    //mBcr.scan(false);
 
-                Log.i("Scanner", s + " " + type + " " + i);
-                Log.i("Scanner", "Shutting down the BarCode scanner.");
+                    Log.i("Scanner", s + " " + type + " " + i);
+                    Log.i("Scanner", "Shutting down the BarCode scanner.");
 
-                create(s);
+                    create(s);
                 /*
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -82,33 +84,43 @@ public class QRScanActivity extends FragmentActivity {
                     }
                 }, 1000);
                 */
-            }
-
-            @Override
-            public void onStatusChanged(int i) {
-                Log.i("TEST", "Changed " + i + " ");
-                if (!hasScanned && (McBcrMessage.Status_Ready == i || McBcrMessage.Status_ServiceConnected == i)) {
-                    mBcr.scan(true);
                 }
-            }
-        });
+
+                @Override
+                public void onStatusChanged(int i) {
+                    Log.i("TEST", "Changed " + i + " ");
+                    if (!hasScanned && (McBcrMessage.Status_Ready == i || McBcrMessage.Status_ServiceConnected == i)) {
+                        mBcr.scan(true);
+                    }
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+            qrScan();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mBcr.startListening();
+        if(mBcr != null){
+            mBcr.startListening();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mBcr.stopListening();
+        if(mBcr != null){
+            mBcr.stopListening();
+        }
     }
 
     @Override
     protected void onDestroy() {
-        mBcr.close();
+        if(mBcr != null){
+            mBcr.close();
+        }
         super.onDestroy();
     }
 
@@ -146,5 +158,30 @@ public class QRScanActivity extends FragmentActivity {
                 QRScanActivity.this.finish();
             }
         });
+    }
+
+    private void qrScan(){
+        try {
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+            this.startActivityForResult(intent, 111);
+        } catch (Exception e) {
+            Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+            Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+            startActivityForResult(marketIntent,111);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = data.getStringExtra("SCAN_RESULT");
+            }
+            if(resultCode == RESULT_CANCELED){
+                //handle cancel
+            }
+        }
     }
 }

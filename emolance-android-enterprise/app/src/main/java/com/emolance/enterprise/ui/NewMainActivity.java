@@ -41,9 +41,6 @@ public class NewMainActivity extends FragmentActivity {
 //    NewMainActivityPageViewerAdapter pagerAdapter;
 //    ViewPager mViewPager;
 
-    @InjectView(R.id.newUserButton)
-    ImageButton newUserButton;
-
     private LinearLayout rootContainer;
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
@@ -102,18 +99,6 @@ public class NewMainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ButterKnife.inject(this);
-        newUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.hide(getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
-                ft.add(R.id.root_container_right,new UserReportCreatorFragment());
-                ft.addToBackStack(null);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
-            }
-        });
     }
 
     private void checkAuth() {

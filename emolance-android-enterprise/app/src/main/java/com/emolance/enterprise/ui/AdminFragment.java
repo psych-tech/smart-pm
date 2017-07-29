@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,6 +47,9 @@ public class AdminFragment extends Fragment {
     EmolanceAPI emolanceAPI;
     @InjectView(R.id.userListView)
     ListView adminReportListView;
+    @InjectView(R.id.newUserButton)
+    ImageButton newUserButton;
+
 
     private ProgressDialog progress;
     private Context context;
@@ -70,6 +74,17 @@ public class AdminFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new, container, false);
         ButterKnife.inject(this, rootView);
+        newUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
+                ft.add(R.id.root_container_right,new UserReportCreatorFragment());
+                ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+            }
+        });
         return rootView;
     }
 
