@@ -22,6 +22,7 @@ import android.os.Handler;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
+import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
@@ -37,9 +38,11 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.paperdb.Paper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -143,7 +146,7 @@ public class UserReportsFragment extends Fragment {
     void takeNewUserReport() {
         Intent intent = new Intent(UserReportsFragment.this.getActivity(), QRScanActivity.class);
         intent.putExtra(Constants.USER_ID, userId);
-        startActivity(intent);
+        startActivityForResult(intent, 200);
     }
 
     public void loadReports() {
@@ -282,4 +285,40 @@ public class UserReportsFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 111){
+            TestReport testReport = new TestReport();
+            String qr = data.getStringExtra("qr");
+            testReport.setReportCode(qr);
+            EmoUser currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(userId), null);
+            testReport.setOwner(currentEmoUser);
+            testReport.setStatus("Not Tested");
+            Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
+            createCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getActivity(),
+                                "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getActivity(),
+                            "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            takePhotoForProcessing(testReport, new ResultReadyListener() {
+                @Override
+                public void onResult() {
+                    Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                    turnOffFlash();
+                }
+            });
+        }
+    }
 }

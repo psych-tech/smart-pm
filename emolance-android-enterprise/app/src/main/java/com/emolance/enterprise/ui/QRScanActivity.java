@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -45,12 +47,17 @@ public class QRScanActivity extends FragmentActivity {
     private boolean hasScanned = false;
     private McBcrConnection mBcr;	// McBcrConnection help BCR control
 
+    private UserReportsFragment adminFragment;
     private Long userId;
     private EmoUser currentEmoUser;
+    private TestReport testReport;
+    private String qr;
     @InjectView(R.id.qr_scan_right_layout)
     LinearLayout rightLayout;
     @InjectView(R.id.qr_scan_left_layout)
     LinearLayout leftLayout;
+    @InjectView(R.id.button_measure)
+    Button measureButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +65,6 @@ public class QRScanActivity extends FragmentActivity {
         Injector.inject(this);
         this.setContentView(R.layout.activity_scan);
         ButterKnife.inject(this);
-
         userId = getIntent().getLongExtra(Constants.USER_ID, -1);
         Log.i(TAG, "Get user id: " + userId);
         currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(userId), null);
@@ -106,7 +112,21 @@ public class QRScanActivity extends FragmentActivity {
             e.printStackTrace();
             qrScan();
         }
-
+        measureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(qr != null){
+                    Toast.makeText(getApplicationContext(),"Report is processing.",Toast.LENGTH_SHORT).show();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("qr", qr);
+                    setResult(QRScanActivity.RESULT_OK, resultIntent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"No QR available.",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -144,7 +164,7 @@ public class QRScanActivity extends FragmentActivity {
         report.setTimestamp(System.currentTimeMillis());
         report.setStatus("Ready to Measure");
 
-        TestReport testReport = new TestReport();
+        final TestReport testReport = new TestReport();
         testReport.setReportCode(qr);
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
@@ -188,7 +208,7 @@ public class QRScanActivity extends FragmentActivity {
             if (resultCode == RESULT_OK) {
                 rightLayout.setVisibility(View.INVISIBLE);
                 leftLayout.setVisibility(View.VISIBLE);
-                String contents = data.getStringExtra("SCAN_RESULT");
+                qr = data.getStringExtra("SCAN_RESULT");
             }
             if(resultCode == RESULT_CANCELED){
                 Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT).show();
