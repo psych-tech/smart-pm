@@ -188,11 +188,10 @@ public class QRScanActivity extends FragmentActivity {
             if (resultCode == RESULT_OK) {
                 rightLayout.setVisibility(View.INVISIBLE);
                 leftLayout.setVisibility(View.VISIBLE);
-                Log.i("RESULT","RECEIVED");
                 String contents = data.getStringExtra("SCAN_RESULT");
             }
             if(resultCode == RESULT_CANCELED){
-                Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT).show();
             }
         }
     }
