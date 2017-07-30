@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
@@ -23,6 +25,7 @@ import com.mitac.cell.device.bcr.utility.BARCODE;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import io.paperdb.Paper;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,6 +47,10 @@ public class QRScanActivity extends FragmentActivity {
 
     private Long userId;
     private EmoUser currentEmoUser;
+    @InjectView(R.id.qr_scan_right_layout)
+    LinearLayout rightLayout;
+    @InjectView(R.id.qr_scan_left_layout)
+    LinearLayout leftLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class QRScanActivity extends FragmentActivity {
             Log.e(TAG, "Failed to find the chosen user. Id: " + userId);
             finish();
         }
+        leftLayout.setVisibility(View.INVISIBLE);
 
         try{
             mBcr = new McBcrConnection(this);
@@ -98,6 +106,7 @@ public class QRScanActivity extends FragmentActivity {
             e.printStackTrace();
             qrScan();
         }
+
     }
 
     @Override
@@ -175,12 +184,15 @@ public class QRScanActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
+        if (requestCode == 111) {
             if (resultCode == RESULT_OK) {
+                rightLayout.setVisibility(View.INVISIBLE);
+                leftLayout.setVisibility(View.VISIBLE);
+                Log.i("RESULT","RECEIVED");
                 String contents = data.getStringExtra("SCAN_RESULT");
             }
             if(resultCode == RESULT_CANCELED){
-                //handle cancel
+                Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT);
             }
         }
     }

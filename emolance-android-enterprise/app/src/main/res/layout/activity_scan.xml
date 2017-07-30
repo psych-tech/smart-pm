@@ -39,7 +39,6 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/qr_scan_right_layout"
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -54,9 +53,10 @@
             android:layout_gravity="center"
             android:src="@drawable/qr_code_scan"
             android:layout_width="wrap_content"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/qr_scan_right_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
