@@ -58,6 +58,8 @@ public class QRScanActivity extends FragmentActivity {
     LinearLayout leftLayout;
     @InjectView(R.id.button_measure)
     Button measureButton;
+    @InjectView(R.id.button_qr_scan)
+    Button qrScanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,6 @@ public class QRScanActivity extends FragmentActivity {
             });
         } catch (Exception e){
             e.printStackTrace();
-            qrScan();
         }
         measureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +126,12 @@ public class QRScanActivity extends FragmentActivity {
                 else{
                     Toast.makeText(getApplicationContext(),"No QR available.",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        qrScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrScan();
             }
         });
     }
