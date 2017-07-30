@@ -68,6 +68,10 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             valueText.setText("Status: Incomplete");
         }
 
+        if(status.equals("Not Tested") | status.equals("Incomplete")){
+            opButton.setText("Measure");
+        }
+
         if (status.equals("Testing")) {
             opButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
