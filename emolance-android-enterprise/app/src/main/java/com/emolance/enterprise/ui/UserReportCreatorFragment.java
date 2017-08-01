@@ -50,6 +50,8 @@ public class UserReportCreatorFragment extends Fragment {
     EditText professionEditText;
     @InjectView(R.id.createButton)
     Button createBtn;
+    @InjectView(R.id.cancelButton)
+    Button cancelBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,12 @@ public class UserReportCreatorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 errorCheck();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
         return rootView;
