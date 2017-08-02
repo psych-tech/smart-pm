@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
@@ -52,6 +53,8 @@ public class UserReportCreatorFragment extends Fragment {
     Button createBtn;
     @InjectView(R.id.cancelButton)
     Button cancelBtn;
+    @InjectView(R.id.profileImageSelector)
+    ImageView profileImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,21 @@ public class UserReportCreatorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
+            }
+        });
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            int count = 0;
+            @Override
+            public void onClick(View v) {
+                if(count >= 7){
+                    count = 1;
+                }
+                else{
+                    count++;
+                }
+                String uri = "@drawable/persona_landing_" + count;
+                int imageResource = getResources().getIdentifier(uri,null,getActivity().getPackageName());
+                profileImageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         });
         return rootView;
