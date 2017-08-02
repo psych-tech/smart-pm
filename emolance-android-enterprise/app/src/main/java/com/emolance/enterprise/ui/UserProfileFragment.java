@@ -130,9 +130,13 @@ public class UserProfileFragment extends Fragment {
         List<Entry> lineEntries = new ArrayList<>();
         Date d;
         timestamps = new long[tests.size()];
-
+        //starting index of the tests being displayed
+        int offset = 0;
+        if(tests.size() > 10){
+            offset = tests.size() - 10;
+        }
         //Set up the chart data from the tests
-        for (int i = 0; i < tests.size(); i++) {
+        for (int i = offset; i < tests.size(); i++) {
             TestReport testReport = tests.get(i);
             if (testReport != null) {
                 Integer stressLevel = testReport.getLevel();
@@ -143,8 +147,8 @@ public class UserProfileFragment extends Fragment {
 
                 try {
                     d = inputFormatter.parse(testDate);
-                    timestamps[i] = d.getTime();
-                    lineEntries.add(new Entry(i, stressLevel));
+                    timestamps[i - offset] = d.getTime();
+                    lineEntries.add(new Entry(i - offset, stressLevel));
                 }
                 catch (ParseException e) {
                     Toast.makeText(getActivity(), "Error getting test date",  Toast.LENGTH_LONG).show();
@@ -196,7 +200,7 @@ public class UserProfileFragment extends Fragment {
             xAxis.setValueFormatter(dateFormatter);
             xAxis.setGranularity(1);
             xAxis.setAxisMinimum(0);
-            xAxis.setAxisMaximum((float) lineEntries.size() - 1);
+            xAxis.setAxisMaximum(9);
             xAxis.setAvoidFirstLastClipping(true);
 
             //Format Y Axis Labels
