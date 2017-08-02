@@ -223,6 +223,11 @@ public class UserReportsFragment extends Fragment {
                                 @Override
                                 public void onFailure(Call<TestReport> call, Throwable t) {
                                     Log.e(TAG, "Failed to submit the test report.");
+                                    Toast.makeText(getActivity(), "Failed to process test report.", Toast.LENGTH_SHORT).show();
+                                    if(isFlashOn){
+                                        turnOffFlash();
+                                    }
+
                                 }
                             });
                         } catch (IOException e) {
@@ -285,40 +290,4 @@ public class UserReportsFragment extends Fragment {
         super.onPause();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 111){
-            TestReport testReport = new TestReport();
-            String qr = data.getStringExtra("qr");
-            testReport.setReportCode(qr);
-            EmoUser currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(userId), null);
-            testReport.setOwner(currentEmoUser);
-            testReport.setStatus("Not Tested");
-            Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
-            createCall.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (!response.isSuccessful()) {
-                        Toast.makeText(getActivity(),
-                                "Failed to add the report.", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getActivity(),
-                            "Failed to add the report.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            takePhotoForProcessing(testReport, new ResultReadyListener() {
-                @Override
-                public void onResult() {
-                    Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
-                    turnOffFlash();
-                }
-            });
-        }
-    }
 }

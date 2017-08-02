@@ -1,8 +1,13 @@
 package com.emolance.enterprise.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -24,11 +29,18 @@ import com.mitac.cell.device.bcr.McBcrMessage;
 import com.mitac.cell.device.bcr.MiBcrListener;
 import com.mitac.cell.device.bcr.utility.BARCODE;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.paperdb.Paper;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,11 +58,13 @@ public class QRScanActivity extends FragmentActivity {
 
     private boolean hasScanned = false;
     private McBcrConnection mBcr;	// McBcrConnection help BCR control
-
-    private UserReportsFragment adminFragment;
+    private Camera camera;
+    private int cameraId = 0;
+    private SurfaceTexture surfaceTexture = new SurfaceTexture(10);
+    private Context context;
+    private boolean isFlashOn;
     private Long userId;
     private EmoUser currentEmoUser;
-    private TestReport testReport;
     private String qr;
     @InjectView(R.id.qr_scan_right_layout)
     LinearLayout rightLayout;
@@ -68,6 +82,7 @@ public class QRScanActivity extends FragmentActivity {
         this.setContentView(R.layout.activity_scan);
         ButterKnife.inject(this);
         userId = getIntent().getLongExtra(Constants.USER_ID, -1);
+        context = QRScanActivity.this;
         Log.i(TAG, "Get user id: " + userId);
         currentEmoUser = Paper.book(Constants.DB_EMOUSER).read(Long.toString(userId), null);
         if (currentEmoUser == null) {
@@ -118,13 +133,11 @@ public class QRScanActivity extends FragmentActivity {
             public void onClick(View v) {
                 if(qr != null){
                     Toast.makeText(getApplicationContext(),"Report is processing.",Toast.LENGTH_SHORT).show();
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("qr", qr);
-                    setResult(QRScanActivity.RESULT_OK, resultIntent);
-                    finish();
+                    generateTestReportForQR();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"No QR available.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No QR code available.",Toast.LENGTH_SHORT).show();
+                    QRScanActivity.this.finish();
                 }
             }
         });
@@ -132,6 +145,51 @@ public class QRScanActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 qrScan();
+            }
+        });
+    }
+
+    public void generateTestReportForQR(){
+        Report report = new Report();
+        report.setId(System.currentTimeMillis());
+        report.setQrcode(qr);
+        report.setName("");
+        report.setAge("");
+        report.setPosition("");
+        report.setProfilePhotoIndex(0);
+        report.setTimestamp(System.currentTimeMillis());
+        report.setStatus("Ready to Measure");
+
+        final TestReport testReport = new TestReport();
+        testReport.setReportCode(qr);
+        testReport.setOwner(currentEmoUser);
+        testReport.setStatus("Not Tested");
+
+        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(QRScanActivity.this,
+                            "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                    QRScanActivity.this.finish();
+                }
+                else{
+                    takePhotoForProcessing(testReport, new ResultReadyListener() {
+                        @Override
+                        public void onResult() {
+                            Toast.makeText(QRScanActivity.this,"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                            turnOffFlash();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QRScanActivity.this,
+                        "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                QRScanActivity.this.finish();
             }
         });
     }
@@ -220,6 +278,112 @@ public class QRScanActivity extends FragmentActivity {
             if(resultCode == RESULT_CANCELED){
                 Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+
+    //Following functions enable measuring of the test reports
+    public void takePhotoForProcessing(final TestReport report, final ResultReadyListener onResultReady) {
+        initCamera();
+        camera.startPreview();
+        isFlashOn=true;
+        new Handler().postDelayed(new Runnable(){
+            @Override public void run(){
+                camera.takePicture(null, null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        try {
+
+                            final File file = new File(
+                                    Environment.getExternalStoragePublicDirectory(
+                                            Environment.DIRECTORY_PICTURES), report.getId() + "-" + System.currentTimeMillis() + ".jpg");
+                            FileOutputStream fos = new FileOutputStream(file);
+                            fos.write(data);
+                            fos.close();
+                            Log.i("TEST", "Photo taken and saved at " + file.getAbsolutePath() + " with size: " + file.length());
+
+                            // create RequestBody instance from file
+                            RequestBody requestFile =
+                                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+                            // MultipartBody.Part is used to send also the actual file name
+                            MultipartBody.Part body =
+                                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+                            Call<TestReport> responseCall = emolanceAPI.triggerTest(report.getId(), body);
+                            responseCall.enqueue(new Callback<TestReport>() {
+                                @Override
+                                public void onResponse(Call<TestReport> call, Response<TestReport> response) {
+                                    onResultReady.onResult();
+                                }
+
+                                @Override
+                                public void onFailure(Call<TestReport> call, Throwable t) {
+                                    Log.e(TAG, "Failed to submit the test report.");
+                                    Toast.makeText(QRScanActivity.this, "Failed to process test report.", Toast.LENGTH_SHORT).show();
+                                    if(isFlashOn){
+                                        turnOffFlash();
+                                    }
+                                    QRScanActivity.this.finish();
+                                }
+                            });
+                        } catch (IOException e) {
+                            Log.e("TEST", "Failed", e);
+                        }
+                    }
+                });
+            }
+        }, 5000);
+
+    }
+
+    private void initCamera() {
+        if (!context.getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            Toast.makeText(context, "No camera on this device", Toast.LENGTH_LONG)
+                    .show();
+        } else {
+            cameraId = findBackFacingCamera();
+            if (cameraId < 0) {
+                Toast.makeText(context, "No front facing camera found.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                try {
+                    camera = Camera.open(cameraId);
+                    Camera.Parameters p = camera.getParameters();
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    camera.setParameters(p);
+
+                    camera.setPreviewTexture(surfaceTexture);
+
+                } catch (IOException e) {
+                    Log.e("Camera", e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    private int findBackFacingCamera() {
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                Log.d("AdminReport", "Camera found");
+                cameraId = i;
+                break;
+            }
+        }
+        return cameraId;
+    }
+    public void turnOffFlash() {
+        if (context.getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA_FLASH)) {
+            camera.stopPreview();
+            camera.release();
+            camera = null;
         }
     }
 }
