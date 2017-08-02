@@ -35,6 +35,7 @@
         </activity>
 
         <activity android:name=".ui.NewMainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="landscape">
         </activity>
 
