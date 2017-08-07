@@ -15,6 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 /**
@@ -42,6 +43,15 @@ public interface EmolanceAPI {
 
     @POST("/api/test-reports")
     public Call<ResponseBody> createUserReport(@Body TestReport testReport);
+
+    @POST("/api/emo/create/emouser/")
+    public Call<ResponseBody> createUser(
+            @Query("login") String login,
+            @Query("firstName") String firstName,
+            @Query("lastName") String lastName,
+            @Query("email") String email,
+            @Query("profileImage") String profileImage,
+            @Query("position") String position);
 
     @PUT("/api/test-reports")
     public Call<ResponseBody> updateUserReport(@Body TestReport testReport);

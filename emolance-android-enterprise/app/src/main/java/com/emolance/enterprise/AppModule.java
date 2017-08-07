@@ -13,6 +13,7 @@ import com.emolance.enterprise.ui.QRScanActivity;
 import com.emolance.enterprise.ui.ReportActivity;
 import com.emolance.enterprise.ui.ReportFragment;
 import com.emolance.enterprise.ui.UserReportCreatorActivity;
+import com.emolance.enterprise.ui.UserReportCreatorFragment;
 import com.emolance.enterprise.ui.UserReportsFragment;
 import com.emolance.enterprise.util.Constants;
 
@@ -34,7 +35,8 @@ import dagger.Provides;
                 UserReportsFragment.class,
                 AdminFragment.class,
                 UserReportCreatorActivity.class,
-                ReportActivity.class
+                ReportActivity.class,
+                UserReportCreatorFragment.class
         }
 )
 public class AppModule {

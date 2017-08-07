@@ -1,33 +1,39 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.EmoUser;
-import com.emolance.enterprise.data.Organization;
+import com.emolance.enterprise.service.EmolanceAPI;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Erick on 7/26/17.
  */
 
 public class UserReportCreatorFragment extends Fragment {
+
+    @Inject
+    EmolanceAPI emolanceAPI;
+
     private NewMainActivity activity;
     private Context context;
     private String name;
@@ -65,6 +71,7 @@ public class UserReportCreatorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_new_user_report, container, false);
         ButterKnife.inject(this, rootView);
+        Injector.inject(this);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +133,31 @@ public class UserReportCreatorFragment extends Fragment {
             zipcode = Integer.parseInt(zipEntry);
             organizationName = organizationNameEntry;
             profession = professionEntry;
+
+            // This is how to post a new uesr:
+            // We need the following fields, please modify the UI accordingly:
+            //  - Username (login)
+            //  - First Name
+            //  - Last Name
+            //  - Email
+            //  - ProfileImage. Use "1", "2", "3", "4" to indicate which image you have chosen from the list of the images we have
+            //  - Profession
+            //
+            // We don't need the organization, age, zipcode anymore
+            // Please test this and make sure it refreshes the fragment after adding it
+            Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(name, "first name", "last name", email, "1", profession);
+            responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Toast.makeText(activity, "Successfully created the user.", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             activity.onBackPressed();
         }
     }
