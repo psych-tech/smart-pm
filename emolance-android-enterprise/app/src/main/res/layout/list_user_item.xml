@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/userProfileImage"
         android:adjustViewBounds="true"
-        android:src="@drawable/profile_pic"
+        android:src="@drawable/persona_landing_7"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

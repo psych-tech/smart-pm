@@ -1,5 +1,6 @@
 package com.emolance.enterprise.ui;
 
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -60,8 +61,8 @@ public class UserProfileFragment extends Fragment {
     TextView lineChartXAxisLabel;
     @InjectView(R.id.userProfileTextViewName)
     TextView userProfileTextViewName;
-    @InjectView(R.id.userProfileTextViewAge)
-    TextView userProfileTextViewAge;
+    @InjectView(R.id.userProfileTextViewEmail)
+    TextView userProfileTextViewEmail;
     @InjectView(R.id.userProfileTextViewPosition)
     TextView userProfileTextViewPosition;
 
@@ -89,21 +90,15 @@ public class UserProfileFragment extends Fragment {
         if (bundle != null) {
             userId = bundle.getLong(Constants.USER_ID);
             String userName = bundle.getString(Constants.USER_NAME);
-            String userAge = bundle.getString(Constants.USER_AGE);
+            String userEmail = bundle.getString(Constants.USER_EMAIL);
             String userPosition = bundle.getString(Constants.USER_POSITION);
             String userImage = bundle.getString(Constants.USER_IMAGE);
             Log.i(TAG, "Getting UserId: " + userId);
 
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             outputFormatter = new SimpleDateFormat("MM/dd");
-            if (userAge != null) {
-                try {
-                    Date date = inputFormatter.parse(userAge);
-                    String str = outputFormatter.format(date);
-                    userProfileTextViewAge.setText("Date of Birth: " + str);
-                }
-                catch (ParseException e) {
-                }
+            if (userEmail != null) {
+                userProfileTextViewEmail.setText("Email: " + userEmail);
             }
             if (userName != null) {
                 userProfileTextViewName.setText(userName);
@@ -111,7 +106,11 @@ public class UserProfileFragment extends Fragment {
             if (userPosition != null) {
                 userProfileTextViewPosition.setText(userPosition);
             }
-            imageView.setImageResource(UserReportCreatorActivity.profileList.get(0));
+            if(userImage != null){
+                String uri = userImage;
+                int imageResource = getResources().getIdentifier(uri,null,getActivity().getPackageName());
+                imageView.setImageDrawable(getResources().getDrawable(imageResource));
+            }
         }
     }
 

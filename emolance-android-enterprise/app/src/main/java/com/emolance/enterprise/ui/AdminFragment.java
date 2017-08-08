@@ -124,7 +124,7 @@ public class AdminFragment extends Fragment {
         bundle.putLong(Constants.USER_ID, emoUser.getId());
         userReportsFragment.setArguments(bundle);
         bundle.putString(Constants.USER_NAME, emoUser.getName());
-        bundle.putString(Constants.USER_AGE, emoUser.getDatebirth());
+        bundle.putString(Constants.USER_EMAIL, emoUser.getEmail());
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
         userProfileFragment.setArguments(bundle);

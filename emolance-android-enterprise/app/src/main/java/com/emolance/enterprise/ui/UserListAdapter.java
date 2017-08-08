@@ -50,8 +50,11 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
                         DateUtils.getTestDateTimeInStr(users.get(position).getLastTestDate()));
 
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.userProfileImage);
-        int profileIndex = 0; // reports.get(position).getProfilePhotoIndex();
-        profileImageView.setImageResource(UserReportCreatorActivity.profileList.get(profileIndex));
+        if(users.get(position).getProfileImage() != null){
+            String uri = users.get(position).getProfileImage() ;
+            int imageResource = context.getResources().getIdentifier(uri,null,context.getApplicationContext().getPackageName());
+            profileImageView.setImageDrawable(context.getResources().getDrawable(imageResource));
+        }
 
         final Button opButton = (Button) view.findViewById(R.id.testsButton);
 

@@ -35,8 +35,8 @@ public class ReportActivity extends FragmentActivity {
 
     private static final String TAG = ReportActivity.class.getName();
 
-    @InjectView(R.id.ageText)
-    TextView ageText;
+    @InjectView(R.id.emailText)
+    TextView emailText;
     @InjectView(R.id.nameText)
     TextView nameText;
     @InjectView(R.id.positionText)
@@ -92,9 +92,13 @@ public class ReportActivity extends FragmentActivity {
                     String link = null;
                     int indexProfile = link == null ? 0 : Integer.parseInt(link);
 
-                    profileImage.setImageResource(UserReportCreatorActivity.profileList.get(indexProfile));
+                    if(testReport.getOwner().getProfileImage() != null){
+                        String uri = testReport.getOwner().getProfileImage();
+                        int imageResource = getResources().getIdentifier(uri,null,getApplicationContext().getPackageName());
+                        profileImage.setImageDrawable(getResources().getDrawable(imageResource));
+                    }
                     nameText.setText(testReport.getOwner().getName());
-                    ageText.setText("Date of Birth: " + DateUtils.getDateBirthInStr(testReport.getOwner().getDatebirth()));
+                    emailText.setText("Email: " + testReport.getOwner().getEmail());
                     positionText.setText(testReport.getOwner().getPosition());
 
                     if (!testReport.getStatus().equals("Done")) {
