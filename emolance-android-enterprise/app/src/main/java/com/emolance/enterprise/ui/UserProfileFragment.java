@@ -182,7 +182,10 @@ public class UserProfileFragment extends Fragment {
             IAxisValueFormatter dateFormatter = new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
-                    return outputFormatter.format(timestamps[(int) value]);
+                    if((int) value < timestamps.length){
+                        return outputFormatter.format(timestamps[(int) value]);
+                    }
+                    return "";
                 }
             };
             //Format Y Axis labels to show integers
@@ -200,7 +203,11 @@ public class UserProfileFragment extends Fragment {
             xAxis.setValueFormatter(dateFormatter);
             xAxis.setGranularity(1);
             xAxis.setAxisMinimum(0);
-            xAxis.setAxisMaximum(9);
+            if(tests.size() < 10){
+                xAxis.setAxisMaximum(tests.size() - 1);
+            }else{
+                xAxis.setAxisMaximum(9);
+            }
             xAxis.setAvoidFirstLastClipping(true);
 
             //Format Y Axis Labels
