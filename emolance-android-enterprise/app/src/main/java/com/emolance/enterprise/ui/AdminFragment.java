@@ -79,7 +79,12 @@ public class AdminFragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
-                ft.add(R.id.root_container_right,new UserReportCreatorFragment());
+                Fragment frag = new UserReportCreatorFragment();
+                Bundle bundle = new Bundle();
+                bundle.putStringArray(Constants.LIST_EMAILS,getEmails());
+                bundle.putStringArray(Constants.LIST_USERNAMES,getUsernames());
+                frag.setArguments(bundle);
+                ft.add(R.id.root_container_right,frag);
                 ft.addToBackStack(null);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
@@ -97,6 +102,23 @@ public class AdminFragment extends Fragment {
         startProgressDialog();
         GetDataAsyncTask asyncTask = new GetDataAsyncTask();
         asyncTask.execute();
+    }
+
+    private String[] getEmails(){
+        String[] emails = new String[myUsers.size()];
+        for(int i = 0; i < myUsers.size();i++){
+            emails[i] = myUsers.get(i).getEmail();
+        }
+        return emails;
+    }
+
+    private String[] getUsernames(){
+        String[] userNames = new String[myUsers.size()];
+
+        for(int i = 0; i < myUsers.size();i++){
+            userNames[i] = myUsers.get(i).getName();
+        }
+        return userNames;
     }
 
     private void startProgressDialog() {

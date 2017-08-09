@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.Constants;
+
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -42,6 +45,8 @@ public class UserReportCreatorFragment extends Fragment {
     private String email;
     private String profession;
     private String profileUri;
+    private String[] emails;
+    private String[] userNames;
 
     @InjectView(R.id.userNameEditText)
     EditText userNameEditText;
@@ -68,6 +73,8 @@ public class UserReportCreatorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_new_user_report, container, false);
+        userNames = getArguments().getStringArray(Constants.LIST_USERNAMES);
+        emails = getArguments().getStringArray(Constants.LIST_EMAILS);
         ButterKnife.inject(this, rootView);
         Injector.inject(this);
         createBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +114,6 @@ public class UserReportCreatorFragment extends Fragment {
         String lastNameEntry = lastNameEditText.getText().toString().trim();
         String emailEntry = emailEditText.getText().toString().trim();
         String professionEntry = professionEditText.getText().toString().trim();
-
         if(firstNameEntry.isEmpty()){
             firstNameEditText.setError("First Name field cannot be empty.");
         }
@@ -120,43 +126,65 @@ public class UserReportCreatorFragment extends Fragment {
         if(professionEntry.isEmpty()){
             professionEditText.setError("Profession field cannot be empty.");
         }
-        if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !lastNameEntry.isEmpty() && !emailEntry.isEmpty() && !professionEntry.isEmpty()){
-            userName = userNameEntry;
-            firstName = firstNameEntry;
-            lastName = lastNameEntry;
-            email = emailEntry;
-            profession = professionEntry;
+        if(!emailEntry.isEmpty() && checkEmail(emailEntry)){
+            emailEditText.setError("Email field has been taken.");
+        }
+        else if(!userNameEntry.isEmpty() && checkUserName(userNameEntry)){
+            userNameEditText.setError("User Name field has been taken.");
+        }
+        else{
+            if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !lastNameEntry.isEmpty() && !emailEntry.isEmpty() && !professionEntry.isEmpty()){
+                userName = userNameEntry;
+                firstName = firstNameEntry;
+                lastName = lastNameEntry;
+                email = emailEntry;
+                profession = professionEntry;
 
-            // This is how to post a new uesr:
-            // We need the following fields, please modify the UI accordingly:
-            //  - Username (login)
-            //  - First Name
-            //  - Last Name
-            //  - Email
-            //  - ProfileImage. Use "1", "2", "3", "4" to indicate which image you have chosen from the list of the images we have
-            //  - Profession
-            //
-            // We don't need the organization, age, zipcode anymore
-            // Please test this and make sure it refreshes the fragment after adding it
-            Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, lastName, email, profileUri, profession);
-            responseBodyCall.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    activity.updateList();
-                    Toast.makeText(activity, "Successfully created the user.", Toast.LENGTH_SHORT).show();
-                }
+                // This is how to post a new uesr:
+                // We need the following fields, please modify the UI accordingly:
+                //  - Username (login)
+                //  - First Name
+                //  - Last Name
+                //  - Email
+                //  - ProfileImage. Use "1", "2", "3", "4" to indicate which image you have chosen from the list of the images we have
+                //  - Profession
+                //
+                // We don't need the organization, age, zipcode anymore
+                // Please test this and make sure it refreshes the fragment after adding it
+                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, lastName, email, profileUri, profession);
+                responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        activity.updateList();
+                        Toast.makeText(activity, "Successfully created the user.", Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            activity.onBackPressed();
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                activity.onBackPressed();
+            }
         }
     }
 
     public void createNewUser(){
 
+    }
+
+    public boolean checkEmail(String s){
+        if(Arrays.asList(emails).contains(s)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkUserName(String s){
+        if(Arrays.asList(userNames).contains(s)){
+            return true;
+        }
+        return false;
     }
 
 
