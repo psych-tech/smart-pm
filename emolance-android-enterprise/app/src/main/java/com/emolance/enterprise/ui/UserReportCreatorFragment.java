@@ -82,9 +82,9 @@ public class UserReportCreatorFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-        profileUri = "@drawable/user_profile_default";
+        profileUri = "@drawable/persona_landing_2";
         profileImageView.setOnClickListener(new View.OnClickListener() {
-            int count = 0;
+            int count = 2;
             @Override
             public void onClick(View v) {
                 if(count >= 7){
