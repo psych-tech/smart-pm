@@ -47,10 +47,8 @@ public class UserReportCreatorActivity extends FragmentActivity {
     Button qrButton;
     //@InjectView(R.id.qrIdText)
     TextView qrIdText;
-    @InjectView(R.id.nameEditText)
+    @InjectView(R.id.firstNameEditText)
     EditText nameEditText;
-    @InjectView(R.id.ageEditText)
-    EditText ageEditText;
     @InjectView(R.id.professionEditText)
     EditText positionEditText;
 
@@ -149,7 +147,6 @@ public class UserReportCreatorActivity extends FragmentActivity {
         report.setId(System.currentTimeMillis());
         report.setQrcode(qrIdText.getText().toString());
         report.setName(nameEditText.getText().toString());
-        report.setAge(ageEditText.getText().toString());
         report.setPosition(positionEditText.getText().toString());
         report.setProfilePhotoIndex(profileIndex);
         report.setTimestamp(System.currentTimeMillis());

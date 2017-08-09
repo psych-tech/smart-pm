@@ -125,6 +125,11 @@ public class NewMainActivity extends FragmentActivity {
         }
         setRootContainerVisibility(true);
     }
+
+    public void updateList(){
+        AdminFragment adminFragment = (AdminFragment) getSupportFragmentManager().findFragmentByTag("AdminFragment");
+        adminFragment.updateAdapter();
+    }
     //Used to transfer data from UserReportsFragment to UserProfileFragment
     public void transferDataUser() {
         UserReportsFragment userReportsFragment = (UserReportsFragment) getSupportFragmentManager()

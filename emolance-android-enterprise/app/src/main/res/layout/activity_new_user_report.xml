@@ -95,7 +95,7 @@
         android:layout_marginBottom="5dp"
         android:id="@+id/profileImageSelector"
         android:adjustViewBounds="true"
-        android:src="@drawable/user_profile_photo"
+        android:src="@drawable/user_profile_default"
         android:layout_width="wrap_content"
         android:layout_height="0dp" />
 
@@ -107,11 +107,33 @@
 
         <EditText
             android:layout_weight="1"
-            android:id="@+id/nameEditText"
-            android:hint="Name"
+            android:id="@+id/userNameEditText"
+            android:hint="User Name"
             android:singleLine="true"
             android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/emailEditTextEditText"
+            android:nextFocusDown="@+id/firstNameEditText"
+            android:background="@drawable/user_profile_field"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/firstNameEditText"
+            android:hint="First Name"
+            android:singleLine="true"
+            android:paddingLeft="20dp"
+            android:nextFocusDown="@+id/lastNameEditText"
+            android:background="@drawable/user_profile_field"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/lastNameEditText"
+            android:hint="Last Name"
+            android:singleLine="true"
+            android:paddingLeft="20dp"
+            android:nextFocusDown="@+id/emailEditText"
             android:background="@drawable/user_profile_field"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
@@ -122,53 +144,8 @@
             android:hint="Email"
             android:singleLine="true"
             android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/ageEditText"
-            android:background="@drawable/user_profile_field"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <EditText
-                android:layout_weight="1"
-                android:id="@+id/ageEditText"
-                android:background="@drawable/user_profile_shorter"
-                android:hint="Age"
-                android:singleLine="true"
-                android:inputType="number"
-                android:nextFocusDown="@+id/zipcodeEditText"
-                android:layout_marginRight="5dp"
-                android:paddingLeft="20dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-
-            <EditText
-                android:layout_weight="1"
-                android:id="@+id/zipcodeEditText"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/user_profile_shorter"
-                android:hint="Zipcode"
-                android:singleLine="true"
-                android:inputType="number"
-                android:nextFocusDown="@+id/organizationNameEditText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-        <EditText
-            android:layout_weight="1"
-            android:background="@drawable/user_profile_field"
-            android:id="@+id/organizationNameEditText"
-            android:hint="Organization Name"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
             android:nextFocusDown="@+id/professionEditText"
+            android:background="@drawable/user_profile_field"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
 

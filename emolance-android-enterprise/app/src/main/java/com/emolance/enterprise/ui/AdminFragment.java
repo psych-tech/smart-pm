@@ -114,6 +114,11 @@ public class AdminFragment extends Fragment {
     public HashMap<Long, List<TestReport>> getTestsHashmap() {
         return hashMap;
     }
+    public void updateAdapter(){
+        startProgressDialog();
+        GetDataAsyncTask asyncTask = new GetDataAsyncTask();
+        asyncTask.execute();
+    }
 
     public void openUserTestsFragment(int i) {
         UserReportsFragment userReportsFragment = new UserReportsFragment();

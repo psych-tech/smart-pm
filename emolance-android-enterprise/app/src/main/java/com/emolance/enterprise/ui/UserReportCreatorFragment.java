@@ -1,6 +1,7 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,24 +36,21 @@ public class UserReportCreatorFragment extends Fragment {
     EmolanceAPI emolanceAPI;
 
     private NewMainActivity activity;
-    private Context context;
-    private String name;
+    private String userName;
+    private String firstName;
+    private String lastName;
     private String email;
-    private int age;
-    private int zipcode;
-    private String organizationName;
     private String profession;
+    private String profileUri;
 
-    @InjectView(R.id.nameEditText)
-    EditText nameEditText;
+    @InjectView(R.id.userNameEditText)
+    EditText userNameEditText;
+    @InjectView(R.id.firstNameEditText)
+    EditText firstNameEditText;
+    @InjectView(R.id.lastNameEditText)
+    EditText lastNameEditText;
     @InjectView(R.id.emailEditText)
     EditText emailEditText;
-    @InjectView(R.id.ageEditText)
-    EditText ageEditText;
-    @InjectView(R.id.zipcodeEditText)
-    EditText zipcodeEditText;
-    @InjectView(R.id.organizationNameEditText)
-    EditText organizationNameEditText;
     @InjectView(R.id.professionEditText)
     EditText professionEditText;
     @InjectView(R.id.createButton)
@@ -84,6 +82,7 @@ public class UserReportCreatorFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        profileUri = "@drawable/user_profile_default";
         profileImageView.setOnClickListener(new View.OnClickListener() {
             int count = 0;
             @Override
@@ -94,8 +93,8 @@ public class UserReportCreatorFragment extends Fragment {
                 else{
                     count++;
                 }
-                String uri = "@drawable/persona_landing_" + count;
-                int imageResource = getResources().getIdentifier(uri,null,getActivity().getPackageName());
+                profileUri = "@drawable/persona_landing_" + count;
+                int imageResource = getResources().getIdentifier(profileUri,null,getActivity().getPackageName());
                 profileImageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         });
@@ -103,35 +102,29 @@ public class UserReportCreatorFragment extends Fragment {
     }
 
     private void errorCheck(){
-        String nameEntry = nameEditText.getText().toString().trim();
+        String userNameEntry = userNameEditText.getText().toString().trim();
+        String firstNameEntry = firstNameEditText.getText().toString().trim();
+        String lastNameEntry = lastNameEditText.getText().toString().trim();
         String emailEntry = emailEditText.getText().toString().trim();
-        String ageEntry = ageEditText.getText().toString().trim();
-        String zipEntry = zipcodeEditText.getText().toString().trim();
-        String organizationNameEntry = organizationNameEditText.toString().trim();
         String professionEntry = professionEditText.getText().toString().trim();
 
-        if(nameEntry.isEmpty()){
-            nameEditText.setError("Name field cannot be empty.");
+        if(firstNameEntry.isEmpty()){
+            firstNameEditText.setError("First Name field cannot be empty.");
+        }
+        if(lastNameEntry.isEmpty()){
+            lastNameEditText.setError("Last Name field cannot be empty.");
         }
         if(emailEntry.isEmpty()){
             emailEditText.setError("Email field cannot be empty.");
         }
-        if(ageEntry.isEmpty()){
-            ageEditText.setError("Age field cannot be empty.");
-        }
-        if(zipEntry.isEmpty()){
-            zipcodeEditText.setError("Zipcode field cannot be empty.");
-        }
         if(professionEntry.isEmpty()){
             professionEditText.setError("Profession field cannot be empty.");
         }
-        if(!nameEntry.isEmpty() && !emailEntry.isEmpty() && !ageEntry.isEmpty() && !zipEntry.isEmpty()
-                && !organizationNameEntry.isEmpty() && !professionEntry.isEmpty()){
-            name = nameEntry;
+        if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !lastNameEntry.isEmpty() && !emailEntry.isEmpty() && !professionEntry.isEmpty()){
+            userName = userNameEntry;
+            firstName = firstNameEntry;
+            lastName = lastNameEntry;
             email = emailEntry;
-            age = Integer.parseInt(ageEntry);
-            zipcode = Integer.parseInt(zipEntry);
-            organizationName = organizationNameEntry;
             profession = professionEntry;
 
             // This is how to post a new uesr:
@@ -145,10 +138,11 @@ public class UserReportCreatorFragment extends Fragment {
             //
             // We don't need the organization, age, zipcode anymore
             // Please test this and make sure it refreshes the fragment after adding it
-            Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(name, "first name", "last name", email, "1", profession);
+            Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, lastName, email, profileUri, profession);
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    activity.updateList();
                     Toast.makeText(activity, "Successfully created the user.", Toast.LENGTH_SHORT).show();
                 }
 
@@ -157,7 +151,6 @@ public class UserReportCreatorFragment extends Fragment {
                     Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
                 }
             });
-
             activity.onBackPressed();
         }
     }
