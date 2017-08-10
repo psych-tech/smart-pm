@@ -1,6 +1,7 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         final TextView valueText = (TextView) view.findViewById(R.id.statusText);
         String status = testReport.getStatus();
         Integer level = testReport.getLevel();
+        final long id = testReport.getId();
         if (status.equals("Done")) {
             profileImageView.setImageResource(R.drawable.test_icon_complete);
             valueText.setText("Status: " + status + "   ---->   Stress level: " + level);
@@ -80,31 +82,36 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                valueText.setText("Status: Testing");
-                testReport.setStatus("Testing");
+                if(opButton.getText() == "Measure"){
+                    valueText.setText("Status: Testing");
+                    testReport.setStatus("Testing");
 
-                profileImageView.setImageResource(R.drawable.test_icon_incomplete);
-                opButton.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
+                    profileImageView.setImageResource(R.drawable.test_icon_incomplete);
+                    opButton.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
 
-                //camera.startPreview();
-                //new Handler().postDelayed(this,
-                  //      10000);
-                adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
-                    @Override
-                    public void onResult() {
-                        valueText.setText("Status: Report is ready");
-                        adminFragment.turnOffFlash();
-                        profileImageView.setImageResource(R.drawable.test_icon_complete);
-                        progressBar.setVisibility(View.GONE);
-                        opButton.setVisibility(View.VISIBLE);
+                    //camera.startPreview();
+                    //new Handler().postDelayed(this,
+                    //      10000);
+                    adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
+                                @Override
+                                public void onResult() {
+                                    valueText.setText("Status: Report is ready");
+                                    adminFragment.turnOffFlash();
+                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
+                                    progressBar.setVisibility(View.GONE);
+                                    opButton.setVisibility(View.VISIBLE);
 
-                    }
+                                }
+                            }
+
+                    );
                 }
-
-                );
-
-
+                else{
+                    Intent intent = new Intent(context, ReportActivity.class);
+                    intent.putExtra("id", id);
+                    context.startActivity(intent);
+                }
             }
         });
 
