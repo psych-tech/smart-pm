@@ -66,6 +66,7 @@ public class QRScanActivity extends FragmentActivity {
     private Long userId;
     private EmoUser currentEmoUser;
     private String qr;
+    private TestReport testReport;
     @InjectView(R.id.qr_scan_right_layout)
     LinearLayout rightLayout;
     @InjectView(R.id.qr_scan_left_layout)
@@ -133,7 +134,14 @@ public class QRScanActivity extends FragmentActivity {
             public void onClick(View v) {
                 if(qr != null){
                     Toast.makeText(getApplicationContext(),"Report is processing.",Toast.LENGTH_SHORT).show();
-                    generateTestReportForQR();
+                    takePhotoForProcessing(testReport, new ResultReadyListener() {
+                        @Override
+                        public void onResult() {
+                            Toast.makeText(QRScanActivity.this,"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                            turnOffFlash();
+                            QRScanActivity.this.finish();
+                        }
+                    });
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"No QR code available.",Toast.LENGTH_SHORT).show();
@@ -150,43 +158,31 @@ public class QRScanActivity extends FragmentActivity {
     }
 
     public void generateTestReportForQR(){
-        Report report = new Report();
-        report.setId(System.currentTimeMillis());
-        report.setQrcode(qr);
-        report.setName("");
-        report.setAge("");
-        report.setPosition("");
-        report.setProfilePhotoIndex(0);
-        report.setTimestamp(System.currentTimeMillis());
-        report.setStatus("Ready to Measure");
-
-        final TestReport testReport = new TestReport();
+        testReport = new TestReport();
         testReport.setReportCode(qr);
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
 
-        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
-        createCall.enqueue(new Callback<ResponseBody>() {
+        Call<TestReport> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<TestReport>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                 if (!response.isSuccessful()) {
+                    Log.i("ID",String.valueOf(response.body().getId()));
                     Toast.makeText(QRScanActivity.this,
                             "Failed to add the report.", Toast.LENGTH_SHORT).show();
                     QRScanActivity.this.finish();
                 }
                 else{
-                    takePhotoForProcessing(testReport, new ResultReadyListener() {
-                        @Override
-                        public void onResult() {
-                            Toast.makeText(QRScanActivity.this,"Status: Report is ready.",Toast.LENGTH_SHORT).show();
-                            turnOffFlash();
-                        }
-                    });
+                    Toast.makeText(getApplicationContext(), "Test report has been added.", Toast.LENGTH_SHORT).show();
+                    testReport = response.body();
+                    rightLayout.setVisibility(View.INVISIBLE);
+                    leftLayout.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TestReport> call, Throwable t) {
                 Toast.makeText(QRScanActivity.this,
                         "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 QRScanActivity.this.finish();
@@ -234,10 +230,10 @@ public class QRScanActivity extends FragmentActivity {
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
 
-        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
-        createCall.enqueue(new Callback<ResponseBody>() {
+        Call<TestReport> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<TestReport>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(QRScanActivity.this,
                             "Failed to add the report.", Toast.LENGTH_SHORT).show();
@@ -246,7 +242,7 @@ public class QRScanActivity extends FragmentActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TestReport> call, Throwable t) {
                 Toast.makeText(QRScanActivity.this,
                         "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 QRScanActivity.this.finish();
@@ -271,9 +267,8 @@ public class QRScanActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 111) {
             if (resultCode == RESULT_OK) {
-                rightLayout.setVisibility(View.INVISIBLE);
-                leftLayout.setVisibility(View.VISIBLE);
                 qr = data.getStringExtra("SCAN_RESULT");
+                generateTestReportForQR();
             }
             if(resultCode == RESULT_CANCELED){
                 Toast.makeText(getApplicationContext(), "QR SCANNING WAS CANCELED.", Toast.LENGTH_SHORT).show();
@@ -319,7 +314,7 @@ public class QRScanActivity extends FragmentActivity {
 
                                 @Override
                                 public void onFailure(Call<TestReport> call, Throwable t) {
-                                    Log.e(TAG, "Failed to submit the test report.");
+                                    Log.e(TAG, "Failed to submit the test report.", t);
                                     Toast.makeText(QRScanActivity.this, "Failed to process test report.", Toast.LENGTH_SHORT).show();
                                     if(isFlashOn){
                                         turnOffFlash();

@@ -157,10 +157,10 @@ public class UserReportCreatorActivity extends FragmentActivity {
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
 
-        Call<ResponseBody> createCall = emolanceAPI.createUserReport(testReport);
-        createCall.enqueue(new Callback<ResponseBody>() {
+        Call<TestReport> createCall = emolanceAPI.createUserReport(testReport);
+        createCall.enqueue(new Callback<TestReport>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(UserReportCreatorActivity.this,
                                 "Failed to add the report.", Toast.LENGTH_SHORT).show();
@@ -169,7 +169,7 @@ public class UserReportCreatorActivity extends FragmentActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TestReport> call, Throwable t) {
                 Toast.makeText(UserReportCreatorActivity.this,
                         "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 UserReportCreatorActivity.this.finish();

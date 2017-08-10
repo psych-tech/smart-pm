@@ -42,7 +42,7 @@ public interface EmolanceAPI {
             @Part MultipartBody.Part file);
 
     @POST("/api/test-reports")
-    public Call<ResponseBody> createUserReport(@Body TestReport testReport);
+    public Call<TestReport> createUserReport(@Body TestReport testReport);
 
     @POST("/api/emo/create/emouser/")
     public Call<ResponseBody> createUser(
