@@ -40,12 +40,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:weightSum="11"
         android:layout_weight="2"
         android:layout_width="0dp"
         android:gravity="center"
         android:layout_height="match_parent">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
         <Button
+            android:layout_weight="9"
             android:layout_gravity="center"
             android:id="@+id/opButton"
             android:text="Report"
@@ -53,9 +59,7 @@
             android:focusable="false"
             android:textColor="@color/white"
             android:background="@drawable/op_button_selector"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="30dp" />
 
         <ProgressBar
@@ -65,7 +69,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
-
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </LinearLayout>
