@@ -62,7 +62,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         final long id = testReport.getId();
         if (status.equals("Done")) {
             profileImageView.setImageResource(R.drawable.test_icon_complete);
-            valueText.setText("Status: " + status + "   ---->   Stress level: " + level);
+            valueText.setText("Status: " + status + "  Stress level: " + level);
             valueText.setTypeface(null, Typeface.BOLD);
         }
         else {
@@ -101,10 +101,9 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                                     profileImageView.setImageResource(R.drawable.test_icon_complete);
                                     progressBar.setVisibility(View.GONE);
                                     opButton.setVisibility(View.VISIBLE);
-
+                                    opButton.setText("Report");
                                 }
                             }
-
                     );
                 }
                 else{

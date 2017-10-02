@@ -212,7 +212,7 @@
                 android:id="@+id/beerLevelImage"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:src="@drawable/beer_level_5"
+                android:src="@drawable/level_background"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />

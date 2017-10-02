@@ -8,6 +8,7 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Handler;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
@@ -32,17 +31,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import io.paperdb.Paper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,9 +101,7 @@ public class UserReportsFragment extends Fragment {
                     Camera.Parameters p = camera.getParameters();
                     p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     camera.setParameters(p);
-
                     camera.setPreviewTexture(surfaceTexture);
-
                 } catch (IOException e) {
                     Log.e("Camera", e.getMessage(), e);
                 }

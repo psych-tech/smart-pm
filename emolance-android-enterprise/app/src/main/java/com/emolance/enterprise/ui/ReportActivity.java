@@ -1,5 +1,10 @@
 package com.emolance.enterprise.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -10,7 +15,6 @@ import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
-import com.emolance.enterprise.util.DateUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -107,7 +111,30 @@ public class ReportActivity extends FragmentActivity {
 
                     levelText.setText(Integer.toString(testReport.getLevel()));
                     percentText.setText(Double.toString(testReport.getPercent()));
-                    beerLevelImage.setImageResource(levelResMap.get(testReport.getLevel()));
+                    //beerLevelImage.setImageResource(levelResMap.get(testReport.getLevel()));
+                    BitmapDrawable drawable = (BitmapDrawable) beerLevelImage.getDrawable();
+                    Bitmap bm = drawable.getBitmap();
+
+                    Bitmap circleBm = BitmapFactory.decodeResource(getResources(),R.drawable.blue_circle);
+                    int circleWidth = circleBm.getWidth();
+                    int circleHeight = circleBm.getHeight();
+
+                    Log.i("TEST", "w: " + bm.getWidth() + " h: " + bm.getHeight());
+                    int cLevel = testReport.getVal1().intValue();
+                    int dLevel = testReport.getVal2().intValue();
+                    int yOffset = (cLevel - 2) * 100;
+                    int xOffset = (dLevel - 2) * 100;
+
+                    Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                    Canvas canvas = new Canvas(bmOverlay);
+
+                    canvas.drawBitmap(bm, new Matrix(), null);
+                    canvas.drawBitmap(circleBm,
+                            bm.getWidth() / 2 - circleWidth / 2 + xOffset,
+                            bm.getHeight() / 2 - circleHeight / 2 + yOffset,
+                            null);
+                    beerLevelImage.setImageBitmap(bmOverlay);
+
                     DateTime dateTime = DateTime.parse(testReport.getReportDate(),
                             DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
                                     .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));

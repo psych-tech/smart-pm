@@ -39,9 +39,9 @@ public class TestReport implements Serializable {
 
     private Double percent;
 
-    private Double val1;
+    private Double val1 = 2d;
 
-    private Double val2;
+    private Double val2 = 2d;
 
     private Double val3;
 
@@ -64,6 +64,9 @@ public class TestReport implements Serializable {
     }
 
     public Double getVal1() {
+        if (val1 == null) {
+            return 2d;
+        }
         return val1;
     }
 
@@ -72,6 +75,9 @@ public class TestReport implements Serializable {
     }
 
     public Double getVal2() {
+        if (val2 == null) {
+            return 2d;
+        }
         return val2;
     }
 
