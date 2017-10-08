@@ -70,9 +70,9 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             valueText.setText("Status: Incomplete");
         }
 
-        if(status.equals("Not Tested") | status.equals("Incomplete")){
+        //if(status.equals("Not Tested") | status.equals("Incomplete")){
             opButton.setText("Measure");
-        }
+        //}
 
         if (status.equals("Testing")) {
             opButton.setVisibility(View.GONE);
@@ -101,7 +101,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                                     profileImageView.setImageResource(R.drawable.test_icon_complete);
                                     progressBar.setVisibility(View.GONE);
                                     opButton.setVisibility(View.VISIBLE);
-                                    opButton.setText("Report");
+                                    //opButton.setText("Report");
                                 }
                             }
                     );
