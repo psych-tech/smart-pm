@@ -3,6 +3,8 @@ package com.emolance.enterprise.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.hardware.Camera;
+import android.media.MediaRecorder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import com.emolance.enterprise.data.TestReport;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by yusun on 5/26/15.
@@ -93,18 +97,24 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                     //camera.startPreview();
                     //new Handler().postDelayed(this,
                     //      10000);
-                    adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
-                                @Override
-                                public void onResult() {
-                                    valueText.setText("Status: Report is ready");
-                                    adminFragment.turnOffFlash();
-                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
-                                    progressBar.setVisibility(View.GONE);
-                                    opButton.setVisibility(View.VISIBLE);
-                                    //opButton.setText("Report");
-                                }
-                            }
-                    );
+//                    adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
+//                                @Override
+//                                public void onResult() {
+//                                    valueText.setText("Status: Report is ready");
+//                                    adminFragment.turnOffFlash();
+//                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
+//                                    progressBar.setVisibility(View.GONE);
+//                                    opButton.setVisibility(View.VISIBLE);
+//                                    //opButton.setText("Report");
+//                                }
+//                            }
+//                    );
+                    MediaRecorder mediaRecorder = adminFragment.getMediaRecorder();
+                    if(mediaRecorder != null && !adminFragment.isRecording()){
+                        adminFragment.setRecording(true);
+                        mediaRecorder.start();
+                    }
+
                 }
                 else{
                     Intent intent = new Intent(context, ReportActivity.class);
