@@ -9,11 +9,9 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +47,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import wseemann.media.FFmpegMediaMetadataRetriever;
 
 /**
  * Created by yusun on 6/22/15.
@@ -85,6 +82,8 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
     private List<TestReport> testList;
     private Camera.Parameters parameters;
     private String fileLocation;
+    private TestReport currentTestReport;
+    private ResultReadyListener resultReadyListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,57 +139,76 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
         @Override
         public void onInfo(MediaRecorder mr, int what, int extra) {
             Log.i(String.valueOf(what), " " + mr.getMaxAmplitude() + "");
-            if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED){
+            if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED
+                    && UserReportsFragment.this.isRecording()) {
                 Log.i("MAX SIZE","REACHED.");
                 Log.i("TEST", "Video taken and saved at " + fileLocation);
                 setRecording(false);
-                Bitmap bitmap;
-                FFmpegMediaMetadataRetriever retriever = new  FFmpegMediaMetadataRetriever();
-                try {
-                    retriever.setDataSource(fileLocation); //file's path
-                    bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
-                    saveThumbnail(bitmap);
+                mediaRecorder.stop();
+                mediaRecorder.release();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    try{
-                        retriever.setDataSource(fileLocation); //file's path
-                        bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
-                        saveThumbnail(bitmap);
-                    }catch (Exception ex){
-                        ex.printStackTrace();
+                Log.i("TEST", "PRE size: " + new File("/storage/emulated/0/Pictures/videocapture_example_1507853678257.mp4").length());
+                final File file = new File(fileLocation);
+                Log.i("TEST", "FILE SIZE: " + file.length());
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i("TEST", "FILE SIZE 2: " + file.length());
+                        // create RequestBody instance from file
+                        RequestBody requestFile =
+                                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+                        // MultipartBody.Part is used to send also the actual file name
+                        MultipartBody.Part body =
+                                MultipartBody.Part.createFormData("video", fileLocation, requestFile);
+
+                        Call<TestReport> responseCall = emolanceAPI.triggerTestWithVideo(currentTestReport.getId(), body);
+                        responseCall.enqueue(new Callback<TestReport>() {
+                            @Override
+                            public void onResponse(Call<TestReport> call, Response<TestReport> response) {
+                                Log.i("TEST", "Video process succeeded.");
+                                resultReadyListener.onResult();
+                            }
+
+                            @Override
+                            public void onFailure(Call<TestReport> call, Throwable t) {
+                                Log.e(TAG, "Failed to submit the test report.");
+                                Toast.makeText(getActivity(), "Failed to process test report.", Toast.LENGTH_SHORT).show();
+                                if(isFlashOn){
+                                    turnOffFlash();
+                                }
+                            }
+                        });
                     }
-                }
-                finally{
-                    retriever.release();
-                }
-
+                }, 10000);
             }
-            if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
-                Log.i("DURATION ","REACHED.");
-                Log.i("TEST", "Photo taken and saved at " + fileLocation);
-                setRecording(false);
-                Bitmap bitmap;
-                FFmpegMediaMetadataRetriever retriever = new  FFmpegMediaMetadataRetriever();
-                try {
-                    retriever.setDataSource(fileLocation); //file's path
-                    bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
-                    saveThumbnail(bitmap);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    try{
-                        retriever.setDataSource(fileLocation); //file's path
-                        bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
-                        saveThumbnail(bitmap);
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                    }
-                }
-                finally{
-                    retriever.release();
-                }
-            }
+//            if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
+//                Log.i("DURATION ","REACHED.");
+//                Log.i("TEST", "Photo taken and saved at " + fileLocation);
+//                setRecording(false);
+//                Bitmap bitmap;
+//                FFmpegMediaMetadataRetriever retriever = new  FFmpegMediaMetadataRetriever();
+//                try {
+//                    retriever.setDataSource(fileLocation); //file's path
+//                    bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
+//                    saveThumbnail(bitmap);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    try{
+//                        retriever.setDataSource(fileLocation); //file's path
+//                        bitmap = retriever.getFrameAtTime(1000,FFmpegMediaMetadataRetriever.OPTION_CLOSEST_SYNC );
+//                        saveThumbnail(bitmap);
+//                    }catch (Exception ex){
+//                        ex.printStackTrace();
+//                    }
+//                }
+//                finally{
+//                    retriever.release();
+//                }
+//            }
         }
     };
 
@@ -407,12 +425,15 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
         }
         return cameraId;
     }
+
     public void turnOffFlash() {
             if (context.getPackageManager().hasSystemFeature(
                     PackageManager.FEATURE_CAMERA_FLASH)) {
-                camera.stopPreview();
-                camera.release();
-                camera = null;
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
             }
     }
 
@@ -475,5 +496,17 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
             camera.release();
             camera = null;
         }
+    }
+
+    public TestReport getCurrentTestReport() {
+        return currentTestReport;
+    }
+
+    public void setCurrentTestReport(TestReport currentTestReport) {
+        this.currentTestReport = currentTestReport;
+    }
+
+    public void setResultReadyListener(ResultReadyListener resultReadyListener) {
+        this.resultReadyListener = resultReadyListener;
     }
 }

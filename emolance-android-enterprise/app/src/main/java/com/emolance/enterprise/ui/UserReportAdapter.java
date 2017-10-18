@@ -3,7 +3,6 @@ package com.emolance.enterprise.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,6 @@ import com.emolance.enterprise.data.TestReport;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by yusun on 5/26/15.
@@ -112,6 +109,18 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                     MediaRecorder mediaRecorder = adminFragment.getMediaRecorder();
                     if(mediaRecorder != null && !adminFragment.isRecording()){
                         adminFragment.setRecording(true);
+                        adminFragment.setCurrentTestReport(testReport);
+                        adminFragment.setResultReadyListener(new ResultReadyListener() {
+                                @Override
+                                public void onResult() {
+                                    valueText.setText("Status: Report is ready");
+                                    adminFragment.turnOffFlash();
+                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
+                                    progressBar.setVisibility(View.GONE);
+                                    opButton.setVisibility(View.VISIBLE);
+                                    //opButton.setText("Report");
+                                }
+                            });
                         mediaRecorder.start();
                     }
 

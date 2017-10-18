@@ -41,6 +41,12 @@ public interface EmolanceAPI {
             @Path("testReportId") Long testReportId,
             @Part MultipartBody.Part file);
 
+    @Multipart
+    @POST("/api/emo/process/test/video/{testReportId}")
+    public Call<TestReport> triggerTestWithVideo(
+            @Path("testReportId") Long testReportId,
+            @Part MultipartBody.Part file);
+
     @POST("/api/test-reports")
     public Call<TestReport> createUserReport(@Body TestReport testReport);
 
