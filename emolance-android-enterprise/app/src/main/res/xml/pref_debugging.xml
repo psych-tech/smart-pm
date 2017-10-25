@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
         android:title="Camera Mode"
-        android:summary="Will require restart."
+        android:summary="Restart Required"
         android:key="pref_camera"
         android:defaultValue="1"
         android:entries="@array/cameraArray"

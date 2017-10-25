@@ -114,7 +114,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                         ResultReadyListener resultReadyListener = new ResultReadyListener() {
                             @Override
                             public void onResult() {
-                                valueText.setText("Status: Loading...");
+                                valueText.setText("Status: Loading");
 
                                 adminFragment.turnOffFlash();
                                 profileImageView.setImageResource(R.drawable.test_icon_complete);

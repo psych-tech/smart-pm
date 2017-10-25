@@ -104,11 +104,11 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String val = sharedPreferences.getString(DebuggingTools.KEY_CAMERA_MODE, "NILL");
         if(val.equals("1")){
-            Log.i("Video Mode: ", "Off");
+            Log.i("Video Mode", "Off");
             videoMode = false;
         }
         else if(val.equals("2")){
-            Log.i("Video Mode: ", "On");
+            Log.i("Video Mode", "On");
             videoMode = true;
         }
     }
