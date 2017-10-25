@@ -3,6 +3,7 @@ package com.emolance.enterprise.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
@@ -12,6 +13,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.emolance.enterprise.DebuggingTools;
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
@@ -69,7 +72,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
     private ProgressDialog progress;
     private Context context;
     private UserReportAdapter adminReportAdapter;
-
+    private final int INVALID_PREFERENCE = -1;
     private Camera camera;
     private MediaRecorder mediaRecorder;
     private SurfaceHolder holder;
@@ -84,6 +87,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
     private String fileLocation;
     private TestReport currentTestReport;
     private ResultReadyListener resultReadyListener;
+    private boolean videoMode = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +100,16 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
         if (bundle != null) {
             userId = bundle.getLong(Constants.USER_ID);
             Log.i(TAG, "Getting UserId: " + userId);
+        }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String val = sharedPreferences.getString(DebuggingTools.KEY_CAMERA_MODE, "NILL");
+        if(val.equals("1")){
+            Log.i("Video Mode: ", "Off");
+            videoMode = false;
+        }
+        else if(val.equals("2")){
+            Log.i("Video Mode: ", "On");
+            videoMode = true;
         }
     }
 
@@ -246,17 +260,22 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                     Camera.Parameters p = camera.getParameters();
                     p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     camera.setParameters(p);
-                    camera.setPreviewDisplay(holder);
-                    camera.startPreview();
+                    if(videoMode){
+                        camera.setPreviewDisplay(holder);
+                        camera.startPreview();
+                        mediaRecorder = new MediaRecorder();
+                    }
+                    else{
+                        camera.setPreviewTexture(surfaceTexture);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mediaRecorder = new MediaRecorder();
             }
         }
     }
 
-    private void saveThumbnail(Bitmap bitmap){
+    /*private void saveThumbnail(Bitmap bitmap){
         FileOutputStream out = null;
         try {
             final File file = new File(
@@ -278,15 +297,17 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_reports, container, false);
         ButterKnife.inject(this, rootView);
-        holder = cameraView.getHolder();
-        holder.addCallback(this);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        if(videoMode){
+            holder = cameraView.getHolder();
+            holder.addCallback(this);
+            holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        }
         return rootView;
     }
 
@@ -447,6 +468,10 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
 
     public MediaRecorder getMediaRecorder() {
         return mediaRecorder;
+    }
+
+    public boolean getVideoMode(){
+        return videoMode;
     }
 
     @Override

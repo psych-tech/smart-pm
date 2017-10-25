@@ -19,7 +19,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.emolance.enterprise.DebuggingTools;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
@@ -166,6 +168,11 @@ public class NewMainActivity extends FragmentActivity {
         } else if (id == R.id.action_refresh) {
             this.sendBroadcast(new Intent(Constants.SYNC_INTENT_FILTER));
         }
+        else if(id == R.id.action_debugging){
+            Intent debugIntent = new Intent(this, DebuggingTools.class);
+            startActivity(debugIntent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -234,5 +241,4 @@ public class NewMainActivity extends FragmentActivity {
         // show it
         alertDialog.show();
     }
-
 }

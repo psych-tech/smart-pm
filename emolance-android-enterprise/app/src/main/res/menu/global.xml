@@ -4,4 +4,6 @@
         android:orderInCategory="100" app:showAsAction="always" />
     <item android:id="@+id/action_refresh" android:title="Refresh"
         android:orderInCategory="200" app:showAsAction="always" />
+    <item android:id="@+id/action_debugging" android:title="Debugging Camera"
+        android:orderInCategory="300" app:showAsAction="always" />
 </menu>
