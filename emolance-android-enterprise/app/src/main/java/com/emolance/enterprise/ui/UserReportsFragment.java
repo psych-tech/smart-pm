@@ -183,6 +183,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                             public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                                 Log.i("TEST", "Video process succeeded.");
                                 resultReadyListener.onResult();
+                                loadReports();
                             }
 
                             @Override
@@ -406,7 +407,9 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                             responseCall.enqueue(new Callback<TestReport>() {
                                 @Override
                                 public void onResponse(Call<TestReport> call, Response<TestReport> response) {
+                                    resultReadyListener.onResult();
                                     onResultReady.onResult();
+                                    loadReports();
                                 }
 
                                 @Override

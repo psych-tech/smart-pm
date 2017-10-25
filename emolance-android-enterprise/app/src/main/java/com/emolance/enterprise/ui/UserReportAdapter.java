@@ -100,7 +100,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                             adminFragment.setResultReadyListener(new ResultReadyListener() {
                                 @Override
                                 public void onResult() {
-                                    valueText.setText("Status: Report is ready");
+                                    valueText.setText("Status: Loading");
                                     adminFragment.turnOffFlash();
                                     profileImageView.setImageResource(R.drawable.test_icon_complete);
                                     progressBar.setVisibility(View.GONE);
@@ -111,18 +111,20 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                             mediaRecorder.start();
                         }
                     }else{
-                        adminFragment.takePhotoForProcessing(testReport, new ResultReadyListener() {
-                                @Override
-                                public void onResult() {
-                                    valueText.setText("Status: Report is ready");
-                                    adminFragment.turnOffFlash();
-                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
-                                    progressBar.setVisibility(View.GONE);
-                                    opButton.setVisibility(View.VISIBLE);
-                                    //opButton.setText("Report");
-                                }
+                        ResultReadyListener resultReadyListener = new ResultReadyListener() {
+                            @Override
+                            public void onResult() {
+                                valueText.setText("Status: Loading...");
+
+                                adminFragment.turnOffFlash();
+                                profileImageView.setImageResource(R.drawable.test_icon_complete);
+                                progressBar.setVisibility(View.GONE);
+                                opButton.setVisibility(View.VISIBLE);
+                                //opButton.setText("Report");
                             }
-                        );
+                        };
+                        adminFragment.setResultReadyListener(resultReadyListener);
+                        adminFragment.takePhotoForProcessing(testReport, resultReadyListener);
                     }
 
                 }
