@@ -103,8 +103,8 @@ public class QRScanActivity extends FragmentActivity {
 
                     Log.i("Scanner", s + " " + type + " " + i);
                     Log.i("Scanner", "Shutting down the BarCode scanner.");
-
-                    create(s);
+                    qr = s;
+                    create(qr);
                 /*
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -215,7 +215,7 @@ public class QRScanActivity extends FragmentActivity {
     }
 
     protected void create(String qr) {
-        Report report = new Report();
+/*        Report report = new Report();
         report.setId(System.currentTimeMillis());
         report.setQrcode(qr);
         report.setName("");
@@ -223,9 +223,9 @@ public class QRScanActivity extends FragmentActivity {
         report.setPosition("");
         report.setProfilePhotoIndex(0);
         report.setTimestamp(System.currentTimeMillis());
-        report.setStatus("Ready to Measure");
+        report.setStatus("Ready to Measure");*/
 
-        final TestReport testReport = new TestReport();
+        testReport = new TestReport();
         testReport.setReportCode(qr);
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
@@ -238,7 +238,9 @@ public class QRScanActivity extends FragmentActivity {
                     Toast.makeText(QRScanActivity.this,
                             "Failed to add the report.", Toast.LENGTH_SHORT).show();
                 }
-                QRScanActivity.this.finish();
+                rightLayout.setVisibility(View.INVISIBLE);
+                leftLayout.setVisibility(View.VISIBLE);
+                //QRScanActivity.this.finish();
             }
 
             @Override
