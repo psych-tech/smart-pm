@@ -46,7 +46,6 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
 
         TextView recentTestText = (TextView) view.findViewById(R.id.recentTestDate);
         recentTestText.setText(
-                "Recent Test: " +
                         DateUtils.getTestDateTimeInStr(users.get(position).getLastTestDate()));
 
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.userProfileImage);

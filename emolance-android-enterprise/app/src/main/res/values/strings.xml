@@ -1,19 +1,48 @@
 <resources>
     <string name="app_name">Emolance</string>
 
-    <string name="title_section1">What\'s Going On</string>
-    <string name="title_section2">Recommendations</string>
-    <string name="title_section3">Logout</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_example">Example action</string>
-
-    <string name="action_settings">Settings</string>
+    <!--For Navigation Drawer-->
+    <string name="title_section1_nav_drawer">What\'s Going On</string>
+    <string name="title_section2_nav_drawer">Recommendations</string>
+    <string name="title_section3_nav_drawer">Logout</string>
     <string name="check_now">Check Now</string>
     <string name="current_value">\?</string>
     <string name="current_time">Last Check</string>
+    <string name="navigation_drawer_open_accessibility">Open navigation drawer</string>
+    <string name="navigation_drawer_close_accessibility">Close navigation drawer</string>
 
-    <string name="check_results">Tests</string>
+    <!--For Settings Menu-->
+    <string name="action_settings_1">Settings</string>
+    <string name="action_settings_2">Refresh</string>
+    <string name="action_settings_3">Camera Debug</string>
+
+    <!--For User List-->
+    <string name="user_list_test_button">Tests</string>
+    <string name="user_list_header">Users</string>
+    <string name="user_list_recent_test_text">Recent Test:\ </string>
+
+    <!--For Dashboard Data-->
+    <string name="dashboard_stress_stats">Stress Stats</string>
+    <string name="dashboard_total_users">Total Users</string>
+    <string name="dashboard_total_tests">Total Tests</string>
+    <string name="dashboard_bar_chart_xaxis">Stress Level</string>
+    <string name="dashboard_bar_chart_yaxis">Number of Tests</string>
+    <string name="dashboard_pie_title">Stress Breakdown</string>
+    <string name="dashboard_pie_low">Low stress</string>
+    <string name="dashboard_pie_normal">Normal stress</string>
+    <string name="dashboard_pie_high">High stress</string>
+
+
+    <!--For Create New User-->
+    <string name="create_user_save_button">Save</string>
+    <string name="create_user_cancel_button">Cancel</string>
+
+
+    <!--For User Profile-->
+
+    <!--For Test Reports In User Profile-->
+
+    <!--For Test Result Activity-->
+
+    <!--For QR Scan Activity-->
 </resources>
