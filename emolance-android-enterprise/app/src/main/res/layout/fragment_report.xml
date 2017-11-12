@@ -144,7 +144,7 @@
                         android:layout_below="@id/levelText"
                         android:textSize="16sp"
                         android:textColor="#828282"
-                        android:text="level of stress"
+                        android:text="@string/test_report_activity_level_of_stress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </RelativeLayout>
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content" />
                     <TextView
                         android:layout_below="@id/percentText"
-                        android:text="people ahead of you"
+                        android:text="@string/test_report_activity_level_of_stress"
                         android:textColor="#828282"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"

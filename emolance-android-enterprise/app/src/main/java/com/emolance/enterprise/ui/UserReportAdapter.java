@@ -55,7 +55,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         final TextView qrText = (TextView) view.findViewById(R.id.qrText);
-        qrText.setText("QR ID: " + testReport.getReportCode());
+        qrText.setText(context.getResources().getString(R.string.test_reports_user_profile_qr_id) +": " + testReport.getReportCode());
 
         final TextView valueText = (TextView) view.findViewById(R.id.statusText);
         String status = testReport.getStatus();
@@ -63,19 +63,21 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         final long id = testReport.getId();
         if (status.equals("Done")) {
             profileImageView.setImageResource(R.drawable.test_icon_complete);
-            valueText.setText("Status: " + status + "  Stress level: " + level);
+            valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " + status + " " +
+                    context.getResources().getString(R.string.test_reports_user_profile_stress_level) + ": " + level);
             valueText.setTypeface(null, Typeface.BOLD);
         }
         else {
             profileImageView.setImageResource(R.drawable.test_icon_incomplete);
-            valueText.setText("Status: Incomplete");
+            valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "
+                    + context.getResources().getString(R.string.test_reports_user_profile_incomplete));
         }
 
         //if(status.equals("Not Tested") | status.equals("Incomplete")){
-            opButton.setText("Measure");
+            opButton.setText(context.getResources().getString(R.string.test_reports_user_profile_measure));
         //}
 
-        if (status.equals("Testing")) {
+        if (status.equals(context.getResources().getString(R.string.test_reports_user_profile_testing))) {
             opButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -83,9 +85,10 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(opButton.getText() == "Measure"){
-                    valueText.setText("Status: Testing");
-                    testReport.setStatus("Testing");
+                if(opButton.getText() == context.getResources().getString(R.string.test_reports_user_profile_measure)){
+                    valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " +
+                            context.getResources().getString(R.string.test_reports_user_profile_testing));
+                    testReport.setStatus(context.getResources().getString(R.string.test_reports_user_profile_testing));
 
                     profileImageView.setImageResource(R.drawable.test_icon_incomplete);
                     opButton.setVisibility(View.GONE);
@@ -100,7 +103,8 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                             adminFragment.setResultReadyListener(new ResultReadyListener() {
                                 @Override
                                 public void onResult() {
-                                    valueText.setText("Status: Loading");
+                                    valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "
+                                            + context.getResources().getString(R.string.test_reports_user_profile_loading));
                                     adminFragment.turnOffFlash();
                                     profileImageView.setImageResource(R.drawable.test_icon_complete);
                                     progressBar.setVisibility(View.GONE);
@@ -114,7 +118,8 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                         ResultReadyListener resultReadyListener = new ResultReadyListener() {
                             @Override
                             public void onResult() {
-                                valueText.setText("Status: Loading");
+                                valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " +
+                                        context.getResources().getString(R.string.test_reports_user_profile_loading));
 
                                 adminFragment.turnOffFlash();
                                 profileImageView.setImageResource(R.drawable.test_icon_complete);

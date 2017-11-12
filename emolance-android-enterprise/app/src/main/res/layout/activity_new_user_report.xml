@@ -108,7 +108,7 @@
         <EditText
             android:layout_weight="1"
             android:id="@+id/userNameEditText"
-            android:hint="User Name"
+            android:hint="@string/create_user_user_name_hint"
             android:singleLine="true"
             android:paddingLeft="20dp"
             android:nextFocusDown="@+id/firstNameEditText"
@@ -119,7 +119,7 @@
         <EditText
             android:layout_weight="1"
             android:id="@+id/firstNameEditText"
-            android:hint="First Name"
+            android:hint="@string/create_user_first_name_hint"
             android:singleLine="true"
             android:paddingLeft="20dp"
             android:nextFocusDown="@+id/lastNameEditText"
@@ -130,7 +130,7 @@
         <EditText
             android:layout_weight="1"
             android:id="@+id/lastNameEditText"
-            android:hint="Last Name"
+            android:hint="@string/create_user_last_name_hint"
             android:singleLine="true"
             android:paddingLeft="20dp"
             android:nextFocusDown="@+id/emailEditText"
@@ -141,7 +141,7 @@
         <EditText
             android:layout_weight="1"
             android:id="@+id/emailEditText"
-            android:hint="Email"
+            android:hint="@string/create_user_email_hint"
             android:singleLine="true"
             android:paddingLeft="20dp"
             android:nextFocusDown="@+id/professionEditText"
@@ -153,7 +153,7 @@
             android:layout_weight="1"
             android:background="@drawable/user_profile_field"
             android:id="@+id/professionEditText"
-            android:hint="Profession"
+            android:hint="@string/create_user_profession_hint"
             android:singleLine="true"
             android:paddingLeft="20dp"
             android:layout_width="match_parent"
@@ -170,7 +170,7 @@
         <Button
             android:layout_margin="10dp"
             android:layout_centerInParent="true"
-            android:text="Save"
+            android:text="@string/create_user_save_button"
             android:background="@drawable/save_button_selector"
             android:id="@+id/createButton"
             android:textColor="@color/save_button_color"
@@ -180,7 +180,7 @@
         <Button
             android:layout_margin="10dp"
             android:layout_centerInParent="true"
-            android:text="Cancel"
+            android:text="@string/create_user_cancel_button"
             android:background="@drawable/save_button_selector"
             android:id="@+id/cancelButton"
             android:textColor="@color/save_button_color"
