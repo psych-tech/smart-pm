@@ -8,6 +8,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <SurfaceView
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:id="@+id/surface_view"/>
+
     <RelativeLayout
         android:layout_weight="1"
         android:layout_width="match_parent"

@@ -149,13 +149,16 @@ public class AdminDashboardFragment extends Fragment {
 
         //Prevent showing the value if it is 0 (makes chart look nicer)
         if (low > 0) {
-            pieEntries.add(new PieEntry(low, "Low stress (1-3)"));
+            String entry = getResources().getString(R.string.dashboard_pie_low);
+            pieEntries.add(new PieEntry(low, entry + " (1-3)"));
         }
         if (mid > 0) {
-            pieEntries.add(new PieEntry(mid, "Normal stress (4-6)"));
+            String entry = getResources().getString(R.string.dashboard_pie_normal);
+            pieEntries.add(new PieEntry(mid, entry + " (4-6)"));
         }
         if (high > 0) {
-            pieEntries.add(new PieEntry(high, "High stress (7-10)"));
+            String entry = getResources().getString(R.string.dashboard_pie_high);
+            pieEntries.add(new PieEntry(high, entry + " (7-10)"));
         }
 
         //Set up pie chart and style it
@@ -179,7 +182,8 @@ public class AdminDashboardFragment extends Fragment {
 
         //More styling
         pieChart.getDescription().setText(""); //hide description
-        pieChart.setCenterText("Stress Breakdown");
+        String title = getResources().getString(R.string.dashboard_pie_title);
+        pieChart.setCenterText(title);
         pieChart.setCenterTextSize(16);
         pieChart.setCenterTextOffset(0, -5);
         pieChart.setDrawCenterText(true);
@@ -226,9 +230,9 @@ public class AdminDashboardFragment extends Fragment {
         barChart.invalidate(); //refresh
 
         Log.i("TAG", "total tests: " + numTests);
-        String str = numUsers + " Total Users";
+        String str = numUsers + " " + getResources().getString(R.string.dashboard_total_users);
         totalUsersTextView.setText(str);
-        str = numTests + " Total Tests";
+        str = numTests + " " + getResources().getString(R.string.dashboard_total_tests);
         totalTestsTextView.setText(str);
     }
 }

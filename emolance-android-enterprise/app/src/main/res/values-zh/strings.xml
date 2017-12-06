@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Emolance</string>
 
@@ -76,5 +77,4 @@
     <string name="qr_scan_activity_test_directions_2">Insert the Test</string>
     <string name="qr_scan_activity_qr_directions_1">Scan the QR Code</string>
     <string name="qr_scan_activity_qr_directions_2">10cm to the Scanner</string>
-
 </resources>

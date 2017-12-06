@@ -102,7 +102,7 @@ public class ReportActivity extends FragmentActivity {
                         profileImage.setImageDrawable(getResources().getDrawable(imageResource));
                     }
                     nameText.setText(testReport.getOwner().getName());
-                    emailText.setText("Email: " + testReport.getOwner().getEmail());
+                    emailText.setText(getResources().getString(R.string.test_report_activity_email) +": " + testReport.getOwner().getEmail());
                     positionText.setText(testReport.getOwner().getPosition());
 
                     if (!testReport.getStatus().equals("Done")) {

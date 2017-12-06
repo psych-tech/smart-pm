@@ -98,7 +98,7 @@ public class UserProfileFragment extends Fragment {
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             outputFormatter = new SimpleDateFormat("MM/dd");
             if (userEmail != null) {
-                userProfileTextViewEmail.setText("Email: " + userEmail);
+                userProfileTextViewEmail.setText(getResources().getString(R.string.user_profile_email) + ": " + userEmail);
             }
             if (userName != null) {
                 userProfileTextViewName.setText(userName);

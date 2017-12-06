@@ -51,7 +51,7 @@
         </LinearLayout>
         <TextView
             android:id="@+id/lineChartTitle"
-            android:text="Stress Level History"
+            android:text="@string/user_profile_stress_level_history"
             android:textSize="20sp"
             android:textColor="@color/darkblue"
             android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                 android:id="@+id/lineChartYAxisLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Stress level"
+                android:text="@string/user_profile_chart_xaxis"
                 android:textSize="14sp"
                 android:gravity="center"/>
             <com.github.mikephil.charting.charts.LineChart
@@ -91,7 +91,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Test Dates"
+            android:text="@string/user_profile_chart_yaxis"
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"/>

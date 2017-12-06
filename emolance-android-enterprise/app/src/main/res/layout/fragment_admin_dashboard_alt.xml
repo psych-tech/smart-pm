@@ -24,7 +24,7 @@
                 android:layout_height="0dp"
                 android:textSize="32sp"
                 android:textColor="#000"
-                android:text="Stress Stats"
+                android:text="@string/dashboard_stress_stats"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/totalUsersTextView"
@@ -79,7 +79,7 @@
                 android:id="@+id/barChartYAxisLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Number of Tests"
+                android:text="@string/dashboard_bar_chart_yaxis"
                 android:textSize="14sp"
                 android:gravity="center"/>
             <com.github.mikephil.charting.charts.BarChart
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Stress level"
+            android:text="@string/dashboard_bar_chart_xaxis"
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"/>
