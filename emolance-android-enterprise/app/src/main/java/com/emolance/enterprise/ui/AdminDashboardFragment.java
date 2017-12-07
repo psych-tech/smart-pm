@@ -48,8 +48,6 @@ public class AdminDashboardFragment extends Fragment {
     TextView totalUsersTextView;
     @InjectView(R.id.totalTestsTextView)
     TextView totalTestsTextView;
-    @InjectView(R.id.stressStatsTextView)
-    TextView stressStatsTextView;
     @InjectView(R.id.adminDashboardBarChart)
     BarChart barChart;
     @InjectView(R.id.adminDashboardPieChart)

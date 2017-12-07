@@ -44,9 +44,7 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
         TextView orgText = (TextView) view.findViewById(R.id.orgText);
         orgText.setText(users.get(position).getOrganization().getName());
 
-        TextView recentTestText = (TextView) view.findViewById(R.id.recentTestDate);
-        recentTestText.setText(
-                        DateUtils.getTestDateTimeInStr(users.get(position).getLastTestDate()));
+
 
         final ImageView profileImageView = (ImageView) view.findViewById(R.id.userProfileImage);
         if(users.get(position).getProfileImage() != null){
@@ -54,15 +52,6 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> {
             int imageResource = context.getResources().getIdentifier(uri,null,context.getApplicationContext().getPackageName());
             profileImageView.setImageDrawable(context.getResources().getDrawable(imageResource));
         }
-
-        final Button opButton = (Button) view.findViewById(R.id.testsButton);
-
-        opButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adminFragment.openUserTestsFragment(position);
-            }
-        });
 
         return view;
     }
