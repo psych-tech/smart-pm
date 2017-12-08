@@ -69,7 +69,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
     @InjectView(R.id.surface_view)
     SurfaceView cameraView;
 
-    private ProgressDialog progress;
+    //private ProgressDialog progress;
     private Context context;
     private UserReportAdapter adminReportAdapter;
     private final int INVALID_PREFERENCE = -1;
@@ -325,11 +325,11 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
     }
 
     private void startProgressDialog() {
-        progress = ProgressDialog.show(this.getActivity(), null, "Loading report data ...", true);
+        //progress = ProgressDialog.show(this.getActivity(), null, "Loading report data ...", true);
     }
 
     private void endProgressDialog() {
-        progress.dismiss();
+        //progress.dismiss();
     }
 
     @OnClick(R.id.newReportButton)
@@ -349,7 +349,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                     testList = response.body();
                     NewMainActivity activity = (NewMainActivity) getActivity();
                     activity.transferDataUser(); //transfer the data to the UserProfileFragment
-                    adminReportAdapter = new UserReportAdapter(context, testList, UserReportsFragment.this);
+                    adminReportAdapter = new UserReportAdapter(context, testList, new UserProfileFragment());
                     totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

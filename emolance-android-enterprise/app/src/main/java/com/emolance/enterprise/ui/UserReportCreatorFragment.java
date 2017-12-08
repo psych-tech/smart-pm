@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class UserReportCreatorFragment extends Fragment {
     @InjectView(R.id.createButton)
     Button createBtn;
     @InjectView(R.id.cancelButton)
-    Button cancelBtn;
+    ImageButton cancelBtn;
     @InjectView(R.id.profileImageSelector)
     ImageView profileImageView;
 

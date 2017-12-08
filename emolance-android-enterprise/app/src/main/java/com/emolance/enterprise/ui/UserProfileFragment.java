@@ -1,5 +1,8 @@
 package com.emolance.enterprise.ui;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -8,10 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
@@ -37,8 +43,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by David on 3/10/2017.
@@ -49,12 +60,15 @@ public class UserProfileFragment extends Fragment {
     private Long userId;
     private static final String TAG = UserReportsFragment.class.getName();
 
+   /* @Inject
+    EmolanceAPI emolanceAPI;*/
     @InjectView(R.id.profileImage)
     ImageView imageView;
     @InjectView(R.id.userDashboardLineChart)
     LineChart lineChart;
-    @InjectView(R.id.lineChartTitle)
-    TextView lineChartTitle;
+    //TODO: Remove possibly
+    /*@InjectView(R.id.lineChartTitle)
+    TextView lineChartTitle;*/
     @InjectView(R.id.lineChartYAxisLabel)
     TextView lineChartYAxisLabel;
     @InjectView(R.id.lineChartXAxisLabel)
@@ -65,13 +79,22 @@ public class UserProfileFragment extends Fragment {
     TextView userProfileTextViewEmail;
     @InjectView(R.id.userProfileTextViewPosition)
     TextView userProfileTextViewPosition;
+    @InjectView(R.id.reportsList)
+    ListView reportsListView;
 
+    private Context context;
     private long[] timestamps;
     private SimpleDateFormat inputFormatter, outputFormatter;
+    private ProgressDialog progress;
+    private List<TestReport> reports;
+    private UserReportAdapter adminReportAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Injector.inject(this);
+        this.context = getActivity();
+
 
     }
 
@@ -112,6 +135,42 @@ public class UserProfileFragment extends Fragment {
                 imageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         }
+
+        //loadReports();
+    }
+
+    public void loadReports() {
+        /*Call<List<TestReport>> call = emolanceAPI.listReports(userId);
+        call.enqueue(new Callback<List<TestReport>>() {
+            @Override
+            public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
+                endProgressDialog();
+                if (response.isSuccessful()) {
+                    reports = response.body();
+                    NewMainActivity activity = (NewMainActivity) getActivity();
+                    activity.transferDataUser(); //transfer the data to the UserProfileFragment
+                    adminReportAdapter = new UserReportAdapter(getContext(), reports, UserProfileFragment.this);
+                    //totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
+                    reportsListView.setAdapter(adminReportAdapter);
+                    reportsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Toast.makeText(getActivity(), "Clickable action", Toast.LENGTH_SHORT).show();
+                            *//*Intent intent = new Intent(UserProfileFragment.this.getActivity(), ReportActivity.class);
+                            intent.putExtra("id", adminReportAdapter.getItem(i).getId());
+                            startActivity(intent);*//*
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TestReport>> call, Throwable t) {
+                Log.e("AdminReport", "Failed to get the list of history reports. ");
+                endProgressDialog();
+                Toast.makeText(getActivity(),"Failed to get the list of reports. ",  Toast.LENGTH_SHORT).show();
+            }
+        });*/
     }
 
     //Handle setting up chart from the data
@@ -157,7 +216,7 @@ public class UserProfileFragment extends Fragment {
 
         //Set up the chart if their is data
         if (lineEntries.size() > 1) {
-            lineChartTitle.setVisibility(View.VISIBLE);
+            //lineChartTitle.setVisibility(View.VISIBLE);
             lineChartXAxisLabel.setVisibility(View.VISIBLE);
             lineChartYAxisLabel.setVisibility(View.VISIBLE);
             LineDataSet lineDataSet = new LineDataSet(lineEntries, "");
@@ -225,12 +284,20 @@ public class UserProfileFragment extends Fragment {
 
         else {
             //Show "No data available"
-            lineChartTitle.setVisibility(View.GONE);
+            //lineChartTitle.setVisibility(View.GONE);
             lineChartXAxisLabel.setVisibility(View.GONE);
             lineChartYAxisLabel.setVisibility(View.GONE);
             Paint p = lineChart.getPaint(Chart.PAINT_INFO);
             p.setTextSize(25);
             p.setColor(getResources().getColor(R.color.darkblue));
         }
+    }
+
+    private void startProgressDialog() {
+        progress = ProgressDialog.show(this.getActivity(), null, "Loading report data ...", true);
+    }
+
+    private void endProgressDialog() {
+        progress.dismiss();
     }
 }

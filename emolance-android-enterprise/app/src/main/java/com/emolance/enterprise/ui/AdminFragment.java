@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
+import com.scalified.fab.ActionButton;
+import com.scalified.fab.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +50,10 @@ public class AdminFragment extends Fragment {
     EmolanceAPI emolanceAPI;
     @InjectView(R.id.userListView)
     ListView adminReportListView;
-    @InjectView(R.id.newUserButton)
-    ImageButton newUserButton;
+    @InjectView(R.id.searchUser)
+    ImageButton searchUser;
+    ActionButton fab;
+
 
 
     private ProgressDialog progress;
@@ -61,20 +66,21 @@ public class AdminFragment extends Fragment {
     private EmoUser emoUser;
     private int counter;
     private NewMainActivity activity;
+    private View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);
-
         this.context = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_new, container, false);
+        rootView = inflater.inflate(R.layout.fragment_new, container, false);
         ButterKnife.inject(this, rootView);
-        newUserButton.setOnClickListener(new View.OnClickListener() {
+        fab = (ActionButton) rootView.findViewById(R.id.fab_new_user);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -143,7 +149,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void openUserTestsFragment(int i) {
-        UserReportsFragment userReportsFragment = new UserReportsFragment();
+        /*UserReportsFragment userReportsFragment = new UserReportsFragment();
         UserProfileFragment userProfileFragment = new UserProfileFragment();
         Bundle bundle = new Bundle();
         EmoUser emoUser = adminReportAdapter.getItem(i);
@@ -154,15 +160,34 @@ public class AdminFragment extends Fragment {
         bundle.putString(Constants.USER_EMAIL, emoUser.getEmail());
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
-        userProfileFragment.setArguments(bundle);
+        userProfileFragment.setArguments(bundle);*/
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
+        Fragment frag = new UserProfileFragment();
+        Bundle bundle = new Bundle();
+        EmoUser emoUser = adminReportAdapter.getItem(i);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.root_container_left, userProfileFragment, "UserProfileFragment");
-        fragmentTransaction.replace(R.id.root_container_right, userReportsFragment, "UserReportsFragment");
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+        bundle.putLong(Constants.USER_ID, emoUser.getId());
+        frag.setArguments(bundle);
+        bundle.putString(Constants.USER_NAME, emoUser.getName());
+        bundle.putString(Constants.USER_EMAIL, emoUser.getEmail());
+        bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
+        bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
+        frag.setArguments(bundle);
+        fragmentTransaction.replace(R.id.root_container_right,frag);
         fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
+
+        //LinearLayout rootContainer = (LinearLayout) rootView.findViewById(R.id.root_container);
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.root_container_left, userProfileFragment, "UserProfileFragment");
+//        fragmentTransaction.replace(R.id.root_container_right, userReportsFragment, "UserReportsFragment");
+//        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 
     private void persistLoadedMyUsers(List<EmoUser> myUsers) {

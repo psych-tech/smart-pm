@@ -65,6 +65,7 @@
     <!--</LinearLayout>-->
 
     <ImageButton
+        android:id="@+id/cancelButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerCrop"
@@ -185,15 +186,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:layout_margin="10dp"
-            android:layout_centerInParent="true"
-            android:text="@string/create_user_cancel_button"
-            android:background="@drawable/save_button_selector"
-            android:id="@+id/cancelButton"
-            android:textColor="@color/save_button_color"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

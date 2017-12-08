@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="3">
 
     <RelativeLayout
         android:id="@+id/userDashboardTopLayout"
         android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:padding="10dp">
             <ImageView
                 android:id="@+id/profileImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/persona_landing_7"/>
 
@@ -38,63 +40,66 @@
                     android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
                 <TextView
                     android:id="@+id/userProfileTextViewEmail"
-                    android:text="Email: Unknown"
-                    android:autoLink="email"
-                    android:textSize="18sp"
-                    android:textColor="#828282"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    android:autoLink="email"
+                    android:text="Email: Unknown"
+                    android:textColor="#828282"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/lineChartTitle"
-            android:text="@string/user_profile_stress_level_history"
-            android:textSize="20sp"
-            android:textColor="@color/darkblue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/userDashboardBottomLayout"
         android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingRight="5dp"
+        android:weightSum="4">
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_weight="10"
+            android:orientation="vertical"
+            android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="0dp">
-            <com.emolance.enterprise.ui.VerticalTextView
-                android:id="@+id/lineChartYAxisLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/user_profile_chart_xaxis"
-                android:textSize="14sp"
-                android:gravity="center"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/userDashboardLineChart"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_height="match_parent">
+                <com.emolance.enterprise.ui.VerticalTextView
+                    android:id="@+id/lineChartYAxisLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/user_profile_chart_xaxis"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/userDashboardLineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/lineChartXAxisLabel"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="@string/user_profile_chart_yaxis"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/lineChartXAxisLabel"
-            android:layout_weight="1"
+        <ListView
+            android:id="@+id/reportsList"
+            android:layout_weight="2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="@string/user_profile_chart_yaxis"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:layout_height="0dp"/>
 
     </LinearLayout>
 </LinearLayout>

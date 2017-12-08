@@ -25,9 +25,9 @@
                 android:layout_height="70dp" />
 
             <ImageButton
-                android:id="@+id/newUserButton"
+                android:id="@+id/searchUser"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/add_new_icon"
+                android:src="@drawable/search_btn"
                 android:scaleType="fitCenter"
                 android:background="@null"
                 android:padding="20dp"
@@ -52,6 +52,7 @@
         </ListView>
     </LinearLayout>
     <com.scalified.fab.FloatingActionButton
+        android:id="@+id/fab_new_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:type="DEFAULT"

@@ -27,9 +27,9 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
     private List<TestReport> reports;
     private Context context;
-    private UserReportsFragment adminFragment;
+    private UserProfileFragment adminFragment;
 
-    public UserReportAdapter(Context context, List<TestReport> objects, UserReportsFragment adminFragment) {
+    public UserReportAdapter(Context context, List<TestReport> objects, UserProfileFragment adminFragment) {
         super(context, R.layout.list_user_report_item, objects);
         this.context = context;
         sortList(objects);
@@ -85,7 +85,8 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         opButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(opButton.getText() == context.getResources().getString(R.string.test_reports_user_profile_measure)){
+                //TODO: Possibly remove
+                /*if(opButton.getText() == context.getResources().getString(R.string.test_reports_user_profile_measure)){
                     valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " +
                             context.getResources().getString(R.string.test_reports_user_profile_testing));
                     testReport.setStatus(context.getResources().getString(R.string.test_reports_user_profile_testing));
@@ -137,7 +138,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
                     Intent intent = new Intent(context, ReportActivity.class);
                     intent.putExtra("id", id);
                     context.startActivity(intent);
-                }
+                }*/
             }
         });
 
