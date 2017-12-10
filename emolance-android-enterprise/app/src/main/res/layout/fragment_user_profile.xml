@@ -3,81 +3,139 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3">
+    android:background="@color/white"
+    android:weightSum="10">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/userDashboardTopLayout"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="7"
+        android:padding="20dp">
+        <ImageButton
+            android:id="@+id/backButtonProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_button"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_weight="3"
+            android:id="@+id/profileImage"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:src="@drawable/persona_landing_7"/>
         <LinearLayout
+            android:layout_weight="3"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp">
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/persona_landing_7"/>
-
-            <LinearLayout
-                android:orientation="vertical"
+            android:layout_height="0dp"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/userProfileTextViewName"
+                android:text="Name: Unknown"
+                android:textSize="30sp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="5dp">
-                <TextView
-                    android:id="@+id/userProfileTextViewName"
-                    android:text="Name: Unknown"
-                    android:textSize="25sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/userProfileTextViewPosition"
-                    android:text="Position: Unknown"
-                    android:textSize="18sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/userProfileTextViewEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:autoLink="email"
-                    android:text="Email: Unknown"
-                    android:textColor="#828282"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/userProfileTextViewPosition"
+                android:text="Position: Unknown"
+                android:textSize="22sp"
+                android:textColor="#828282"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/userProfileTextViewGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Gender: Unknown"
+                android:textColor="#828282"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/userProfileTextViewDOB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Date of Birth: Unknown"
+                android:textColor="#828282"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/userProfileTextViewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:autoLink="email"
+                android:text="Email: Unknown"
+                android:textColor="#828282"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/userProfileTextViewWeChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="WeChat: Not Available"
+                android:textColor="#828282"
+                android:textSize="15sp" />
         </LinearLayout>
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:paddingLeft="45dp"
+                android:paddingRight="45dp"
+                android:background="#819dc4"
+                android:textColor="@color/white"
+                android:layout_gravity="top" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="#e0e0e0"/>
 
     <LinearLayout
         android:id="@+id/userDashboardBottomLayout"
         android:orientation="vertical"
-        android:layout_weight="2"
+        android:layout_weight="7"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:weightSum="4">
+        <ImageView
+            android:id="@+id/noDataProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/no_data_found_img"
+            android:padding="50dp"
+            android:visibility="gone"/>
         <LinearLayout
             android:orientation="vertical"
             android:layout_weight="2"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:weightSum="10">
             <LinearLayout
                 android:orientation="horizontal"
+                android:layout_weight="9"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp">
                 <com.emolance.enterprise.ui.VerticalTextView
                     android:id="@+id/lineChartYAxisLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/user_profile_chart_xaxis"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     android:gravity="center"/>
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/userDashboardLineChart"
@@ -93,13 +151,13 @@
                 android:text="@string/user_profile_chart_yaxis"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:gravity="center"/>
+                android:gravity="center"
+                />
         </LinearLayout>
         <ListView
             android:id="@+id/reportsList"
             android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
-
     </LinearLayout>
 </LinearLayout>

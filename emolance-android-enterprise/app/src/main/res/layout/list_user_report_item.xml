@@ -6,14 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/testImage"
-        android:adjustViewBounds="true"
-        android:src="@drawable/test_icon_incomplete"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+    <View
+        android:id="@+id/resultColor"
+        android:background="@color/red"
+        android:layout_margin="12dp"
+        android:layout_width="5dp"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -50,17 +48,16 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
-        <Button
+        <ImageButton
             android:layout_weight="9"
             android:layout_gravity="center"
-            android:id="@+id/opButton"
-            android:text="Report"
+            android:id="@+id/more_menu_reports "
             android:textSize="16sp"
             android:focusable="false"
-            android:textColor="@color/white"
-            android:background="@drawable/op_button_selector"
+            android:src="@drawable/more_horiz"
             android:layout_width="0dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:background="#00000000"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

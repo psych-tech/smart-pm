@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,8 +61,8 @@ public class UserProfileFragment extends Fragment {
     private Long userId;
     private static final String TAG = UserReportsFragment.class.getName();
 
-   /* @Inject
-    EmolanceAPI emolanceAPI;*/
+    @Inject
+    EmolanceAPI emolanceAPI;
     @InjectView(R.id.profileImage)
     ImageView imageView;
     @InjectView(R.id.userDashboardLineChart)
@@ -81,6 +82,10 @@ public class UserProfileFragment extends Fragment {
     TextView userProfileTextViewPosition;
     @InjectView(R.id.reportsList)
     ListView reportsListView;
+    @InjectView(R.id.backButtonProfile)
+    ImageButton backButton;
+    @InjectView(R.id.noDataProfile)
+    ImageView noDataImage;
 
     private Context context;
     private long[] timestamps;
@@ -92,7 +97,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Injector.inject(this);
+        Injector.inject(this);
         this.context = getActivity();
 
 
@@ -102,6 +107,12 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.inject(this, rootView);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         return rootView;
     }
 
@@ -135,32 +146,42 @@ public class UserProfileFragment extends Fragment {
                 imageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         }
-
-        //loadReports();
+        startProgressDialog();
+        loadReports();
     }
 
     public void loadReports() {
-        /*Call<List<TestReport>> call = emolanceAPI.listReports(userId);
+        Call<List<TestReport>> call = emolanceAPI.listReports(userId);
         call.enqueue(new Callback<List<TestReport>>() {
             @Override
             public void onResponse(Call<List<TestReport>> call, Response<List<TestReport>> response) {
                 endProgressDialog();
                 if (response.isSuccessful()) {
                     reports = response.body();
-                    NewMainActivity activity = (NewMainActivity) getActivity();
-                    activity.transferDataUser(); //transfer the data to the UserProfileFragment
-                    adminReportAdapter = new UserReportAdapter(getContext(), reports, UserProfileFragment.this);
-                    //totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
-                    reportsListView.setAdapter(adminReportAdapter);
-                    reportsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Toast.makeText(getActivity(), "Clickable action", Toast.LENGTH_SHORT).show();
-                            *//*Intent intent = new Intent(UserProfileFragment.this.getActivity(), ReportActivity.class);
-                            intent.putExtra("id", adminReportAdapter.getItem(i).getId());
-                            startActivity(intent);*//*
-                        }
-                    });
+                    if(reports.size() == 0){
+                        reportsListView.setVisibility(View.GONE);
+                        lineChartXAxisLabel.setVisibility(View.GONE);
+                        lineChartYAxisLabel.setVisibility(View.GONE);
+                        lineChart.setVisibility(View.GONE);
+                        noDataImage.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        NewMainActivity activity = (NewMainActivity) getActivity();
+                        activity.transferDataUser(); //transfer the data to the UserProfileFragment
+                        adminReportAdapter = new UserReportAdapter(getContext(), reports, UserProfileFragment.this);
+                        //totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
+                        reportsListView.setAdapter(adminReportAdapter);
+                        reportsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Toast.makeText(getActivity(), "Clickable action", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(UserProfileFragment.this.getActivity(), ReportActivity.class);
+                                intent.putExtra("id", adminReportAdapter.getItem(i).getId());
+                                startActivity(intent);
+                            }
+                        });
+                        setData(reports);
+                    }
                 }
             }
 
@@ -170,7 +191,7 @@ public class UserProfileFragment extends Fragment {
                 endProgressDialog();
                 Toast.makeText(getActivity(),"Failed to get the list of reports. ",  Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
     }
 
     //Handle setting up chart from the data

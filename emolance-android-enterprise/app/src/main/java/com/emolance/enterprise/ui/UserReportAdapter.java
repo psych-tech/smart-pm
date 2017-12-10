@@ -2,13 +2,16 @@ package com.emolance.enterprise.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,9 +53,9 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
         final TestReport testReport = reports.get(position);
 
-        final ImageView profileImageView = (ImageView) view.findViewById(R.id.testImage);
+        final View resultColorView = view.findViewById(R.id.resultColor);
 
-        final Button opButton = (Button) view.findViewById(R.id.opButton);
+        //final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         final TextView qrText = (TextView) view.findViewById(R.id.qrText);
         qrText.setText(context.getResources().getString(R.string.test_reports_user_profile_qr_id) +": " + testReport.getReportCode());
@@ -62,85 +65,17 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         Integer level = testReport.getLevel();
         final long id = testReport.getId();
         if (status.equals("Done")) {
-            profileImageView.setImageResource(R.drawable.test_icon_complete);
             valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " + status + " " +
                     context.getResources().getString(R.string.test_reports_user_profile_stress_level) + ": " + level);
             valueText.setTypeface(null, Typeface.BOLD);
+            resultColorView.setBackgroundColor(Color.GREEN);
+
         }
         else {
-            profileImageView.setImageResource(R.drawable.test_icon_incomplete);
             valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "
                     + context.getResources().getString(R.string.test_reports_user_profile_incomplete));
+            resultColorView.setBackgroundColor(Color.YELLOW);
         }
-
-        //if(status.equals("Not Tested") | status.equals("Incomplete")){
-            opButton.setText(context.getResources().getString(R.string.test_reports_user_profile_measure));
-        //}
-
-        if (status.equals(context.getResources().getString(R.string.test_reports_user_profile_testing))) {
-            opButton.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        opButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Possibly remove
-                /*if(opButton.getText() == context.getResources().getString(R.string.test_reports_user_profile_measure)){
-                    valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " +
-                            context.getResources().getString(R.string.test_reports_user_profile_testing));
-                    testReport.setStatus(context.getResources().getString(R.string.test_reports_user_profile_testing));
-
-                    profileImageView.setImageResource(R.drawable.test_icon_incomplete);
-                    opButton.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    boolean videoMode = adminFragment.getVideoMode();
-                    if(videoMode){
-                        MediaRecorder mediaRecorder = adminFragment.getMediaRecorder();
-                        if(mediaRecorder != null && !adminFragment.isRecording()){
-                            adminFragment.setRecording(true);
-                            adminFragment.setCurrentTestReport(testReport);
-                            adminFragment.setResultReadyListener(new ResultReadyListener() {
-                                @Override
-                                public void onResult() {
-                                    valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "
-                                            + context.getResources().getString(R.string.test_reports_user_profile_loading));
-                                    adminFragment.turnOffFlash();
-                                    profileImageView.setImageResource(R.drawable.test_icon_complete);
-                                    progressBar.setVisibility(View.GONE);
-                                    opButton.setVisibility(View.VISIBLE);
-                                    //opButton.setText("Report");
-                                }
-                            });
-                            mediaRecorder.start();
-                        }
-                    }else{
-                        ResultReadyListener resultReadyListener = new ResultReadyListener() {
-                            @Override
-                            public void onResult() {
-                                valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " +
-                                        context.getResources().getString(R.string.test_reports_user_profile_loading));
-
-                                adminFragment.turnOffFlash();
-                                profileImageView.setImageResource(R.drawable.test_icon_complete);
-                                progressBar.setVisibility(View.GONE);
-                                opButton.setVisibility(View.VISIBLE);
-                                //opButton.setText("Report");
-                            }
-                        };
-                        adminFragment.setResultReadyListener(resultReadyListener);
-                        adminFragment.takePhotoForProcessing(testReport, resultReadyListener);
-                    }
-
-                }
-                else{
-                    Intent intent = new Intent(context, ReportActivity.class);
-                    intent.putExtra("id", id);
-                    context.startActivity(intent);
-                }*/
-            }
-        });
 
         return view;
     }
