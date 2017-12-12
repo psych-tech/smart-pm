@@ -1,192 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingTop="15dp"
-    android:paddingBottom="10dp"
-    android:background="#f5f5f5"
+    android:orientation="horizontal"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- The following is not needed in the current add new user screen -->
-    <!--<LinearLayout-->
-        <!--android:layout_weight="0.6"-->
-        <!--android:padding="5dp"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp">-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_weight="1.8"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:orientation="vertical"-->
-            <!--android:background="@drawable/qr_code_background"-->
-            <!--android:paddingTop="5dp"-->
-            <!--android:paddingBottom="5dp"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="0dp">-->
-
-            <!--<TextView-->
-                <!--android:layout_gravity="center"-->
-                <!--android:text="QR ID"-->
-                <!--android:textSize="16sp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-
-            <!--<TextView-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:text="N/A"-->
-                <!--android:textSize="16sp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:id="@+id/qrIdText"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="0dp">-->
-            <!--<Button-->
-                <!--android:id="@+id/qrButton"-->
-                <!--android:background="@null"-->
-                <!--android:text="Not You, Rescan?"-->
-                <!--android:textSize="16sp"-->
-                <!--android:textColor="@color/tab_highlight"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->
-
-    <ImageButton
-        android:id="@+id/cancelButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/back_button"
-        android:background="@null"
-        />
-
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:weightSum="3">
     <LinearLayout
-        android:padding="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content">
-
-        <View
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dip"
-            android:background="#ebebeb" />
-
-        <View
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dip"
-            android:background="#ebebeb" />
+        <ImageButton
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_button"
+            android:background="@null" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_weight="0.8"
-        android:layout_gravity="center"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/profileImageSelector"
-        android:adjustViewBounds="true"
-        android:src="@drawable/persona_landing_2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp" />
-
     <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1.3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/userNameEditText"
-            android:hint="@string/create_user_user_name_hint"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/firstNameEditText"
-            android:background="@drawable/user_profile_field"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp">
+        <View
             android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_weight="0.8"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/profileImageSelector"
+            android:src="@drawable/persona_landing_2"
+            android:layout_width="wrap_content"
             android:layout_height="0dp" />
 
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/firstNameEditText"
-            android:hint="@string/create_user_first_name_hint"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/lastNameEditText"
-            android:background="@drawable/user_profile_field"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1.3"
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            android:layout_height="0dp">
 
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/lastNameEditText"
-            android:hint="@string/create_user_last_name_hint"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/emailEditText"
-            android:background="@drawable/user_profile_field"
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/userNameEditText"
+                android:hint="@string/create_user_user_name_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:nextFocusDown="@+id/firstNameEditText"
+                android:background="@drawable/user_profile_field"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/firstNameEditText"
+                android:hint="@string/create_user_first_name_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:nextFocusDown="@+id/lastNameEditText"
+                android:background="@drawable/user_profile_field"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/lastNameEditText"
+                android:hint="@string/create_user_last_name_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:nextFocusDown="@+id/emailEditText"
+                android:background="@drawable/user_profile_field"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/emailEditText"
+                android:hint="@string/create_user_email_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:nextFocusDown="@+id/professionEditText"
+                android:background="@drawable/user_profile_field"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <EditText
+                android:layout_weight="1"
+                android:background="@drawable/user_profile_field"
+                android:id="@+id/professionEditText"
+                android:hint="@string/create_user_profession_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:scaleX=".70"
+                    android:scaleY=".70"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Send Report Automatically"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <Button
+                android:layout_marginTop="10dp"
+                android:layout_centerInParent="true"
+                android:text="@string/create_user_save_button"
+                android:background="@drawable/save_button_selector"
+                android:id="@+id/createButton"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
-
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/emailEditText"
-            android:hint="@string/create_user_email_hint"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
-            android:nextFocusDown="@+id/professionEditText"
-            android:background="@drawable/user_profile_field"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
-
-        <EditText
-            android:layout_weight="1"
-            android:background="@drawable/user_profile_field"
-            android:id="@+id/professionEditText"
-            android:hint="@string/create_user_profession_hint"
-            android:singleLine="true"
-            android:paddingLeft="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight="0.7"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-
-        <Button
-            android:layout_margin="10dp"
-            android:layout_centerInParent="true"
-            android:text="@string/create_user_save_button"
-            android:background="@drawable/save_button_selector"
-            android:id="@+id/createButton"
-            android:textColor="@color/save_button_color"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
+            android:layout_height="20dp"/>
     </LinearLayout>
 
 </LinearLayout>
