@@ -51,7 +51,7 @@
         <ImageButton
             android:layout_weight="9"
             android:layout_gravity="center"
-            android:id="@+id/more_menu_reports "
+            android:id="@+id/more_menu_reports"
             android:textSize="16sp"
             android:focusable="false"
             android:src="@drawable/more_horiz"

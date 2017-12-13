@@ -43,7 +43,6 @@
             android:layout_weight="1.3"
             android:layout_width="match_parent"
             android:layout_height="0dp">
-
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/userNameEditText"
@@ -54,7 +53,6 @@
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
-
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/firstNameEditText"
@@ -65,18 +63,31 @@
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
-
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:id="@+id/lastNameEditText"
-                android:hint="@string/create_user_last_name_hint"
-                android:singleLine="true"
-                android:paddingLeft="20dp"
-                android:nextFocusDown="@+id/emailEditText"
-                android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
-
+                android:layout_height="0dp"
+                android:weightSum="3">
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/dateOfBirthEditText"
+                    android:hint="Date of birth"
+                    android:singleLine="true"
+                    android:paddingLeft="20dp"
+                    android:nextFocusDown="@+id/emailEditText"
+                    android:background="@drawable/user_profile_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/datePicker"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Select Date"
+                    android:textColor="#819dc4"/>
+            </LinearLayout>
             <EditText
                 android:layout_weight="1"
                 android:id="@+id/emailEditText"
@@ -87,14 +98,12 @@
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
-
-            <EditText
+            <Spinner
+                android:id="@+id/spinnerGroupNewUser"
                 android:layout_weight="1"
-                android:background="@drawable/user_profile_field"
-                android:id="@+id/professionEditText"
-                android:hint="@string/create_user_profession_hint"
-                android:singleLine="true"
-                android:paddingLeft="20dp"
+                android:entries="@array/new_user_group"
+                android:spinnerMode="dialog"
+                android:prompt="@string/create_user_select_item"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
             <LinearLayout
@@ -126,5 +135,9 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
     </LinearLayout>
+    <View
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

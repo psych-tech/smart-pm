@@ -3,22 +3,29 @@ package com.emolance.enterprise.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
+import com.emolance.enterprise.DatePickerFragment;
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -44,6 +51,8 @@ public class UserReportCreatorFragment extends Fragment {
     private String firstName;
     private String lastName;
     private String email;
+    private String dob;
+    private String groupSelected;
     private String profession;
     private String profileUri;
     private String[] emails;
@@ -53,12 +62,14 @@ public class UserReportCreatorFragment extends Fragment {
     EditText userNameEditText;
     @InjectView(R.id.firstNameEditText)
     EditText firstNameEditText;
-    @InjectView(R.id.lastNameEditText)
-    EditText lastNameEditText;
+    @InjectView(R.id.dateOfBirthEditText)
+    EditText dateOfBirthEditText;
+    @InjectView(R.id.datePicker)
+    Button datePickerBtn;
     @InjectView(R.id.emailEditText)
     EditText emailEditText;
-    @InjectView(R.id.professionEditText)
-    EditText professionEditText;
+    @InjectView(R.id.spinnerGroupNewUser)
+    Spinner spinnerGroup;
     @InjectView(R.id.createButton)
     Button createBtn;
     @InjectView(R.id.cancelButton)
@@ -106,26 +117,44 @@ public class UserReportCreatorFragment extends Fragment {
                 profileImageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         });
+        String[] spinnerArray = getResources().getStringArray(R.array.new_user_group);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, spinnerArray);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinnerGroup.setAdapter(spinnerAdapter);
+        datePickerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new DatePickerFragment();
+                fragment.show(getFragmentManager(),"datePicker");
+            }
+        });
         return rootView;
     }
 
     private void errorCheck(){
         String userNameEntry = userNameEditText.getText().toString().trim();
         String firstNameEntry = firstNameEditText.getText().toString().trim();
-        String lastNameEntry = lastNameEditText.getText().toString().trim();
+        String dateOfBirthEntry = dateOfBirthEditText.getText().toString().trim();
         String emailEntry = emailEditText.getText().toString().trim();
-        String professionEntry = professionEditText.getText().toString().trim();
+        String spinnerEntry = spinnerGroup.getSelectedItem().toString();
         if(firstNameEntry.isEmpty()){
             firstNameEditText.setError("First Name field cannot be empty.");
         }
-        if(lastNameEntry.isEmpty()){
-            lastNameEditText.setError("Last Name field cannot be empty.");
+        if(dateOfBirthEntry.isEmpty()){
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            dateFormat.setLenient(false);
+            try {
+                dateFormat.parse(dateOfBirthEntry);
+            } catch (ParseException pe) {
+                dateOfBirthEditText.setError("Date of birth must be in MM/dd/yyyy format.");
+            }
         }
         if(emailEntry.isEmpty()){
             emailEditText.setError("Email field cannot be empty.");
         }
-        if(professionEntry.isEmpty()){
-            professionEditText.setError("Profession field cannot be empty.");
+        if(spinnerEntry.equals("---Select Group---")){
+            spinnerEntry = "";
         }
         if(!emailEntry.isEmpty() && checkEmail(emailEntry)){
             emailEditText.setError("Email field has been taken.");
@@ -134,12 +163,12 @@ public class UserReportCreatorFragment extends Fragment {
             userNameEditText.setError("User Name field has been taken.");
         }
         else{
-            if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !lastNameEntry.isEmpty() && !emailEntry.isEmpty() && !professionEntry.isEmpty()){
+            if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() ){
                 userName = userNameEntry;
                 firstName = firstNameEntry;
-                lastName = lastNameEntry;
+                dob = dateOfBirthEntry;
                 email = emailEntry;
-                profession = professionEntry;
+                groupSelected = spinnerEntry;
 
                 // This is how to post a new uesr:
                 // We need the following fields, please modify the UI accordingly:
@@ -152,7 +181,8 @@ public class UserReportCreatorFragment extends Fragment {
                 //
                 // We don't need the organization, age, zipcode anymore
                 // Please test this and make sure it refreshes the fragment after adding it
-                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, lastName, email, profileUri, profession);
+                //Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, dob, email, profileUri, groupSelected);
+                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, dob, email, profileUri, profession);
                 responseBodyCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -207,4 +237,5 @@ public class UserReportCreatorFragment extends Fragment {
         //will use to create new EmoUser
 
     }
+
 }
