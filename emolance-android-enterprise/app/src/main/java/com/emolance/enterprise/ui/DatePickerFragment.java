@@ -1,4 +1,4 @@
-package com.emolance.enterprise;
+package com.emolance.enterprise.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.app.DatePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import com.emolance.enterprise.R;
 
 import java.util.Calendar;
 

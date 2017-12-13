@@ -241,6 +241,4 @@ public class NewMainActivity extends FragmentActivity {
         // show it
         alertDialog.show();
     }
-
-
 }

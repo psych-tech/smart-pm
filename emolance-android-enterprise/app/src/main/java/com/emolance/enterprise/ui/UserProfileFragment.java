@@ -3,15 +3,16 @@ package com.emolance.enterprise.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
@@ -35,6 +35,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,9 +68,6 @@ public class UserProfileFragment extends Fragment {
     ImageView imageView;
     @InjectView(R.id.userDashboardLineChart)
     LineChart lineChart;
-    //TODO: Remove possibly
-    /*@InjectView(R.id.lineChartTitle)
-    TextView lineChartTitle;*/
     @InjectView(R.id.lineChartYAxisLabel)
     TextView lineChartYAxisLabel;
     @InjectView(R.id.lineChartXAxisLabel)
@@ -84,6 +82,8 @@ public class UserProfileFragment extends Fragment {
     ListView reportsListView;
     @InjectView(R.id.backButtonProfile)
     ImageButton backButton;
+    @InjectView(R.id.testSequenceBtn)
+    Button testSequenceBtn;
     @InjectView(R.id.noDataProfile)
     ImageView noDataImage;
 
@@ -111,6 +111,21 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
+            }
+        });
+        testSequenceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                //ft.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
+                Fragment frag = new TestSequenceFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.DB_EMOUSER,String.valueOf(userId));
+                frag.setArguments(bundle);
+                ft.replace(R.id.root_container_right,frag);
+                ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
             }
         });
         return rootView;

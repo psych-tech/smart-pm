@@ -1,42 +1,6 @@
 package com.emolance.enterprise.ui;
 
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.emolance.enterprise.DatePickerFragment;
-import com.emolance.enterprise.Injector;
-import com.emolance.enterprise.R;
-import com.emolance.enterprise.data.EmoUser;
-import com.emolance.enterprise.data.Report;
-import com.emolance.enterprise.data.TestReport;
-import com.emolance.enterprise.service.EmolanceAPI;
-import com.emolance.enterprise.util.Constants;
-import com.mitac.cell.device.bcr.McBcrConnection;
-import com.mitac.cell.device.bcr.McBcrMessage;
-import com.mitac.cell.device.bcr.MiBcrListener;
-import com.mitac.cell.device.bcr.utility.BARCODE;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-import io.paperdb.Paper;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by yusun on 6/22/15.
