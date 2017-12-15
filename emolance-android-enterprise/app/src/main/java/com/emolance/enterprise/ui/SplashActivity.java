@@ -4,11 +4,17 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
+import com.emolance.enterprise.Manifest;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.util.Constants;
 
@@ -39,6 +45,7 @@ public class SplashActivity extends Activity {
                 checkAuth();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
     }
 
     @Override

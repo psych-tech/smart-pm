@@ -2,12 +2,9 @@ package com.emolance.enterprise.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.SurfaceTexture;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,7 +22,6 @@ import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
 import com.scalified.fab.ActionButton;
-import com.scalified.fab.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +30,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,6 +61,7 @@ public class AdminFragment extends Fragment {
     private int counter;
     private NewMainActivity activity;
     private View rootView;
+    private UserProfileFragment userProfileFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,18 +158,18 @@ public class AdminFragment extends Fragment {
         userProfileFragment.setArguments(bundle);*/
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
-        Fragment frag = new UserProfileFragment();
+        userProfileFragment = new UserProfileFragment();
         Bundle bundle = new Bundle();
         EmoUser emoUser = adminReportAdapter.getItem(i);
 
         bundle.putLong(Constants.USER_ID, emoUser.getId());
-        frag.setArguments(bundle);
+        userProfileFragment.setArguments(bundle);
         bundle.putString(Constants.USER_NAME, emoUser.getName());
         bundle.putString(Constants.USER_EMAIL, emoUser.getEmail());
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
-        frag.setArguments(bundle);
-        fragmentTransaction.replace(R.id.root_container_right,frag);
+        userProfileFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.root_container_right, userProfileFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
@@ -268,5 +263,9 @@ public class AdminFragment extends Fragment {
                 persistLoadedMyUsers(myUsers);
             }
         }
+    }
+
+    public void measureTestOnClick(View view){
+        userProfileFragment.measureTestOnClick(view);
     }
 }

@@ -6,10 +6,14 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +50,7 @@ public class NewMainActivity extends FragmentActivity {
     private LinearLayout rootContainer;
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
+    private AdminFragment adminFragment;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,16 @@ public class NewMainActivity extends FragmentActivity {
         actionBar.setHomeButtonEnabled(true);
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (ContextCompat.checkSelfPermission(NewMainActivity.this, android.Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CAMERA},
+                        1);
+            }
+
+        }
 
         /*
         // Create a tab listener that is called when the user changes tabs.
@@ -90,8 +105,9 @@ public class NewMainActivity extends FragmentActivity {
 //        mViewPager = (ViewPager) findViewById(R.id.pager);
 //        mViewPager.setAdapter(pagerAdapter);
 
+        adminFragment = new AdminFragment();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.root_container_left, new AdminFragment(), "AdminFragment");
+        fragmentTransaction.replace(R.id.root_container_left, adminFragment, "AdminFragment");
         fragmentTransaction.replace(R.id.root_container_right, new AdminDashboardFragment(), "AdminDashboardFragment");
         fragmentTransaction.commit();
 
@@ -146,6 +162,10 @@ public class NewMainActivity extends FragmentActivity {
             }
         }
         setRootContainerVisibility(true);
+    }
+
+    public void measureTestOnClick(View view){
+        adminFragment.measureTestOnClick(view);
     }
 
     @Override
@@ -240,5 +260,35 @@ public class NewMainActivity extends FragmentActivity {
 
         // show it
         alertDialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+
+                    Toast.makeText(this, "Permission denied to use camera ", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0)
+            getFragmentManager().popBackStackImmediate();
+        else super.onBackPressed();
     }
 }

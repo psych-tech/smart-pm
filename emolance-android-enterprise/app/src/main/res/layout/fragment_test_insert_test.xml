@@ -42,10 +42,12 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"/>
             <Button
+                android:id="@+id/measureBtn"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="Measure"
+                android:onClick="measureTestOnClick"
                 android:background="#819dc4"/>
         </LinearLayout>
     </LinearLayout>

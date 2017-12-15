@@ -8,10 +8,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.emolance.enterprise.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TestInsertTestFragment extends Fragment {
+
+    @InjectView(R.id.measureBtn)
+    Button measureBtn;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +31,10 @@ public class TestInsertTestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("TestFragment","onCreateView");
+        View rootView  = inflater.inflate(R.layout.fragment_test_insert_test, container, false);
+        ButterKnife.inject(this,rootView);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_test_insert_test, container, false);
+        return rootView;
     }
 
     @Override

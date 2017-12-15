@@ -93,6 +93,8 @@ public class UserProfileFragment extends Fragment {
     private ProgressDialog progress;
     private List<TestReport> reports;
     private UserReportAdapter adminReportAdapter;
+    private final String USER_ID = "user";
+    private TestSequenceFragment testSequenceFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,12 +120,12 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 //ft.hide(getActivity().getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment"));
-                Fragment frag = new TestSequenceFragment();
+                testSequenceFragment = new TestSequenceFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.DB_EMOUSER,String.valueOf(userId));
-                frag.setArguments(bundle);
-                ft.replace(R.id.root_container_right,frag);
-                ft.addToBackStack(null);
+                bundle.putLong(USER_ID,userId);
+                testSequenceFragment.setArguments(bundle);
+                ft.replace(R.id.root_container_right,testSequenceFragment);
+                ft.addToBackStack("test");
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
             }
@@ -337,5 +339,7 @@ public class UserProfileFragment extends Fragment {
         progress.dismiss();
     }
 
-
+    public void measureTestOnClick(View view){
+        testSequenceFragment.measureTestOnClick(view);
+    }
 }
