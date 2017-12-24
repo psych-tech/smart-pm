@@ -35,7 +35,6 @@ public class TestResultFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-                getActivity().onBackPressed();
             }
         });
         // Inflate the layout for this fragment

@@ -215,11 +215,6 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 getChildFragmentManager().beginTransaction().remove(this).commit();
             }
         }
-        if(videoMode){
-            holder = cameraView.getHolder();
-            holder.addCallback(this);
-            holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        }
     }
 
     protected void create(String qr) {
@@ -258,19 +253,26 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
     public void measureTestOnClick(View view){
         if(qr != null){
             viewPager.setCurrentItem(2);
-            takePhotoForProcessing(testReport, new ResultReadyListener() {
-                @Override
-                public void onResult() {
-                    Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
-                    turnOffFlash();
-                    FragmentTransaction fm = getFragmentManager().beginTransaction();
-                    Fragment testResult = new TestResultFragment();
-                    fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
-                    fm.replace(R.id.root_container_right,testResult);
-                    fm.addToBackStack(null);
-                    fm.commit();
-                }
-            });
+            if(videoMode){
+                holder = cameraView.getHolder();
+                holder.addCallback(this);
+                holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            }
+            else{
+                takePhotoForProcessing(testReport, new ResultReadyListener() {
+                    @Override
+                    public void onResult() {
+                        Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                        turnOffFlash();
+                        FragmentTransaction fm = getFragmentManager().beginTransaction();
+                        Fragment testResult = new TestResultFragment();
+                        fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
+                        fm.replace(R.id.root_container_right,testResult);
+                        fm.addToBackStack(null);
+                        fm.commit();
+                    }
+                });
+            }
         }
         else{
             Toast.makeText(getActivity(),"No QR code available.",Toast.LENGTH_SHORT).show();

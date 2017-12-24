@@ -81,6 +81,11 @@ public class AdminDashboardFragment extends Fragment {
         Context context = getActivity();
 
         colors = getResources().getIntArray(R.array.altcolors);
+        if(((NewMainActivity)getActivity()).getUserList() != null){
+            myUsers = ((NewMainActivity)getActivity()).getUserList();
+            reportsHashmap = ((NewMainActivity)getActivity()).getMaps();
+            setData(myUsers,reportsHashmap);
+        }
     }
 
     //Takes the test data from the AdminFragment and adjusts the UI according to the stats

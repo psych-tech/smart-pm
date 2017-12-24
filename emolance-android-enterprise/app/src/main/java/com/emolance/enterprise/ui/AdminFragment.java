@@ -6,13 +6,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
@@ -38,14 +44,16 @@ import retrofit2.Response;
 /**
  * Created by yusun on 6/22/15.
  */
-public class AdminFragment extends Fragment {
+public class AdminFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     @Inject
     EmolanceAPI emolanceAPI;
     @InjectView(R.id.userListView)
     ListView adminReportListView;
-    @InjectView(R.id.searchUser)
-    ImageButton searchUser;
+    @InjectView(R.id.searchViewUsers)
+    SearchView searchUser;
+    @InjectView(R.id.searchViewHolder)
+    LinearLayout linearLayout;
     ActionButton fab;
 
 
@@ -91,6 +99,21 @@ public class AdminFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        //SearchView search = (SearchView) item.getActionView();
+        //search.setLayoutParams(new ActionBar.LayoutParams(Gravity.RIGHT));
+        searchUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Log.i("search focus", "yes");
+                }
+                else{
+                    Log.i("search focus", "no");
+                }
+            }
+        });
+        linearLayout.setGravity(Gravity.END);
         return rootView;
     }
 
@@ -261,8 +284,39 @@ public class AdminFragment extends Fragment {
                     }
                 });
                 persistLoadedMyUsers(myUsers);
+                adminReportListView.setTextFilterEnabled(true);
+                setupSearchView();
             }
         }
+    }
+
+    private void setupSearchView()
+    {
+        searchUser.setOnQueryTextListener(this);
+        searchUser.setOnCloseListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (TextUtils.isEmpty(newText)) {
+            adminReportListView.clearTextFilter();
+        } else {
+            //adminReportListView.setFilterText(newText);
+            adminReportAdapter.filter(newText);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onClose() {
+        adminReportAdapter.reset();
+        return false;
     }
 
     public void measureTestOnClick(View view){

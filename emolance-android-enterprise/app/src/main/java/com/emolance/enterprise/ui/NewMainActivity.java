@@ -51,6 +51,8 @@ public class NewMainActivity extends FragmentActivity {
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
     private AdminFragment adminFragment;
+    private List<EmoUser> users;
+    HashMap<Long, List<TestReport>> hashMap;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,12 +138,20 @@ public class NewMainActivity extends FragmentActivity {
                     getSupportFragmentManager().findFragmentByTag("AdminDashboardFragment");
 
             if (adminDashboardFragment != null) {
-                List<EmoUser> myUsers = adminFragment.getEmoUserList();
-                HashMap<Long, List<TestReport>> hashMap = adminFragment.getTestsHashmap();
-                adminDashboardFragment.setData(myUsers, hashMap);
+                users = adminFragment.getEmoUserList();
+                hashMap = adminFragment.getTestsHashmap();
+                adminDashboardFragment.setData(users, hashMap);
             }
         }
         setRootContainerVisibility(true);
+    }
+
+    public List<EmoUser> getUserList(){
+        return users;
+    }
+
+    public HashMap<Long, List<TestReport>> getMaps(){
+        return hashMap;
     }
 
     public void updateList(){
