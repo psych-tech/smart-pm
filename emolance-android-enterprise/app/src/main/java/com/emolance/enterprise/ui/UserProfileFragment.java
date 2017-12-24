@@ -27,6 +27,7 @@ import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
+import com.emolance.enterprise.util.DateUtils;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -81,6 +82,10 @@ public class UserProfileFragment extends Fragment {
     TextView userProfileTextViewEmail;
     @InjectView(R.id.userProfileTextViewPosition)
     TextView userProfileTextViewPosition;
+    @InjectView(R.id.userProfileTextViewGender)
+    TextView userProfileTextViewGender;
+    @InjectView(R.id.userProfileTextViewDOB)
+    TextView userProfileTextViewDOB;
     @InjectView(R.id.reportsList)
     ListView reportsListView;
     @InjectView(R.id.backButtonProfile)
@@ -148,6 +153,7 @@ public class UserProfileFragment extends Fragment {
             String userEmail = bundle.getString(Constants.USER_EMAIL);
             String userPosition = bundle.getString(Constants.USER_POSITION);
             String userImage = bundle.getString(Constants.USER_IMAGE);
+            String userDOB = bundle.getString(Constants.USER_DOB);
             Log.i(TAG, "Getting UserId: " + userId);
 
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -160,6 +166,9 @@ public class UserProfileFragment extends Fragment {
             }
             if (userPosition != null) {
                 userProfileTextViewPosition.setText(userPosition);
+            }
+            if(userDOB != null){
+                userProfileTextViewDOB.setText("Date of Birth: " + DateUtils.getDateBirthInStr(userDOB));
             }
             if(userImage != null){
                 String uri = userImage;

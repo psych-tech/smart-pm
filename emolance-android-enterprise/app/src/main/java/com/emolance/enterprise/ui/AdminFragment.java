@@ -191,6 +191,8 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
         bundle.putString(Constants.USER_EMAIL, emoUser.getEmail());
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
+        bundle.putString(Constants.USER_DOB, emoUser.getDatebirth());
+        //TODO: need to add gender for user
         userProfileFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.root_container_right, userProfileFragment);
         fragmentTransaction.addToBackStack(null);

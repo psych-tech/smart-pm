@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
+import com.emolance.enterprise.util.DateUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,18 +59,24 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         //final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         final TextView qrText = (TextView) view.findViewById(R.id.qrText);
-        qrText.setText(context.getResources().getString(R.string.test_reports_user_profile_qr_id) +": " + testReport.getReportCode());
-
         final TextView valueText = (TextView) view.findViewById(R.id.statusText);
+        final TextView dateText = (TextView) view.findViewById(R.id.dateText);
+        qrText.setText(context.getResources().getString(R.string.test_reports_user_profile_qr_id) +": " + testReport.getReportCode());
         String status = testReport.getStatus();
         Integer level = testReport.getLevel();
-        final long id = testReport.getId();
+        long id = testReport.getId();
+        String date = DateUtils.getDateInMMDDYYYYFormat(testReport.getReportDate());
+        if(date == null){
+            dateText.setText("Date Unknown");
+        }
+        else{
+            dateText.setText(date);
+        }
         if (status.equals("Done")) {
             valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " + status + " " +
                     context.getResources().getString(R.string.test_reports_user_profile_stress_level) + ": " + level);
             valueText.setTypeface(null, Typeface.BOLD);
             resultColorView.setBackgroundColor(Color.GREEN);
-
         }
         else {
             valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "

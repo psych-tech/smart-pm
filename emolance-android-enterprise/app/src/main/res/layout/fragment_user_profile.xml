@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/userProfileTextViewPosition"
-                android:text="Position: Unknown"
+                android:text="Position: Not Available"
                 android:textSize="22sp"
                 android:textColor="#828282"
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Gender: Unknown"
+                android:text="Gender: Not Available"
                 android:textColor="#828282"
                 android:textSize="15sp" />
             <TextView
