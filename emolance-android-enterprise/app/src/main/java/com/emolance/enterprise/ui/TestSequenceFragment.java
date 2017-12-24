@@ -171,6 +171,11 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
             }
         });
         viewPagerTab.setViewPager(viewPager);
+        if(videoMode){
+            holder = cameraView.getHolder();
+            holder.addCallback(this);
+            holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        }
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -254,9 +259,8 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         if(qr != null){
             viewPager.setCurrentItem(2);
             if(videoMode){
-                holder = cameraView.getHolder();
-                holder.addCallback(this);
-                holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+                recording = true;
+                mediaRecorder.start();
             }
             else{
                 takePhotoForProcessing(testReport, new ResultReadyListener() {
@@ -268,7 +272,6 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                         Fragment testResult = new TestResultFragment();
                         fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
                         fm.replace(R.id.root_container_right,testResult);
-                        fm.addToBackStack(null);
                         fm.commit();
                     }
                 });
@@ -397,6 +400,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         mediaRecorder.setOutputFile(fileLocation);
         mediaRecorder.setMaxDuration(10000);
         mediaRecorder.setMaxFileSize(5000000);
+
     }
 
     public void prepareRecorder(){
@@ -456,6 +460,14 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                             @Override
                             public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                                 Log.i("TEST", "Video process succeeded.");
+                                //Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                                turnOffFlash();
+                                FragmentTransaction fm = getFragmentManager().beginTransaction();
+                                Fragment testResult = new TestResultFragment();
+                                fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
+                                fm.replace(R.id.root_container_right,testResult);
+                                fm.commit();
+
                             }
 
                             @Override

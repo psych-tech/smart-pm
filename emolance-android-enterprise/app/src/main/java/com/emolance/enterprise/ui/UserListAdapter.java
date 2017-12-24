@@ -71,38 +71,6 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> implements Filterable
         return convertView;
     }
 
-    public Filter getFilter() {
-        return new Filter() {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                final FilterResults oReturn = new FilterResults();
-                final ArrayList<EmoUser> results = new ArrayList<>();
-                if (orig == null)
-                    orig = users;
-                if (constraint != null) {
-                    if (orig != null && orig.size() > 0) {
-                        for (final EmoUser g : orig) {
-                            if (g.getName().toLowerCase()
-                                    .contains(constraint.toString()))
-                                results.add(g);
-                        }
-                    }
-                    oReturn.values = results;
-                }
-                return oReturn;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint,
-                                          FilterResults results) {
-                users = (ArrayList<EmoUser>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         users.clear();
