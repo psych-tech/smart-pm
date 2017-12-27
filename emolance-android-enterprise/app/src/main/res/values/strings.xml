@@ -34,9 +34,8 @@
 
 
     <!--For Create New User-->
-    <string name="create_user_user_name_hint">User Name</string>
-    <string name="create_user_first_name_hint">First Name</string>
-    <string name="create_user_last_name_hint">Last Name</string>
+    <string name="create_user_name_hint">Name</string>
+    <string name="create_user_gender_hint">Gender</string>
     <string name="create_user_email_hint">Email</string>
     <string name="create_user_profession_hint">Profession</string>
     <string name="create_user_save_button">Save</string>

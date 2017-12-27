@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,9 +45,8 @@ public class UserReportCreatorFragment extends Fragment {
     EmolanceAPI emolanceAPI;
 
     private NewMainActivity activity;
-    private String userName;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String gender;
     private String email;
     private String dob;
     private String groupSelected;
@@ -54,11 +54,12 @@ public class UserReportCreatorFragment extends Fragment {
     private String profileUri;
     private String[] emails;
     private String[] userNames;
+    private boolean checked;
 
-    @InjectView(R.id.userNameEditText)
-    EditText userNameEditText;
-    @InjectView(R.id.firstNameEditText)
-    EditText firstNameEditText;
+    @InjectView(R.id.nameEditText)
+    EditText nameEditText;
+    @InjectView(R.id.genderEditText)
+    EditText genderEditText;
     @InjectView(R.id.dateOfBirthEditText)
     EditText dateOfBirthEditText;
     @InjectView(R.id.datePicker)
@@ -73,6 +74,8 @@ public class UserReportCreatorFragment extends Fragment {
     ImageButton cancelBtn;
     @InjectView(R.id.profileImageSelector)
     ImageView profileImageView;
+    @InjectView(R.id.checkBoxEmailAutomatically)
+    CheckBox checkBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,13 +132,20 @@ public class UserReportCreatorFragment extends Fragment {
     }
 
     private void errorCheck(){
-        String userNameEntry = userNameEditText.getText().toString().trim();
-        String firstNameEntry = firstNameEditText.getText().toString().trim();
+        String nameEntry = nameEditText.getText().toString().trim();
+        String genderEntry = genderEditText.getText().toString().trim();
         String dateOfBirthEntry = dateOfBirthEditText.getText().toString().trim();
         String emailEntry = emailEditText.getText().toString().trim();
         String spinnerEntry = spinnerGroup.getSelectedItem().toString();
-        if(firstNameEntry.isEmpty()){
-            firstNameEditText.setError("First Name field cannot be empty.");
+        checked = checkBox.isChecked();
+        if(spinnerEntry.equals("---Select Group---")){
+            spinnerEntry = "";
+        }
+        if(nameEntry.isEmpty()){
+            nameEditText.setError("Name field cannot be empty.");
+        }
+        if(genderEntry.isEmpty()){
+            genderEditText.setError("Gender field cannot be empty.");
         }
         if(dateOfBirthEntry.isEmpty()){
 
@@ -150,19 +160,16 @@ public class UserReportCreatorFragment extends Fragment {
         if(emailEntry.isEmpty()){
             emailEditText.setError("Email field cannot be empty.");
         }
-        if(spinnerEntry.equals("---Select Group---")){
-            spinnerEntry = "";
-        }
         if(!emailEntry.isEmpty() && checkEmail(emailEntry)){
             emailEditText.setError("Email field has been taken.");
         }
-        else if(!userNameEntry.isEmpty() && checkUserName(userNameEntry)){
-            userNameEditText.setError("User Name field has been taken.");
+        else if(!nameEntry.isEmpty() && checkUserName(nameEntry)){
+            nameEditText.setError("User Name field has been taken.");
         }
         else{
-            if(!userNameEntry.isEmpty() && !firstNameEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() ){
-                userName = userNameEntry;
-                firstName = firstNameEntry;
+            if(!nameEntry.isEmpty() && !genderEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() ){
+                name = nameEntry;
+                gender = genderEntry;
                 dob = dateOfBirthEntry;
                 email = emailEntry;
                 groupSelected = spinnerEntry;
@@ -178,8 +185,7 @@ public class UserReportCreatorFragment extends Fragment {
                 //
                 // We don't need the organization, age, zipcode anymore
                 // Please test this and make sure it refreshes the fragment after adding it
-                //Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, dob, email, profileUri, groupSelected);
-                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(userName, firstName, dob, email, profileUri, profession);
+               /* Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(name, gender, dob, email, profileUri, groupSelected,checked);
                 responseBodyCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -191,7 +197,7 @@ public class UserReportCreatorFragment extends Fragment {
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
                 activity.onBackPressed();
             }
         }

@@ -40,8 +40,8 @@
             android:layout_height="0dp">
             <EditText
                 android:layout_weight="1"
-                android:id="@+id/userNameEditText"
-                android:hint="@string/create_user_user_name_hint"
+                android:id="@+id/nameEditText"
+                android:hint="@string/create_user_name_hint"
                 android:singleLine="true"
                 android:paddingLeft="20dp"
                 android:nextFocusDown="@+id/firstNameEditText"
@@ -50,8 +50,8 @@
                 android:layout_height="0dp" />
             <EditText
                 android:layout_weight="1"
-                android:id="@+id/firstNameEditText"
-                android:hint="@string/create_user_first_name_hint"
+                android:id="@+id/genderEditText"
+                android:hint="@string/create_user_gender_hint"
                 android:singleLine="true"
                 android:paddingLeft="20dp"
                 android:nextFocusDown="@+id/lastNameEditText"
@@ -106,6 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <CheckBox
+                    android:id="@+id/checkBoxEmailAutomatically"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:scaleX=".70"
