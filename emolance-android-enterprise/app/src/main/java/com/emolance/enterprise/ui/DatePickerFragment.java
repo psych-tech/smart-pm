@@ -31,5 +31,8 @@ public class DatePickerFragment extends DialogFragment implements android.app.Da
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         EditText dobEditText = (EditText) getActivity().findViewById(R.id.dateOfBirthEditText);
         dobEditText.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
+        if(dobEditText.getError() != null || dobEditText.getText().length() == 0){
+            dobEditText.setError(null);
+        }
     }
 }

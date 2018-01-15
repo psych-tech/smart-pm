@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emolance.enterprise.Injector;
@@ -78,6 +79,8 @@ public class UserReportCreatorFragment extends Fragment {
     ImageView profileImageView;
     @InjectView(R.id.checkBoxEmailAutomatically)
     CheckBox checkBox;
+    @InjectView(R.id.sendReportAutoText)
+    TextView sendReportTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,17 @@ public class UserReportCreatorFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, spinnerArray);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerGroup.setAdapter(spinnerAdapter);
+        sendReportTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    checkBox.setChecked(false);
+                }
+                else{
+                    checkBox.setChecked(true);
+                }
+            }
+        });
         genderEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,10 +238,6 @@ public class UserReportCreatorFragment extends Fragment {
                 activity.onBackPressed();
             }
         }
-    }
-
-    public void createNewUser(){
-
     }
 
     public boolean checkEmail(String s){

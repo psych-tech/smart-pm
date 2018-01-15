@@ -39,6 +39,9 @@ public class GenderDialogFragment extends DialogFragment {
                                 RadioButton radioButton = (RadioButton) view.findViewById(radioID);
                                 EditText genderEditText = (EditText) getActivity().findViewById(R.id.genderEditText);
                                 genderEditText.setText(radioButton.getText());
+                                if(genderEditText.getError() != null || genderEditText.getText().length() == 0){
+                                    genderEditText.setError(null);
+                                }
                                 dialog.dismiss();
                             }
                         }

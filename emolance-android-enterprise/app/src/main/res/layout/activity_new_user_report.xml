@@ -132,6 +132,7 @@
                     android:scaleX=".70"
                     android:scaleY=".70"/>
                 <TextView
+                    android:id="@+id/sendReportAutoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Send Report Automatically"
