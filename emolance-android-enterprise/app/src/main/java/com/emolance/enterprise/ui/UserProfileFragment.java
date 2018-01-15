@@ -173,7 +173,9 @@ public class UserProfileFragment extends Fragment {
             if(userImage != null){
                 String uri = userImage;
                 int imageResource = getResources().getIdentifier(uri,null,getActivity().getPackageName());
-                imageView.setImageDrawable(getResources().getDrawable(imageResource));
+                if(imageResource != 1){
+                    imageView.setImageDrawable(getResources().getDrawable(imageResource));
+                }
             }
         }
         startProgressDialog();

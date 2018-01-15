@@ -66,7 +66,9 @@ public class UserListAdapter extends ArrayAdapter<EmoUser> implements Filterable
         if(users.get(position).getProfileImage() != null){
             String uri = users.get(position).getProfileImage() ;
             int imageResource = context.getResources().getIdentifier(uri,null,context.getApplicationContext().getPackageName());
-            holder.profileImageView.setImageDrawable(context.getResources().getDrawable(imageResource));
+            if(imageResource != 1){
+                holder.profileImageView.setImageDrawable(context.getResources().getDrawable(imageResource));
+            }
         }
         return convertView;
     }
