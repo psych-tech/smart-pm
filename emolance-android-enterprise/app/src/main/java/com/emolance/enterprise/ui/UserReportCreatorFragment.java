@@ -60,6 +60,8 @@ public class UserReportCreatorFragment extends Fragment {
     EditText nameEditText;
     @InjectView(R.id.genderEditText)
     EditText genderEditText;
+    @InjectView(R.id.genderPicker)
+    Button genderPickerBtn;
     @InjectView(R.id.dateOfBirthEditText)
     EditText dateOfBirthEditText;
     @InjectView(R.id.datePicker)
@@ -121,6 +123,20 @@ public class UserReportCreatorFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, spinnerArray);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerGroup.setAdapter(spinnerAdapter);
+        genderEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new GenderDialogFragment();
+                fragment.show(getFragmentManager(),"genderPicker");
+            }
+        });
+        genderPickerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new GenderDialogFragment();
+                fragment.show(getFragmentManager(),"genderPicker");
+            }
+        });
         dateOfBirthEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -48,16 +48,33 @@
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:id="@+id/genderEditText"
-                android:hint="@string/create_user_gender_hint"
-                android:singleLine="true"
-                android:paddingLeft="20dp"
-                android:nextFocusDown="@+id/lastNameEditText"
-                android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:weightSum="3">
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/genderEditText"
+                    android:hint="@string/create_user_gender_hint"
+                    android:focusable="false"
+                    android:singleLine="true"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:nextFocusDown="@+id/emailEditText"
+                    android:background="@drawable/user_profile_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/genderPicker"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Select Gender"
+                    android:textColor="#819dc4"/>
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_weight="1"
@@ -89,6 +106,7 @@
                 android:layout_weight="1"
                 android:id="@+id/emailEditText"
                 android:hint="@string/create_user_email_hint"
+                android:inputType="textWebEmailAddress"
                 android:singleLine="true"
                 android:paddingLeft="20dp"
                 android:nextFocusDown="@+id/professionEditText"
