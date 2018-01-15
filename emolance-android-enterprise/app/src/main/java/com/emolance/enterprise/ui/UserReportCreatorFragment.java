@@ -121,6 +121,13 @@ public class UserReportCreatorFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, spinnerArray);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinnerGroup.setAdapter(spinnerAdapter);
+        dateOfBirthEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new DatePickerFragment();
+                fragment.show(getFragmentManager(),"datePicker");
+            }
+        });
         datePickerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
