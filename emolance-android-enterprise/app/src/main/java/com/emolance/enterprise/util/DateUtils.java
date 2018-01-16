@@ -110,7 +110,7 @@ public class DateUtils {
                     DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                             .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM-dd-yyyy")
                     .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
             return dateTimeStr;
@@ -119,7 +119,7 @@ public class DateUtils {
                     DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
                             .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy' 'HH:mm")
+            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM-dd-yyyy")
                     .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
             return dateTimeStr;

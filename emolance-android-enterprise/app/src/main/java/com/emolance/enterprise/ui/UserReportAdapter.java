@@ -58,10 +58,9 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
         //final Button opButton = (Button) view.findViewById(R.id.opButton);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        final TextView qrText = (TextView) view.findViewById(R.id.qrText);
-        final TextView valueText = (TextView) view.findViewById(R.id.statusText);
+        final TextView levelText = (TextView) view.findViewById(R.id.valueText);
+        final TextView statusText = (TextView) view.findViewById(R.id.statusText);
         final TextView dateText = (TextView) view.findViewById(R.id.dateText);
-        qrText.setText(context.getResources().getString(R.string.test_reports_user_profile_qr_id) +": " + testReport.getReportCode());
         String status = testReport.getStatus();
         Integer level = testReport.getLevel();
         long id = testReport.getId();
@@ -73,15 +72,15 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             dateText.setText(date);
         }
         if (status.equals("Done")) {
-            valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": " + status + " " +
-                    context.getResources().getString(R.string.test_reports_user_profile_stress_level) + ": " + level);
-            valueText.setTypeface(null, Typeface.BOLD);
-            resultColorView.setBackgroundColor(Color.GREEN);
+            int color = colorPicker(level);
+            resultColorView.setBackgroundColor(color);
+            statusText.setText(status);
+            levelText.setText(String.valueOf(level));
         }
         else {
-            valueText.setText(context.getResources().getString(R.string.test_reports_user_profile_status) + ": "
-                    + context.getResources().getString(R.string.test_reports_user_profile_incomplete));
-            resultColorView.setBackgroundColor(Color.YELLOW);
+            statusText.setText(context.getResources().getString(R.string.test_reports_user_profile_incomplete));
+            resultColorView.setBackgroundColor(Color.GRAY);
+            levelText.setText("N/A");
         }
 
         return view;
@@ -94,5 +93,20 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             }
         });
         Collections.reverse(reports);
+    }
+
+    private int colorPicker(int val){
+        if(val <= 2 && val > 0){
+            return Color.GREEN;
+        }
+        else if(val <= 4 && val > 2){
+            return Color.YELLOW;
+        }
+        else if(val <= 6 && val > 4){
+            return Color.RED;
+        }
+        else{
+            return Color.GRAY;
+        }
     }
 }

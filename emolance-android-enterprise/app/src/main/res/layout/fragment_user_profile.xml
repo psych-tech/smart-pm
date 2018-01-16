@@ -156,6 +156,10 @@
                 android:gravity="center"
                 />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="?android:attr/listDivider" />
         <ListView
             android:id="@+id/reportsList"
             android:layout_weight="2"
