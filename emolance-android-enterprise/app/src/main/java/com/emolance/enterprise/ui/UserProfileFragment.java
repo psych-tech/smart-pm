@@ -268,7 +268,7 @@ public class UserProfileFragment extends Fragment {
         }
 
         //Set up the chart if their is data
-        if (lineEntries.size() > 1) {
+        if (lineEntries.size() > 0) {
             //lineChartTitle.setVisibility(View.VISIBLE);
             lineChartXAxisLabel.setVisibility(View.VISIBLE);
             lineChartYAxisLabel.setVisibility(View.VISIBLE);
