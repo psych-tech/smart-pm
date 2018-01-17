@@ -134,9 +134,9 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         generateReportFragment = new TestGenerateReportFragment();
          adapter = new FragmentPagerItemAdapter(
                 getFragmentManager(), FragmentPagerItems.with(getActivity())
-                .add("Scan QR Code", qrScanFragment.getClass())
-                .add("Insert Test", insertTestFragment.getClass())
-                .add("Generating Report", generateReportFragment.getClass())
+                .add("Step 1: Scan QR Code", qrScanFragment.getClass())
+                .add("Step 2: Insert Test", insertTestFragment.getClass())
+                .add("Step 3:  Generating Report", generateReportFragment.getClass())
                 .create());
         final View touchView = rootView.findViewById(R.id.viewpager);
         touchView.setOnTouchListener(new View.OnTouchListener()
