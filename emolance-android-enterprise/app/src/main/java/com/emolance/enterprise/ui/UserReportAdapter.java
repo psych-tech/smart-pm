@@ -36,7 +36,6 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
     public UserReportAdapter(Context context, List<TestReport> objects, UserProfileFragment adminFragment) {
         super(context, R.layout.list_user_report_item, objects);
         this.context = context;
-        sortList(objects);
         this.reports = objects;
         this.adminFragment = adminFragment;
     }
@@ -84,15 +83,6 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         }
 
         return view;
-    }
-
-    private void sortList(List<TestReport> reports){
-        Collections.sort(reports, new Comparator<TestReport>() {
-            public int compare(TestReport lhs, TestReport rhs) {
-                return lhs.getReportDateinMillseconds().compareTo(rhs.getReportDateinMillseconds());
-            }
-        });
-        Collections.reverse(reports);
     }
 
     private int colorPicker(int val){

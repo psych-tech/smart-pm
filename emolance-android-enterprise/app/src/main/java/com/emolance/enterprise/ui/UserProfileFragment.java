@@ -200,6 +200,13 @@ public class UserProfileFragment extends Fragment {
                     else{
                         NewMainActivity activity = (NewMainActivity) getActivity();
                         activity.transferDataUser(); //transfer the data to the UserProfileFragment
+                        Collections.sort(reports, new Comparator<TestReport>() {
+                            public int compare(TestReport o1, TestReport o2) {
+                                if (o1.getReportDate() == null || o2.getReportDate() == null)
+                                    return 0;
+                                return o2.getReportDate().compareTo(o1.getReportDate());
+                                }
+                        });
                         adminReportAdapter = new UserReportAdapter(getContext(), reports, UserProfileFragment.this);
                         //totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
                         reportsListView.setAdapter(adminReportAdapter);
@@ -228,26 +235,19 @@ public class UserProfileFragment extends Fragment {
 
     //Handle setting up chart from the data
     public void setData(List<TestReport> tests) {
-        //Sort the reports chronologically
-        Collections.sort(tests, new Comparator<TestReport>() {
-            public int compare(TestReport o1, TestReport o2) {
-                if (o1.getReportDate() == null || o2.getReportDate() == null)
-                    return 0;
-                return o1.getReportDate().compareTo(o2.getReportDate());
-            }
-        });
 
         //fill lineEntries with data
         List<Entry> lineEntries = new ArrayList<>();
         Date d;
         timestamps = new long[tests.size()];
         //starting index of the tests being displayed
-        int offset = 0;
-        if(tests.size() > 10){
-            offset = tests.size() - 10;
+        int offset = 9;
+        if(tests.size() < 10){
+            offset = tests.size() - 1;
         }
         //Set up the chart data from the tests
-        for (int i = offset; i < tests.size(); i++) {
+        int count = 0;
+        for (int i = offset; i >= 0; i--) {
             TestReport testReport = tests.get(i);
             if (testReport != null) {
                 Integer stressLevel = testReport.getLevel();
@@ -255,11 +255,11 @@ public class UserProfileFragment extends Fragment {
                     stressLevel = 0;
                 }
                 String testDate = testReport.getReportDate();
-
                 try {
                     d = inputFormatter.parse(testDate);
-                    timestamps[i - offset] = d.getTime();
-                    lineEntries.add(new Entry(i - offset, stressLevel));
+                    timestamps[count] = d.getTime();
+                    lineEntries.add(new Entry(count, stressLevel));
+                    count++;
                 }
                 catch (ParseException e) {
                     Toast.makeText(getActivity(), "Error getting test date",  Toast.LENGTH_LONG).show();
