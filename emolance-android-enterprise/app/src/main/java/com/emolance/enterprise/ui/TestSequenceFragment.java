@@ -126,7 +126,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(TestSequenceFragment.this).commit();
+                getActivity().onBackPressed();
             }
         });
         qrScanFragment = new TestQRScanFragment();
@@ -227,7 +227,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         testReport.setReportCode(qr);
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
-
+        Log.i("IN","create(qr)");
         Call<TestReport> createCall = emolanceAPI.createUserReport(testReport);
         createCall.enqueue(new Callback<TestReport>() {
             @Override
@@ -530,7 +530,14 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
     public void onStop() {
         super.onStop();
         if(mBcr != null){
+            mBcr.stopScan();
             mBcr.stopListening();
+        }
+        if (recording) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            turnOffFlash();
+            recording = false;
         }
     }
 
