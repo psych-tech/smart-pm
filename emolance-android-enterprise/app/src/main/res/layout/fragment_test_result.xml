@@ -4,19 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.emolance.enterprise.ui.TestResultFragment">
-
-    <!-- TODO: Update blank fragment layout -->
     <ImageButton
+        android:id="@+id/backButtonResultScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/back_button"
-        android:layout_margin="8dp"
-        android:scaleX=".70"
-        android:scaleY=".70"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="4dp"
         android:background="#00000000"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
