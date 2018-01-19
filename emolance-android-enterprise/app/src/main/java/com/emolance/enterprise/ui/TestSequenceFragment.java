@@ -133,7 +133,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         insertTestFragment = new TestInsertTestFragment();
         generateReportFragment = new TestGenerateReportFragment();
          adapter = new FragmentPagerItemAdapter(
-                getFragmentManager(), FragmentPagerItems.with(getActivity())
+                getChildFragmentManager(), FragmentPagerItems.with(getActivity())
                 .add("Step 1: Scan QR Code", qrScanFragment.getClass())
                 .add("Step 2: Insert Test", insertTestFragment.getClass())
                 .add("Step 3:  Generating Report", generateReportFragment.getClass())
@@ -217,7 +217,6 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 if(mBcr != null){
                     mBcr.close();
                 }
-                getChildFragmentManager().beginTransaction().remove(this).commit();
             }
         }
     }
@@ -227,7 +226,6 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         testReport.setReportCode(qr);
         testReport.setOwner(currentEmoUser);
         testReport.setStatus("Not Tested");
-        Log.i("IN","create(qr)");
         Call<TestReport> createCall = emolanceAPI.createUserReport(testReport);
         createCall.enqueue(new Callback<TestReport>() {
             @Override
@@ -250,7 +248,8 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 if(mBcr != null){
                     mBcr.close();
                 }
-                getActivity().getSupportFragmentManager().beginTransaction().remove(TestSequenceFragment.this).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(TestSequenceFragment.this).commit();
+                getActivity().onBackPressed();
             }
         });
     }
