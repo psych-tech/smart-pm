@@ -44,7 +44,7 @@
                 android:hint="@string/create_user_name_hint"
                 android:singleLine="true"
                 android:paddingLeft="20dp"
-                android:nextFocusDown="@+id/firstNameEditText"
+                android:imeOptions="actionDone"
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
@@ -62,7 +62,6 @@
                     android:singleLine="true"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:nextFocusDown="@+id/emailEditText"
                     android:background="@drawable/user_profile_field"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -89,7 +88,6 @@
                     android:singleLine="true"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:nextFocusDown="@+id/emailEditText"
                     android:background="@drawable/user_profile_field"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -109,7 +107,6 @@
                 android:inputType="textWebEmailAddress"
                 android:singleLine="true"
                 android:paddingLeft="20dp"
-                android:nextFocusDown="@+id/professionEditText"
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
