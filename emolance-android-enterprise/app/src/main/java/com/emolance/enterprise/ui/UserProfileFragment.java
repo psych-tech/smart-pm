@@ -1,5 +1,6 @@
 package com.emolance.enterprise.ui;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -133,7 +134,7 @@ public class UserProfileFragment extends Fragment {
                 bundle.putLong(USER_ID,userId);
                 testSequenceFragment.setArguments(bundle);
                 ft.replace(R.id.root_container_right,testSequenceFragment);
-                ft.addToBackStack("test");
+                ft.addToBackStack(null);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
             }
