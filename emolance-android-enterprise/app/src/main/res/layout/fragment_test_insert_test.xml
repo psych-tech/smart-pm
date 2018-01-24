@@ -48,7 +48,7 @@
                 android:textColor="@color/white"
                 android:text="Measure"
                 android:onClick="measureTestOnClick"
-                android:background="#819dc4"/>
+                android:background="#496a9e"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
