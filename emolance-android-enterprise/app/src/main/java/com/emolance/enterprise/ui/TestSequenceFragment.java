@@ -132,7 +132,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
         qrScanFragment = new TestQRScanFragment();
         insertTestFragment = new TestInsertTestFragment();
         generateReportFragment = new TestGenerateReportFragment();
-         adapter = new FragmentPagerItemAdapter(
+        adapter = new FragmentPagerItemAdapter(
                 getChildFragmentManager(), FragmentPagerItems.with(getActivity())
                 .add("Step 1: Scan QR Code", qrScanFragment.getClass())
                 .add("Step 2: Insert Test", insertTestFragment.getClass())
@@ -175,6 +175,9 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
             holder = cameraView.getHolder();
             holder.addCallback(this);
             holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        }
+        for(int i = 0; i <= 2; i++) {
+            viewPagerTab.getTabAt(i).setClickable(false);
         }
         // Inflate the layout for this fragment
         return rootView;
