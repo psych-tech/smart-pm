@@ -106,16 +106,18 @@
                 android:hint="@string/create_user_email_hint"
                 android:inputType="textWebEmailAddress"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:paddingLeft="20dp"
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
-            <Spinner
-                android:id="@+id/spinnerGroupNewUser"
+            <EditText
                 android:layout_weight="1"
-                android:entries="@array/new_user_group"
-                android:spinnerMode="dialog"
-                android:prompt="@string/create_user_select_item"
+                android:id="@+id/positionEditText"
+                android:hint="@string/create_user_position_hint"
+                android:singleLine="true"
+                android:paddingLeft="20dp"
+                android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
             <LinearLayout

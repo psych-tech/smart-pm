@@ -37,7 +37,7 @@
     <string name="create_user_name_hint">Name</string>
     <string name="create_user_gender_hint">Gender</string>
     <string name="create_user_email_hint">Email</string>
-    <string name="create_user_profession_hint">Profession</string>
+    <string name="create_user_position_hint">Position</string>
     <string name="create_user_save_button">Save</string>
     <string name="create_user_cancel_button">Cancel</string>
     <string name="create_user_select_item">Select an item</string>
@@ -84,13 +84,6 @@
 
     <string-array name="dashboard_listings">
         <item>All</item>
-        <item>Other</item>
-    </string-array>
-
-    <string-array name="new_user_group">
-        <item>---Select Group---</item>
-        <item>Group 1</item>
-        <item>Group 2</item>
         <item>Other</item>
     </string-array>
 

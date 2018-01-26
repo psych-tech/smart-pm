@@ -50,8 +50,8 @@ public class UserReportCreatorFragment extends Fragment {
     private String gender;
     private String email;
     private String dob;
-    private String groupSelected;
-    private String profession;
+    private String position;
+    private String login;
     private String profileUri;
     private String[] emails;
     private String[] userNames;
@@ -69,8 +69,8 @@ public class UserReportCreatorFragment extends Fragment {
     Button datePickerBtn;
     @InjectView(R.id.emailEditText)
     EditText emailEditText;
-    @InjectView(R.id.spinnerGroupNewUser)
-    Spinner spinnerGroup;
+    @InjectView(R.id.positionEditText)
+    EditText positionEditText;
     @InjectView(R.id.createButton)
     Button createBtn;
     @InjectView(R.id.cancelButton)
@@ -122,10 +122,6 @@ public class UserReportCreatorFragment extends Fragment {
                 profileImageView.setImageDrawable(getResources().getDrawable(imageResource));
             }
         });
-        String[] spinnerArray = getResources().getStringArray(R.array.new_user_group);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, spinnerArray);
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
-        spinnerGroup.setAdapter(spinnerAdapter);
         sendReportTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,11 +169,8 @@ public class UserReportCreatorFragment extends Fragment {
         String genderEntry = genderEditText.getText().toString().trim();
         String dateOfBirthEntry = dateOfBirthEditText.getText().toString().trim();
         String emailEntry = emailEditText.getText().toString().trim();
-        String spinnerEntry = spinnerGroup.getSelectedItem().toString();
+        String positionEntry = positionEditText.getText().toString().trim();
         checked = checkBox.isChecked();
-        if(spinnerEntry.equals("---Select Group---")){
-            spinnerEntry = "";
-        }
         if(nameEntry.isEmpty()){
             nameEditText.setError("Name field cannot be empty.");
         }
@@ -197,6 +190,9 @@ public class UserReportCreatorFragment extends Fragment {
         if(emailEntry.isEmpty()){
             emailEditText.setError("Email field cannot be empty.");
         }
+        if(positionEntry.isEmpty()){
+            positionEditText.setError("Position field cannot be empty.");
+        }
         if(!emailEntry.isEmpty() && checkEmail(emailEntry)){
             emailEditText.setError("Email field has been taken.");
         }
@@ -204,12 +200,14 @@ public class UserReportCreatorFragment extends Fragment {
             nameEditText.setError("User Name field has been taken.");
         }
         else{
-            if(!nameEntry.isEmpty() && !genderEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() ){
+            if(!nameEntry.isEmpty() && !genderEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() && !positionEntry.isEmpty()){
                 name = nameEntry;
                 gender = genderEntry;
                 dob = dateOfBirthEntry;
                 email = emailEntry;
-                groupSelected = spinnerEntry;
+                position = positionEntry;
+                login = emailEntry;
+                //TODO: checked  and gender should be added to API post for checkbox
 
                 // This is how to post a new uesr:
                 // We need the following fields, please modify the UI accordingly:
@@ -222,7 +220,7 @@ public class UserReportCreatorFragment extends Fragment {
                 //
                 // We don't need the organization, age, zipcode anymore
                 // Please test this and make sure it refreshes the fragment after adding it
-               /* Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(name, gender, dob, email, profileUri, groupSelected,checked);
+                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(email, name, dob, email, profileUri, position);
                 responseBodyCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -234,7 +232,7 @@ public class UserReportCreatorFragment extends Fragment {
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
                 activity.onBackPressed();
             }
         }
