@@ -1,27 +1,16 @@
 package com.emolance.enterprise.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.MediaRecorder;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.util.DateUtils;
-
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -42,7 +31,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View view = convertView;
+        View view;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.list_user_report_item, parent, false);
@@ -62,15 +51,14 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         final TextView dateText = (TextView) view.findViewById(R.id.dateText);
         String status = testReport.getStatus();
         Integer level = testReport.getLevel();
-        long id = testReport.getId();
         String date = DateUtils.getDateInMMDDYYYYFormat(testReport.getReportDate());
         if(date == null){
-            dateText.setText("Date Unknown");
+            dateText.setText(context.getResources().getString(R.string.test_reports_user_date_unknown));
         }
         else{
             dateText.setText(date);
         }
-        if (status.equals("Done")) {
+        if (status.equals(context.getResources().getString(R.string.test_reports_user_profile_done))) {
             int color = colorPicker(level);
             resultColorView.setBackgroundColor(color);
             statusText.setText(status);

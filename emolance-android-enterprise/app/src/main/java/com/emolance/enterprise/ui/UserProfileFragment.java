@@ -87,6 +87,8 @@ public class UserProfileFragment extends Fragment {
     TextView userProfileTextViewGender;
     @InjectView(R.id.userProfileTextViewDOB)
     TextView userProfileTextViewDOB;
+    @InjectView(R.id.userProfileTextViewWeChat)
+    TextView userProfileTextViewWeChat;
     @InjectView(R.id.reportsList)
     ListView reportsListView;
     @InjectView(R.id.backButtonProfile)
@@ -139,7 +141,6 @@ public class UserProfileFragment extends Fragment {
                 ft.commit();
             }
         });
-        //TODO:searchView.setGravity(Gravity.RIGHT);
         return rootView;
     }
 
@@ -155,6 +156,7 @@ public class UserProfileFragment extends Fragment {
             String userPosition = bundle.getString(Constants.USER_POSITION);
             String userImage = bundle.getString(Constants.USER_IMAGE);
             String userDOB = bundle.getString(Constants.USER_DOB);
+            String userWeChat = bundle.getString(Constants.USER_WECHAT);
             Log.i(TAG, "Getting UserId: " + userId);
 
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -169,7 +171,7 @@ public class UserProfileFragment extends Fragment {
                 userProfileTextViewPosition.setText(userPosition);
             }
             if(userDOB != null){
-                userProfileTextViewDOB.setText("Date of Birth: " + DateUtils.getDateBirthInStr(userDOB));
+                userProfileTextViewDOB.setText(getResources().getString(R.string.user_profile_dob) + ": " + DateUtils.getDateBirthInStr(userDOB));
             }
             if(userImage != null){
                 String uri = userImage;

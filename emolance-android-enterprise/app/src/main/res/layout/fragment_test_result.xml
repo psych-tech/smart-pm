@@ -205,7 +205,7 @@
                         android:paddingRight="50dp"
                         android:textColor="@color/white"
                         android:background="#819dc4"
-                        android:text="Send" />
+                        android:text="@string/test_result_send_button" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

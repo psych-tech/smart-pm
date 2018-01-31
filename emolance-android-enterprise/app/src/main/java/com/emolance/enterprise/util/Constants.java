@@ -27,6 +27,8 @@ public class Constants {
     public static final String USER_POSITION = "UserPosition";
     public static final String USER_IMAGE = "UserImage";
     public static final String USER_DOB = "UserDOB";
+    public static final String USER_WECHAT = "UserWeChat";
+
 
     public static final String LIST_EMAILS = "emails";
     public static final String LIST_USERNAMES = "usernames";

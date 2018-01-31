@@ -71,7 +71,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:text="Select Gender"
+                    android:text="@string/create_user_gender_button"
                     android:textColor="#819dc4"/>
             </LinearLayout>
             <LinearLayout
@@ -83,7 +83,7 @@
                 <EditText
                     android:layout_weight="2"
                     android:id="@+id/dateOfBirthEditText"
-                    android:hint="Date of birth"
+                    android:hint="@string/create_user_dob_hint"
                     android:focusable="false"
                     android:singleLine="true"
                     android:paddingLeft="20dp"
@@ -97,7 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:text="Select Date"
+                    android:text="@string/create_user_dob_button"
                     android:textColor="#819dc4"/>
             </LinearLayout>
             <EditText
@@ -134,7 +134,7 @@
                     android:id="@+id/sendReportAutoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Send Report Automatically"
+                    android:text="@string/create_user_send_report_check"
                     android:textSize="10sp" />
             </LinearLayout>
             <Button

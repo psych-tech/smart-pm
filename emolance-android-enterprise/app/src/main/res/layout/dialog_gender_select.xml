@@ -17,14 +17,14 @@
             android:id="@+id/genderRadioGroup"
             android:padding="10dp">
             <RadioButton
-                android:text="Male"
+                android:text="@string/create_user_selection_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioMaleButton"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1" />
             <RadioButton
-                android:text="Female"
+                android:text="@string/create_user_selection_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioFemaleButton"

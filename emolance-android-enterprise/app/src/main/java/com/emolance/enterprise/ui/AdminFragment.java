@@ -192,7 +192,8 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
         bundle.putString(Constants.USER_DOB, emoUser.getDatebirth());
-        //TODO: need to add gender for user
+        //TODO: need to add wechat
+        bundle.putString(Constants.USER_WECHAT, getResources().getString(R.string.user_profile_na));
         userProfileFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.root_container_right, userProfileFragment);
         fragmentTransaction.addToBackStack(null);
@@ -250,7 +251,7 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
                                 @Override
                                 public void onFailure(Call<List<TestReport>> call, Throwable t) {
                                     Log.e("AdminReport", "Failed to get the list of individual history reports. ");
-                                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.api_user_list_error),  Toast.LENGTH_LONG).show();
                                     endProgressDialog();
                                 }
                             });
@@ -261,7 +262,7 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
                 @Override
                 public void onFailure(Call<List<EmoUser>> call, Throwable t) {
                     Log.e("AdminReport", "Failed to get the list of history reports. ");
-                    Toast.makeText(getActivity(),"Failed to get the list of history reports. ",  Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),getResources().getString(R.string.api_user_list_error),  Toast.LENGTH_LONG).show();
                     endProgressDialog();
                 }
             });

@@ -90,7 +90,7 @@
                 android:id="@+id/testSequenceBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Test"
+                android:text="@string/user_profile_test_button"
                 android:paddingLeft="45dp"
                 android:paddingRight="45dp"
                 android:background="#819dc4"

@@ -6,7 +6,6 @@
     android:weightSum="3"
     tools:context="com.emolance.enterprise.ui.TestQRScanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_weight="1"
         android:orientation="horizontal"
