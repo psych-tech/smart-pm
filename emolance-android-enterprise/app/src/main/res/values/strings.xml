@@ -71,7 +71,7 @@
     <!--For Test Sequence Fragment-->
     <string name="test_sequence_tab_1">Step 1: Scan QR Code</string>
     <string name="test_sequence_tab_2">Step 2: Insert Test</string>
-    <string name="test_sequence_tab_3">Step 3:  Generating Report</string>
+    <string name="test_sequence_tab_3">Step 3: Generating Report</string>
 
     <!--For Test Result Fragment-->
     <string name="test_result_send_button">Send</string>

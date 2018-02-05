@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -109,8 +110,8 @@ public class NewMainActivity extends FragmentActivity {
 
         adminFragment = new AdminFragment();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.root_container_left, adminFragment, "AdminFragment");
-        fragmentTransaction.replace(R.id.root_container_right, new AdminDashboardFragment(), "AdminDashboardFragment");
+        fragmentTransaction.add(R.id.root_container_left, adminFragment, "AdminFragment");
+        fragmentTransaction.add(R.id.root_container_right, new AdminDashboardFragment(), "AdminDashboardFragment");
         fragmentTransaction.commit();
 
         rootContainer = (LinearLayout) findViewById(R.id.root_container);
@@ -295,10 +296,30 @@ public class NewMainActivity extends FragmentActivity {
         }
     }
 
+    public void clearBackStackInclusive() {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0)
-            getFragmentManager().popBackStackImmediate();
-        else super.onBackPressed();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0 || count == 1) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.root_container_right);
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            if(fragment instanceof TestSequenceFragment){
+                super.onBackPressed();
+            }
+            else if(fragment instanceof TestResultFragment) {
+                super.onBackPressed();
+            }
+            else if(manager.getBackStackEntryCount() > 1) {
+                android.support.v4.app.FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        }
     }
 }

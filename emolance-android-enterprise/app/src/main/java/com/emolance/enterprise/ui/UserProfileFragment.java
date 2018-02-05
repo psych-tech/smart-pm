@@ -135,7 +135,7 @@ public class UserProfileFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putLong(USER_ID,userId);
                 testSequenceFragment.setArguments(bundle);
-                ft.replace(R.id.root_container_right,testSequenceFragment);
+                ft.replace(R.id.root_container_right,testSequenceFragment,"SequenceFragment");
                 ft.addToBackStack(null);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
@@ -360,4 +360,10 @@ public class UserProfileFragment extends Fragment {
     public void measureTestOnClick(View view){
         testSequenceFragment.measureTestOnClick(view);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 }
