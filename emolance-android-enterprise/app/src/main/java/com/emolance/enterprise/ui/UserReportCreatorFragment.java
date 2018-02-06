@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -224,13 +222,19 @@ public class UserReportCreatorFragment extends Fragment {
                 responseBodyCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        activity.updateList();
-                        Toast.makeText(activity, getResources().getString(R.string.create_user_success_toast), Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful()) {
+                            activity.updateList();
+                            //Toast.makeText(activity, getActivity().getResources().getString(R.string.create_user_success_toast), Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            /*Toast.makeText(activity, getActivity().getResources().getString(R.string.create_user_failure_toast),
+                                    Toast.LENGTH_SHORT).show();*/
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(activity, getResources().getString(R.string.create_user_failure_toast), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, getActivity().getResources().getString(R.string.create_user_failure_toast), Toast.LENGTH_SHORT).show();
                     }
                 });
                 activity.onBackPressed();
@@ -268,7 +272,6 @@ public class UserReportCreatorFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        //will use to create new EmoUser
 
     }
 

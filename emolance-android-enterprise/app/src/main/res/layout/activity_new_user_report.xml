@@ -116,6 +116,7 @@
                 android:id="@+id/positionEditText"
                 android:hint="@string/create_user_position_hint"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:paddingLeft="20dp"
                 android:background="@drawable/user_profile_field"
                 android:layout_width="match_parent"
