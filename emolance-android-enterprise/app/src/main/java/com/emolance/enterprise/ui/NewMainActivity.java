@@ -286,7 +286,7 @@ public class NewMainActivity extends FragmentActivity {
 
                 } else {
 
-                    Toast.makeText(this, "Permission denied to use camera ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

@@ -172,10 +172,10 @@ public class UserReportCreatorFragment extends Fragment {
         String positionEntry = positionEditText.getText().toString().trim();
         checked = checkBox.isChecked();
         if(nameEntry.isEmpty()){
-            nameEditText.setError("Name field cannot be empty.");
+            nameEditText.setError(getResources().getString(R.string.create_user_name_error));
         }
         if(genderEntry.isEmpty()){
-            genderEditText.setError("Gender field cannot be empty.");
+            genderEditText.setError(getResources().getString(R.string.create_user_gender_error));
         }
         if(dateOfBirthEntry.isEmpty()){
 
@@ -184,20 +184,20 @@ public class UserReportCreatorFragment extends Fragment {
             try {
                 dateFormat.parse(dateOfBirthEntry);
             } catch (ParseException pe) {
-                dateOfBirthEditText.setError("Date of birth must be in MM/dd/yyyy format.");
+                dateOfBirthEditText.setError(getResources().getString(R.string.create_user_dob_error));
             }
         }
         if(emailEntry.isEmpty()){
-            emailEditText.setError("Email field cannot be empty.");
+            emailEditText.setError(getResources().getString(R.string.create_user_email_error));
         }
         if(positionEntry.isEmpty()){
-            positionEditText.setError("Position field cannot be empty.");
+            positionEditText.setError(getResources().getString(R.string.create_user_position_error));
         }
         if(!emailEntry.isEmpty() && checkEmail(emailEntry)){
-            emailEditText.setError("Email field has been taken.");
+            emailEditText.setError(getResources().getString(R.string.create_user_email_taken_error));
         }
         else if(!nameEntry.isEmpty() && checkUserName(nameEntry)){
-            nameEditText.setError("User Name field has been taken.");
+            nameEditText.setError(getResources().getString(R.string.create_user_name_taken_error));
         }
         else{
             if(!nameEntry.isEmpty() && !genderEntry.isEmpty() && !dateOfBirthEntry.isEmpty() && !emailEntry.isEmpty() && !positionEntry.isEmpty()){
@@ -225,12 +225,12 @@ public class UserReportCreatorFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         activity.updateList();
-                        Toast.makeText(activity, "Successfully created the user.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, getResources().getString(R.string.create_user_success_toast), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(activity, "Failed to create the user.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, getResources().getString(R.string.create_user_failure_toast), Toast.LENGTH_SHORT).show();
                     }
                 });
                 activity.onBackPressed();

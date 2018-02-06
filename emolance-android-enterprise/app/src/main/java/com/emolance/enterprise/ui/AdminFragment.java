@@ -250,7 +250,7 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
 
                                 @Override
                                 public void onFailure(Call<List<TestReport>> call, Throwable t) {
-                                    Log.e("AdminReport", "Failed to get the list of individual history reports. ");
+                                    Log.e("AdminReport", getResources().getString(R.string.api_user_list_error));
                                     Toast.makeText(getActivity(), getResources().getString(R.string.api_user_list_error),  Toast.LENGTH_LONG).show();
                                     endProgressDialog();
                                 }

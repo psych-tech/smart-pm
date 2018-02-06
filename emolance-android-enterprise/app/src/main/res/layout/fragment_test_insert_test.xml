@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Insert test, faced up."
+                android:text="@string/test_sequence_insert_directions"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginRight="20dp"
@@ -45,7 +45,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Measure"
+                android:text="@string/test_sequence_measure_button"
                 android:onClick="measureTestOnClick"
                 android:background="#496a9e"/>
         </LinearLayout>

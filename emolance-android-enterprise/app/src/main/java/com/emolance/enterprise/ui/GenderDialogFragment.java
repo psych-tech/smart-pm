@@ -30,9 +30,9 @@ public class GenderDialogFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_gender_select, null);
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.genderRadioGroup);
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Select Gender...")
+                .setTitle(getResources().getString(R.string.create_user_gender_dialog))
                 .setView(view)
-                .setPositiveButton("OK",
+                .setPositiveButton(getResources().getString(R.string.create_user_gender_dialog_confirm),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 int radioID = radioGroup.getCheckedRadioButtonId();
@@ -46,7 +46,7 @@ public class GenderDialogFragment extends DialogFragment {
                             }
                         }
                 )
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getResources().getString(R.string.create_user_gender_dialog_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();

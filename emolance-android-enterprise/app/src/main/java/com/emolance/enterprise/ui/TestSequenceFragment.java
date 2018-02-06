@@ -216,7 +216,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 });
             } catch (Exception e){
                 e.printStackTrace();
-                Toast.makeText(context, "Could not use scanner.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getResources().getString(R.string.test_sequence_qr_scanner_error_toast), Toast.LENGTH_SHORT).show();
                 if(mBcr != null){
                     mBcr.close();
                 }
@@ -239,7 +239,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 }
                 if (!response.isSuccessful()) {
                     Toast.makeText(getContext(),
-                            "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                            getResources().getString(R.string.api_failed_report_addition), Toast.LENGTH_SHORT).show();
                     getActivity().onBackPressed();
                 }
             }
@@ -247,7 +247,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
             @Override
             public void onFailure(Call<TestReport> call, Throwable t) {
                 Toast.makeText(getContext(),
-                        "Failed to add the report.", Toast.LENGTH_SHORT).show();
+                        getResources().getString(R.string.api_failed_report_addition), Toast.LENGTH_SHORT).show();
                 if(mBcr != null){
                     mBcr.close();
                 }
@@ -268,7 +268,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                 takePhotoForProcessing(testReport, new ResultReadyListener() {
                     @Override
                     public void onResult() {
-                        Toast.makeText(getActivity(),"Status: Report is ready.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getResources().getString(R.string.test_sequence_report_ready_toast),Toast.LENGTH_SHORT).show();
                         turnOffFlash();
                         FragmentTransaction fm = getFragmentManager().beginTransaction();
                         Fragment testResult = new TestResultFragment();
@@ -280,7 +280,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
             }
         }
         else{
-            Toast.makeText(getActivity(),"No QR code available.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),getResources().getString(R.string.test_sequence_qr_error_toast),Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }
     }
@@ -323,7 +323,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                                 @Override
                                 public void onFailure(Call<TestReport> call, Throwable t) {
                                     Log.e(TAG, "Failed to submit the test report.");
-                                    Toast.makeText(getActivity(), "Failed to process test report.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.api_failed_report_processing), Toast.LENGTH_SHORT).show();
                                     if(isFlashOn){
                                         turnOffFlash();
                                     }
@@ -345,12 +345,12 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
     public void initCamera() {
         if (!context.getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            Toast.makeText(context, "No camera on this device", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(context, getResources().getString(R.string.test_sequence_no_camera_toast),
+                    Toast.LENGTH_LONG).show();
         } else {
             cameraId = findBackFacingCamera();
             if (cameraId < 0) {
-                Toast.makeText(context, "No front facing camera found.",
+                Toast.makeText(context, getResources().getString(R.string.test_sequence_no_front_camera_toast),
                         Toast.LENGTH_LONG).show();
             } else {
                 try {
@@ -475,7 +475,8 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                             @Override
                             public void onFailure(Call<TestReport> call, Throwable t) {
                                 Log.e(TAG, "Failed to submit the test report.");
-                                Toast.makeText(getActivity(), "Failed to process test report.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getResources().getString(R.string.api_failed_report_processing),
+                                        Toast.LENGTH_SHORT).show();
                                 if(isFlashOn){
                                     turnOffFlash();
                                 }

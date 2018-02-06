@@ -350,7 +350,7 @@ public class UserReportsFragment extends Fragment implements  SurfaceHolder.Call
                     NewMainActivity activity = (NewMainActivity) getActivity();
                     activity.transferDataUser(); //transfer the data to the UserProfileFragment
                     adminReportAdapter = new UserReportAdapter(context, testList, new UserProfileFragment());
-                    totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_items));
+                    totalTextView.setText(adminReportAdapter.getCount() + context.getResources().getString(R.string.test_reports_user_profile_testing));
                     adminReportListView.setAdapter(adminReportAdapter);
                     adminReportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override

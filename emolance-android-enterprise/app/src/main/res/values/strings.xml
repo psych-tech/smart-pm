@@ -17,10 +17,13 @@
     <string name="action_settings_3">Camera Debug</string>
 
     <!--System Errors-->
-
+    <string name="permission_denied">Permission denied to use camera</string>
 
     <!--API Feedback-->
     <string name="api_user_list_error">Failed to get the list of history reports.</string>
+    <string name="api_user_list_error_2">Failed to get the list of individual history reports.</string>
+    <string name="api_failed_report_addition">Failed to add the report.</string>
+    <string name="api_failed_report_processing">Failed to process test report.</string>
 
     <!--For User List-->
 
@@ -37,16 +40,28 @@
 
     <!--For Create New User-->
     <string name="create_user_name_hint">Name</string>
+    <string name="create_user_name_error">Name field cannot be empty.</string>
+    <string name="create_user_name_taken_error">User Name field has been taken.</string>
     <string name="create_user_gender_hint">Gender</string>
+    <string name="create_user_gender_error">Gender field cannot be empty.</string>
     <string name="create_user_selection_male">Male</string>
     <string name="create_user_selection_female">Female</string>
     <string name="create_user_gender_button">Select Gender</string>
+    <string name="create_user_gender_dialog">Select Gender</string>
+    <string name="create_user_gender_dialog_confirm">OK</string>
+    <string name="create_user_gender_dialog_cancel">Cancel</string>
     <string name="create_user_dob_hint">Date of birth</string>
+    <string name="create_user_dob_error">Date of birth must be in MM/dd/yyyy format.</string>
     <string name="create_user_dob_button">Select Date</string>
     <string name="create_user_email_hint">Email</string>
+    <string name="create_user_email_error">Email field cannot be empty.</string>
+    <string name="create_user_email_taken_error">Email field has been taken.</string>
     <string name="create_user_position_hint">Position</string>
+    <string name="create_user_position_error">Position field cannot be empty.</string>
     <string name="create_user_send_report_check">Send Report Automatically</string>
     <string name="create_user_save_button">Save</string>
+    <string name="create_user_success_toast">Successfully created the user</string>
+    <string name="create_user_failure_toast">Failed to create the user</string>
 
 
     <!--For User Profile-->
@@ -72,6 +87,14 @@
     <string name="test_sequence_tab_1">Step 1: Scan QR Code</string>
     <string name="test_sequence_tab_2">Step 2: Insert Test</string>
     <string name="test_sequence_tab_3">Step 3: Generating Report</string>
+    <string name="test_sequence_scan_directions">Scan the QR code,\n10 cm away from scanner.</string>
+    <string name="test_sequence_insert_directions">Insert test, faced up.</string>
+    <string name="test_sequence_measure_button">Measure</string>
+    <string name="test_sequence_qr_scanner_error_toast">Could not use scanner.</string>
+    <string name="test_sequence_qr_error_toast">No QR code available.</string>
+    <string name="test_sequence_report_ready_toast">Status: Report is ready.</string>
+    <string name="test_sequence_no_camera_toast">No camera on this device</string>
+    <string name="test_sequence_no_front_camera_toast">No front facing camera found</string>
 
     <!--For Test Result Fragment-->
     <string name="test_result_send_button">Send</string>

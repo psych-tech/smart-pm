@@ -157,7 +157,6 @@ public class UserProfileFragment extends Fragment {
             String userImage = bundle.getString(Constants.USER_IMAGE);
             String userDOB = bundle.getString(Constants.USER_DOB);
             String userWeChat = bundle.getString(Constants.USER_WECHAT);
-            Log.i(TAG, "Getting UserId: " + userId);
 
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             outputFormatter = new SimpleDateFormat("MM/dd");
@@ -229,9 +228,9 @@ public class UserProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<TestReport>> call, Throwable t) {
-                Log.e("AdminReport", "Failed to get the list of history reports. ");
+                Log.e("AdminReport", getResources().getString(R.string.api_user_list_error));
                 endProgressDialog();
-                Toast.makeText(getActivity(),"Failed to get the list of reports. ",  Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),getResources().getString(R.string.api_user_list_error),  Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,9 +1,6 @@
 package com.emolance.enterprise.ui;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +13,6 @@ import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -26,7 +22,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
@@ -57,7 +52,6 @@ public class AdminDashboardFragment extends Fragment {
     private List<EmoUser> myUsers;
     private HashMap<Long, List<TestReport>> reportsHashmap;
     private HashMap<Integer, Integer> levelsHashmap;
-    private Typeface font;
 
     private int[] colors;
 
@@ -76,9 +70,6 @@ public class AdminDashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        //Set text style
-        Context context = getActivity();
 
         colors = getResources().getIntArray(R.array.altcolors);
         if(((NewMainActivity)getActivity()).getUserList() != null){
