@@ -32,6 +32,7 @@ import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.util.Constants;
 import com.emolance.enterprise.util.GlobalSettings;
+import com.emolance.enterprise.util.ResultManager;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class NewMainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         checkAuth();
-
+        
         setContentView(R.layout.activity_new_main);
 
         ActionBar actionBar = getActionBar();

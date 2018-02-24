@@ -206,7 +206,7 @@ public class UserReportCreatorFragment extends Fragment {
                 email = emailEntry;
                 position = positionEntry;
                 login = emailEntry;
-                
+
                 // TODO
                 // There is a Hack here. Could we put "HH " + DOB + " " + Gender in the LastName Field?
                 // The idea is that when loading the user info, if lastName starts with "HH", we are going to split it by " " and get the DOB and Gender
