@@ -44,14 +44,19 @@ public class DateUtils {
 
             return dateTimeStr;
         } catch (IllegalArgumentException e) {
-            DateTime dateTime = DateTime.parse(dateStr,
-                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
-                            .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+            try {
+                DateTime dateTime = DateTime.parse(dateStr,
+                        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                                .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-            String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy")
-                    .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
+                String dateTimeStr = dateTime.toString(DateTimeFormat.forPattern("MM/dd/yyyy")
+                        .withLocale(Locale.ROOT).withChronology(ISOChronology.getInstanceUTC()));
 
-            return dateTimeStr;
+                return dateTimeStr;
+            }
+            catch (IllegalArgumentException ex){
+                return null;
+            }
         }
     }
 

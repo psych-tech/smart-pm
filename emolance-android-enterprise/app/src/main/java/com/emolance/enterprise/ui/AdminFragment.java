@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,12 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
@@ -28,12 +24,9 @@ import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
 import com.emolance.enterprise.util.Constants;
 import com.scalified.fab.ActionButton;
-
 import java.util.HashMap;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.paperdb.Paper;
@@ -65,7 +58,6 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
     //Used to send data to AdminDashboardFragment
     private List<EmoUser> myUsers;
     private HashMap<Long, List<TestReport>> hashMap;
-    private EmoUser emoUser;
     private int counter;
     private NewMainActivity activity;
     private View rootView;
@@ -157,9 +149,11 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
     public List<EmoUser> getEmoUserList() {
         return myUsers;
     }
+
     public HashMap<Long, List<TestReport>> getTestsHashmap() {
         return hashMap;
     }
+
     public void updateAdapter(){
         startProgressDialog();
         GetDataAsyncTask asyncTask = new GetDataAsyncTask();
@@ -184,7 +178,6 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
         userProfileFragment = new UserProfileFragment();
         Bundle bundle = new Bundle();
         EmoUser emoUser = adminReportAdapter.getItem(i);
-
         bundle.putLong(Constants.USER_ID, emoUser.getId());
         userProfileFragment.setArguments(bundle);
         bundle.putString(Constants.USER_NAME, emoUser.getName());
@@ -192,6 +185,7 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
         bundle.putString(Constants.USER_POSITION, emoUser.getPosition());
         bundle.putString(Constants.USER_IMAGE, emoUser.getProfileImage());
         bundle.putString(Constants.USER_DOB, emoUser.getDatebirth());
+        bundle.putString(Constants.USER_GENDER, emoUser.getGender());
         //TODO: need to add wechat
         bundle.putString(Constants.USER_WECHAT, getResources().getString(R.string.user_profile_na));
         userProfileFragment.setArguments(bundle);
@@ -218,6 +212,28 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
         Paper.book(Constants.DB_MYUSERS).write(Constants.DB_MYUSERS_KEY, myUsers);
     }
 
+    private void setUserInformation(EmoUser emoUser) {
+        String information = emoUser.getName();
+        if(information.contains(" HH ")){
+            String[] array = information.split("\\s+");
+            if(array.length == 4 && array[1].equals("HH")){ //user with first name
+                emoUser.setName(array[0]);
+                emoUser.setDatebirth(array[2]);
+                emoUser.setGender(array[3]);
+            }
+            else if(array.length == 5 && array[2].equals("HH")){ //user with first,last name
+                emoUser.setName(array[0] + " " + array[1]);
+                emoUser.setDatebirth(array[3]);
+                emoUser.setGender(array[4]);
+            }
+            else if(array.length == 6 && array[3].equals("HH")){ //user with first,middle,last name
+                emoUser.setName(array[0] + " " + array[1] + array[2]);
+                emoUser.setDatebirth(array[4]);
+                emoUser.setGender(array[5]);
+            }
+        }
+    }
+
     private class GetDataAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -228,11 +244,13 @@ public class AdminFragment extends Fragment implements SearchView.OnQueryTextLis
                     if (response.isSuccessful()) {
                         myUsers = response.body();
                         counter = 0;
+                        EmoUser emoUser;
                         hashMap = new HashMap<>(); //used to map tests to users
                         //Loads the hashmap with the lists of test reports and then transfers the data between the fragments
                         for (int i = 0; i < myUsers.size(); i++) {
                             emoUser = myUsers.get(i);
                             Long userId = emoUser.getId();
+                            setUserInformation(emoUser);
                             Call<List<TestReport>> testReportCall = emolanceAPI.listReports(userId);
                             testReportCall.enqueue(new Callback<List<TestReport>>() {
                                 @Override

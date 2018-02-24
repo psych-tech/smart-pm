@@ -31,6 +31,8 @@ public class EmoUser implements Serializable {
 
     private String profileImage;
 
+    private String gender;
+
     public String getDatebirth() {
         return datebirth;
     }
@@ -131,5 +133,13 @@ public class EmoUser implements Serializable {
             ", email='" + email + "'" +
             ", type='" + type + "'" +
             '}';
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

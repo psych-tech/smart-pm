@@ -156,8 +156,8 @@ public class UserProfileFragment extends Fragment {
             String userPosition = bundle.getString(Constants.USER_POSITION);
             String userImage = bundle.getString(Constants.USER_IMAGE);
             String userDOB = bundle.getString(Constants.USER_DOB);
+            String userGender = bundle.getString(Constants.USER_GENDER);
             String userWeChat = bundle.getString(Constants.USER_WECHAT);
-
             inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             outputFormatter = new SimpleDateFormat("MM/dd");
             if (userEmail != null) {
@@ -170,7 +170,17 @@ public class UserProfileFragment extends Fragment {
                 userProfileTextViewPosition.setText(userPosition);
             }
             if(userDOB != null){
-                userProfileTextViewDOB.setText(getResources().getString(R.string.user_profile_dob) + ": " + DateUtils.getDateBirthInStr(userDOB));
+                String dob = DateUtils.getDateBirthInStr(userDOB);
+                if(dob != null){
+                    userProfileTextViewDOB.setText(getResources().getString(R.string.user_profile_dob) + ": " + dob);
+                }
+                else{
+                    userProfileTextViewDOB.setText(getResources().getString(R.string.user_profile_dob) + ": " + userDOB);
+                }
+            }
+
+            if(userGender != null && !userGender.equals("null")){
+                userProfileTextViewGender.setText(getResources().getString(R.string.user_profile_gender) + ": " + userGender);
             }
             if(userImage != null){
                 String uri = userImage;
