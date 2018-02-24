@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -205,28 +206,22 @@ public class UserReportCreatorFragment extends Fragment {
                 email = emailEntry;
                 position = positionEntry;
                 login = emailEntry;
-                //TODO: checked  and gender should be added to API post for checkbox
-
-                // This is how to post a new uesr:
-                // We need the following fields, please modify the UI accordingly:
-                //  - Username (login)
-                //  - First Name
-                //  - Last Name
-                //  - Email
-                //  - ProfileImage. Use "1", "2", "3", "4" to indicate which image you have chosen from the list of the images we have
-                //  - Profession
-                //
-                // We don't need the organization, age, zipcode anymore
-                // Please test this and make sure it refreshes the fragment after adding it
-                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(email, name, dob, email, profileUri, position);
+                
+                // TODO
+                // There is a Hack here. Could we put "HH " + DOB + " " + Gender in the LastName Field?
+                // The idea is that when loading the user info, if lastName starts with "HH", we are going to split it by " " and get the DOB and Gender
+                // Otherwise, we will use it for lastName
+                Call<ResponseBody> responseBodyCall = emolanceAPI.createUser(email.substring(0, email.indexOf("@")), name, "HH " + dob + " " + gender, email, profileUri, position);
                 responseBodyCall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
+                            Log.i("TEST", "Created user successfully");
                             activity.updateList();
                             //Toast.makeText(activity, getActivity().getResources().getString(R.string.create_user_success_toast), Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            Log.i("TEST", "Failed to Created user successfully");
                             /*Toast.makeText(activity, getActivity().getResources().getString(R.string.create_user_failure_toast),
                                     Toast.LENGTH_SHORT).show();*/
                         }
