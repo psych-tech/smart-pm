@@ -4,7 +4,7 @@ package com.emolance.enterprise.data;
  * Created by yusun on 2/24/18.
  */
 
-class Tip {
+public class Tip {
 
     private String title;
     private String description;

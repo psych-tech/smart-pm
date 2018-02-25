@@ -27,6 +27,7 @@ import com.emolance.enterprise.Injector;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.Colors;
 import com.emolance.enterprise.util.Constants;
 import com.emolance.enterprise.util.DateUtils;
 import com.github.mikephil.charting.charts.Chart;
@@ -225,10 +226,22 @@ public class UserProfileFragment extends Fragment {
                         reportsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Toast.makeText(getActivity(), "Clickable action", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(UserProfileFragment.this.getActivity(), ReportActivity.class);
-                                intent.putExtra("id", adminReportAdapter.getItem(i).getId());
-                                startActivity(intent);
+                                FragmentTransaction fm = getFragmentManager().beginTransaction();
+                                Fragment testResult = new TestResultFragment();
+                                String date = adminReportAdapter.getItem(i).getReportDate();
+                                Bundle args = new Bundle();
+                                if(adminReportAdapter.getItem(i).getLevel() != null){
+                                    args.putInt(Constants.RESULT_LEVEL, adminReportAdapter.getItem(i).getLevel());
+                                    args.putInt(Constants.RESULT_VALONE,adminReportAdapter.getItem(i).getVal1().intValue());
+                                    args.putInt(Constants.RESULT_VALTWO,adminReportAdapter.getItem(i).getVal2().intValue());
+                                    args.putString(Constants.RESULT_DATE,date);
+                                    args.putInt(Constants.RESULT_COLOR, Colors.colorPicker(adminReportAdapter.getItem(i).getLevel()));
+                                    args.putString(Constants.RESULT_STATUS, adminReportAdapter.getItem(i).getStatus());
+                                }
+                                testResult.setArguments(args);
+                                fm.add(R.id.root_container_right,testResult);
+                                fm.addToBackStack(null);
+                                fm.commit();
                             }
                         });
                         setData(reports);

@@ -32,6 +32,7 @@ import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.EmoUser;
 import com.emolance.enterprise.data.TestReport;
 import com.emolance.enterprise.service.EmolanceAPI;
+import com.emolance.enterprise.util.Colors;
 import com.emolance.enterprise.util.Constants;
 import com.mitac.cell.device.bcr.McBcrConnection;
 import com.mitac.cell.device.bcr.McBcrMessage;
@@ -270,8 +271,17 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                     public void onResult() {
                         Toast.makeText(getActivity(),getResources().getString(R.string.test_sequence_report_ready_toast),Toast.LENGTH_SHORT).show();
                         turnOffFlash();
+                        String date = testReport.getReportDate();
                         FragmentTransaction fm = getFragmentManager().beginTransaction();
                         Fragment testResult = new TestResultFragment();
+                        Bundle args = new Bundle();
+                        args.putInt(Constants.RESULT_LEVEL, testReport.getLevel());
+                        args.putInt(Constants.RESULT_VALONE,testReport.getVal1().intValue());
+                        args.putInt(Constants.RESULT_VALTWO,testReport.getVal2().intValue());
+                        args.putString(Constants.RESULT_DATE,date);
+                        args.putInt(Constants.RESULT_COLOR, Colors.colorPicker(testReport.getLevel()));
+                        args.putString(Constants.RESULT_STATUS, testReport.getStatus());
+                        testResult.setArguments(args);
                         fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
                         fm.replace(R.id.root_container_right,testResult);
                         fm.commit();
@@ -317,6 +327,7 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                                 @Override
                                 public void onResponse(Call<TestReport> call, Response<TestReport> response) {
                                     Log.i("TEST", "Image process succeeded.");
+                                    testReport = response.body();
                                     onResultReady.onResult();
                                 }
 

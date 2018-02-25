@@ -307,17 +307,21 @@ public class NewMainActivity extends FragmentActivity {
 
         if (count == 0 || count == 1) {
             super.onBackPressed();
+            Log.i("BACK", "count 0 or 1");
             //additional code
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.root_container_right);
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
             if(fragment instanceof TestSequenceFragment){
                 super.onBackPressed();
+                Log.i("BACK", "Test Sequence");
             }
             else if(fragment instanceof TestResultFragment) {
+                Log.i("BACK", "Test Result");
                 super.onBackPressed();
             }
             else if(manager.getBackStackEntryCount() > 1) {
+                Log.i("BACK", "count greater than 1");
                 android.support.v4.app.FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
                 manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }

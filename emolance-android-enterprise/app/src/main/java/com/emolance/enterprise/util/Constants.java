@@ -29,6 +29,12 @@ public class Constants {
     public static final String USER_DOB = "UserDOB";
     public static final String USER_WECHAT = "UserWeChat";
     public static final String USER_GENDER = "UserGender";
+    public static final String RESULT_LEVEL = "level";
+    public static final String RESULT_VALONE = "valone";
+    public static final String RESULT_VALTWO = "valtwo";
+    public static final String RESULT_DATE = "date";
+    public static final String RESULT_COLOR = "color";
+    public static final String RESULT_STATUS = "status";
     public static final String LIST_EMAILS = "emails";
     public static final String LIST_USERNAMES = "usernames";
 }

@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.emolance.enterprise.R;
 import com.emolance.enterprise.data.TestReport;
+import com.emolance.enterprise.util.Colors;
 import com.emolance.enterprise.util.DateUtils;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
             dateText.setText(date);
         }
         if (status.equals(context.getResources().getString(R.string.test_reports_user_profile_done))) {
-            int color = colorPicker(level);
+            int color = Colors.colorPicker(level);
             resultColorView.setBackgroundColor(color);
             statusText.setText(status);
             levelText.setText(String.valueOf(level));
@@ -73,18 +74,4 @@ public class UserReportAdapter extends ArrayAdapter<TestReport> {
         return view;
     }
 
-    private int colorPicker(int val){
-        if(val <= 2 && val > 0){
-            return Color.GREEN;
-        }
-        else if(val <= 4 && val > 2){
-            return Color.YELLOW;
-        }
-        else if(val <= 6 && val > 4){
-            return Color.RED;
-        }
-        else{
-            return Color.GRAY;
-        }
-    }
 }

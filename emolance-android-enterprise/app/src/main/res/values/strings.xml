@@ -98,6 +98,7 @@
 
     <!--For Test Result Fragment-->
     <string name="test_result_send_button">Send</string>
+    <string name="test_result_tips_header">减压贴士</string>
 
     <!--For Test Report Activity-->
     <!--Currently not displayed-->
