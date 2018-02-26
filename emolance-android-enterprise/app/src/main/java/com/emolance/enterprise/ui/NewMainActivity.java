@@ -45,10 +45,6 @@ import butterknife.InjectView;
  * Created by yusun on 6/22/15.
  */
 public class NewMainActivity extends FragmentActivity {
-
-//    NewMainActivityPageViewerAdapter pagerAdapter;
-//    ViewPager mViewPager;
-
     private LinearLayout rootContainer;
     private int tmpDelayTime = GlobalSettings.processingDelay;
     private FragmentTransaction fragmentTransaction;
@@ -77,38 +73,6 @@ public class NewMainActivity extends FragmentActivity {
             }
 
         }
-
-        /*
-        // Create a tab listener that is called when the user changes tabs.
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            @Override
-            public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
-
-            }
-
-            @Override
-            public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
-
-            }
-
-            @Override
-            public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
-
-            }
-        };
-
-        // Add 1 tab, specifying the tab's text and TabListener
-        actionBar.addTab(actionBar.newTab()
-                            .setText("New")
-                            .setTabListener(tabListener));*/
-
-        // ViewPager and its adapters use support library
-//        // fragments, so use getSupportFragmentManager.
-//        pagerAdapter = new NewMainActivityPageViewerAdapter(
-//                getSupportFragmentManager());
-//        mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(pagerAdapter);
-
         adminFragment = new AdminFragment();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.root_container_left, adminFragment, "AdminFragment");
@@ -318,7 +282,15 @@ public class NewMainActivity extends FragmentActivity {
             }
             else if(fragment instanceof TestResultFragment) {
                 Log.i("BACK", "Test Result");
-                super.onBackPressed();
+                //Fragment sequence = getSupportFragmentManager().findFragmentByTag("SequenceFragment");
+                List<Fragment> list = manager.getFragments();
+                if(list.get(list.size() - 2) instanceof TestSequenceFragment){
+                    android.support.v4.app.FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(count - 2);
+                    manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                else{
+                    super.onBackPressed();
+                }
             }
             else if(manager.getBackStackEntryCount() > 1) {
                 Log.i("BACK", "count greater than 1");

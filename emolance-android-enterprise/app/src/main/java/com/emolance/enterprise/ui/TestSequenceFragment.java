@@ -283,7 +283,8 @@ public class TestSequenceFragment extends Fragment implements  SurfaceHolder.Cal
                         args.putString(Constants.RESULT_STATUS, testReport.getStatus());
                         testResult.setArguments(args);
                         fm.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
-                        fm.replace(R.id.root_container_right,testResult);
+                        fm.add(R.id.root_container_right,testResult);
+                        fm.addToBackStack(null);
                         fm.commit();
                     }
                 });
